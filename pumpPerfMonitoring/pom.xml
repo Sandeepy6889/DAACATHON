@@ -6,35 +6,25 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<dependencies>
 		<dependency>
-			<groupId>javax</groupId>
-			<artifactId>javaee-api</artifactId>
-			<version>7.0</version>
-		</dependency>
-
-		<dependency>
 			<groupId>com.amazonaws</groupId>
-			<artifactId>aws-java-sdk-ec2</artifactId>
+			<artifactId>aws-java-sdk</artifactId>
+			<version>1.11.297</version>
+			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.amazonaws</groupId>
-			<artifactId>aws-java-sdk-s3</artifactId>
+			<artifactId>amazon-kinesis-client</artifactId>
+			<version>1.2.1</version>
+			<scope>compile</scope>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk-dynamodb -->
 		<dependency>
 			<groupId>com.amazonaws</groupId>
 			<artifactId>aws-java-sdk-dynamodb</artifactId>
+			<version>1.11.297</version>
 		</dependency>
+
 	</dependencies>
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>com.amazonaws</groupId>
-				<artifactId>aws-java-sdk-bom</artifactId>
-				<version>1.11.104</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
 	<build>
 		<sourceDirectory>src</sourceDirectory>
 		<plugins>
