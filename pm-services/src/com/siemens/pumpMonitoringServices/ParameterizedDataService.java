@@ -46,13 +46,14 @@ public class ParameterizedDataService {
 	}
 
 	@GET
+	@Path("/getAll")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<ParameterizedData> getAll() {
 		return data;
 	}
 
 	@POST
-	@Path("add")
+	@Path("/insert")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public ParameterizedData add(ParameterizedData pumpData) {
