@@ -6,9 +6,8 @@ assetsManagementApp.directive("assetReport", function () {
     return {
         restrict: 'EA',
         scope: {
-            name: "="
         },
-        templateUrl: 'analysis.html',
+        templateUrl: 'report.html',
         controller: function ($scope, $element, Asset, assetService) {
         }
 

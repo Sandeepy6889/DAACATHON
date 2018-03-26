@@ -36,7 +36,6 @@ public class TrainingDataService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public TrainingDataRecord add(TrainingDataRecord trainingRecord) {
-		System.out.println("Object received : " + trainingRecord);
 		data.add(trainingRecord);
 		return trainingRecord;
 	}

@@ -57,7 +57,6 @@ public class ParameterizedDataService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public ParameterizedData add(ParameterizedData pumpData) {
-		System.out.println("Object received : "+pumpData);
 		data.add(pumpData);
 		return pumpData;
 	}
