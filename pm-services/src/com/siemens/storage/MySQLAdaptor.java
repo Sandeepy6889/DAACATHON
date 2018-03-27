@@ -3,8 +3,8 @@
  *
  * SPPA-T3000  
  * 
- */
-package com.pg.orion.sps.adapter.service;
+ 
+package com.siemens.storage;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -22,12 +22,12 @@ import com.pg.orion.sps.model.SPSAccountPwdChg;
 import com.pg.orion.sps.model.SPSDefaultMessage;
 import com.pg.orion.sps.util.SPSErrorCode;
 
-/**
+*//**
  * Provides the Method for Changing password in MYSQL DB.
  * 
  * @author Suhail Gupta
  * 
- */
+ *//*
 public class MySQLAdaptor implements IAdapter
 {
 	private static final FormatLogger LOGGER = new FormatLogger(Logger.getLogger(MySQLAdaptor.class));
@@ -37,19 +37,19 @@ public class MySQLAdaptor implements IAdapter
     private static final String DB_PORT_PROPERTY_NAME = "MYSQL_DB_PORT";
     private static final String DBDRIVER_PROPERTY_NAME = "MYSQL_DBDRIVER";
     
-    /**
+    *//**
      * 
      * @param sPSPropertiesReader SPSPropertiesReader reference
-     */
+     *//*
     public MySQLAdaptor(SPSPropertiesReader sPSPropertiesReader)
     {
         mSPSPropertiesReader = sPSPropertiesReader;
     }
     
-    /**
+    *//**
      * 
      * {@inheritDoc}
-     */
+     *//*
     @Override
     public OprStatus changePwd(SPSAccountPwdChg objRecordPwdChg)
     {
@@ -125,25 +125,25 @@ public class MySQLAdaptor implements IAdapter
         return oprStatus;
     }
     
-    /**
+    *//**
      * Get the DB connection.
      * 
      * @param properties Properties reference
      * @param dbUrl dbUrl String
      * @return Connection reference
      * @throws SQLException SQLException exception
-     */
+     *//*
     protected Connection getDBConnection(Properties properties, String dbUrl) throws SQLException
     {
         return DriverManager.getConnection(dbUrl, properties);
     }
     
-    /**
+    *//**
      * Release the resources
      * 
      * @param mConnection Connection reference
      * @param stmt Statement reference
-     */
+     *//*
     private void releaseResources(Connection mConnection, PreparedStatement stmt)
     {
         try
@@ -159,13 +159,13 @@ public class MySQLAdaptor implements IAdapter
         }
     }
     
-    /**
+    *//**
      * Get DB Properties.
      * 
      * @param strLoginUID loginUserId to make DB connection.
      * @param strLoginPassword loginPassword to make DB connection.
      * @return Properties
-     */
+     *//*
     private Properties getDBProperties(String strLoginUID,String strLoginPassword)
     {
         Properties properties = new Properties();
@@ -181,14 +181,14 @@ public class MySQLAdaptor implements IAdapter
         return properties;
     }
     
-    /**
+    *//**
      * Get DB Query
      * 
      * @param strAccountUID accountUserId String
      * @param strHostName account HostIP String
      * @param strNewPassword account NewPassword
      * @return query String.
-     */
+     *//*
     private String getQuery(String strAccountUID, String strHostName, String strNewPassword)
     {
         
@@ -197,8 +197,9 @@ public class MySQLAdaptor implements IAdapter
     }
     
 }
-/*
+
  * Copyright (c) Siemens AG 2016 ALL RIGHTS RESERVED.
  * 
  * SPPA-T3000
- */
+ 
+*/
