@@ -6,11 +6,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class ParameterizedData {
 	private String assetID;
 	private String assetName;
-	private int ratedPower;
+	private double ratedPower;
 	private double motorEfficiency;
 	private double motorRatedSpeed;
 	private double minRatedFlowOfPump;
-	private int waterDensity;
+	private double waterDensity;
 	private double threadholdLT;
 
 	@Override
@@ -44,11 +44,11 @@ public class ParameterizedData {
 		this.assetName = assetName;
 	}
 
-	public int getRatedPower() {
+	public double getRatedPower() {
 		return ratedPower;
 	}
 
-	public void setRatedPower(int ratedPower) {
+	public void setRatedPower(double ratedPower) {
 		this.ratedPower = ratedPower;
 	}
 
@@ -76,11 +76,11 @@ public class ParameterizedData {
 		this.minRatedFlowOfPump = minRatedFlowOfPump;
 	}
 
-	public int getWaterDensity() {
+	public double getWaterDensity() {
 		return waterDensity;
 	}
 
-	public void setWaterDensity(int waterDensity) {
+	public void setWaterDensity(double waterDensity) {
 		this.waterDensity = waterDensity;
 	}
 

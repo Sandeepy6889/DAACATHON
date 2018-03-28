@@ -1,5 +1,7 @@
 package com.siemens.pumpMonitoringServices;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +13,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import com.siemens.pumpMonitoring.core.ParameterizedData;
+import com.siemens.pumpMonitoring.core.ParameterizedDataResultSet;
+import com.siemens.storage.DbConnection;
+import com.siemens.storage.SelectOperations;
 
 @Path("/assetPrmtz")
 public class ParameterizedDataService {
@@ -49,7 +54,22 @@ public class ParameterizedDataService {
 	@Path("/getAll")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<ParameterizedData> getAll() {
-		return data;
+		ParameterizedDataResultSet obj = null;
+		Connection connection = null;
+		try {
+			connection = DbConnection.getDbConnection();
+			obj = new ParameterizedDataResultSet();
+			String qStr = "SELECT * from paramdata";
+			SelectOperations opr = new SelectOperations();
+			opr.select(connection, qStr, obj);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DbConnection.releaseResources(connection);
+		}
+		return data = obj.getData();
 	}
 
 	@POST

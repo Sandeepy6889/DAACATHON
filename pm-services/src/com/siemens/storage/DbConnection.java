@@ -6,21 +6,19 @@
  */
 package com.siemens.storage;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Properties;
 
+import com.siemens.pumpMonitoring.core.Configuration;
+
 /**
  * Provides the Method for Changing password in MYSQL DB.
  * 
- * @author Suhail Gupta
- * 
  */
-public class MySQLAdaptor {
+public class DbConnection {
 	private static final String DEFAULT_DBURL = "jdbc:mysql://";
 	private static final String DB_NAME = "MYSQL_DB_NAME";
 	private static final String PORT = "MYSQL_DB_PORT";
@@ -34,14 +32,21 @@ public class MySQLAdaptor {
 	 * @param sPSPropertiesReader
 	 *            SPSPropertiesReader reference
 	 */
-	public MySQLAdaptor() {
+	public DbConnection() {
 	}
 
 	/**
 	 * 
 	 * {@inheritDoc}
+	 * 
+	 * @throws ClassNotFoundException
+	 * @throws IllegalAccessException
+	 * @throws InstantiationException
+	 * @throws SQLException
 	 */
-	public void getDbConnection(Properties dbProperties) {
+	public static Connection getDbConnection()
+			throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
+		Properties dbProperties = Configuration.getDbProperties();
 		String portNumber = dbProperties.getProperty(PORT).trim();
 		String dbDriver = dbProperties.getProperty(DBDRIVER).trim();
 		String dbName = dbProperties.getProperty(DB_NAME).trim();
@@ -51,26 +56,17 @@ public class MySQLAdaptor {
 
 		String strHostName = dbProperties.getProperty(HOSTNAME);
 		Properties properties = getDBProperties(strLoginUID, strLoginPassword);
-		String dbUrl = DEFAULT_DBURL + strHostName + ":" + portNumber + "/" + dbName;
-
-		System.out.println("dbURL-" + dbUrl + "-");
+		// String dbUrl = DEFAULT_DBURL + strHostName + ":" + portNumber + "/" + dbName;
+		String dbUrl = "jdbc:oracle:thin:@localhost:1521:xe";
+		// System.out.println("dbURL-" + dbUrl + "-");
 		Connection mConnection = null;
 		PreparedStatement preparedStatement = null;
 		boolean connectionEstablished = false;
-		try {
 
-			Class.forName(dbDriver).newInstance();
-			System.out.println("DB class loaded");
-			mConnection = DriverManager.getConnection(dbUrl, properties);
-			System.out.println("Connected successfully");
-			connectionEstablished = true;
+		Class.forName(dbDriver).newInstance();
+		mConnection = DriverManager.getConnection(dbUrl, properties);
 
-		} catch (Exception e) {
-			System.out.println("unable to connect");
-			e.printStackTrace();
-		} finally {
-			releaseResources(mConnection, preparedStatement);
-		}
+		return mConnection;
 	}
 
 	/**
@@ -81,10 +77,8 @@ public class MySQLAdaptor {
 	 * @param stmt
 	 *            Statement reference
 	 */
-	private void releaseResources(Connection mConnection, PreparedStatement stmt) {
+	public static void releaseResources(Connection mConnection) {
 		try {
-			if (stmt != null)
-				stmt.close();
 			if (mConnection != null)
 				mConnection.close();
 		} catch (SQLException e) {
@@ -101,7 +95,7 @@ public class MySQLAdaptor {
 	 *            loginPassword to make DB connection.
 	 * @return Properties
 	 */
-	private Properties getDBProperties(String strLoginUID, String strLoginPassword) {
+	private static Properties getDBProperties(String strLoginUID, String strLoginPassword) {
 		Properties properties = new Properties();
 		properties.put("user", strLoginUID);
 		properties.put("password", strLoginPassword);
@@ -114,31 +108,6 @@ public class MySQLAdaptor {
 		properties.put("jdbcCompliantTruncation", "false");
 		return properties;
 	}
-
-	public void loadFile() {
-		ClassLoader classLoader = getClass().getClassLoader();
-		InputStream inputStream = classLoader.getResourceAsStream("database.cfg");
-		Properties dbProperties = new Properties();
-		try {
-			dbProperties.load(inputStream);
-			getDbConnection(dbProperties);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public static void main(String[] args) throws IOException {
-		MySQLAdaptor adt = new MySQLAdaptor();
-		adt.loadFile();
-	}
-
-	/*
-	 * 
-	 * ## MYSQL DB Properties MYSQL_DBDRIVER = com.mysql.jdbc.Driver MYSQL_DB_PORT =
-	 * 3306 MYSQL_DB_NAME = sandeep MYSQL_USERNAME = sandeep MYSQL_PASSWORD =
-	 * sandeepyadav MYSQL_HOSTNAME =
-	 * pump-testing-75019790.cnpdj3nbkprg.us-east-1.rds.amazonaws.com
-	 */
 
 }
 /*

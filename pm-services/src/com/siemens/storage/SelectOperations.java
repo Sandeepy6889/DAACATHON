@@ -1,0 +1,53 @@
+package com.siemens.storage;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.List;
+
+import com.siemens.pumpMonitoring.core.DbRowToObject;
+import com.siemens.pumpMonitoring.core.ParameterizedData;
+import com.siemens.pumpMonitoring.core.ParameterizedDataResultSet;
+
+public class SelectOperations {
+
+	public void select(Connection connection, String qString, DbRowToObject dbResult) throws SQLException {
+		Statement stmt = connection.createStatement();
+		ResultSet rs;
+		rs = stmt.executeQuery(qString);
+		while (rs.next()) {
+			dbResult.fill(rs);
+		}
+	}
+
+	public static void main(String[] args) {
+		SelectOperations op = new SelectOperations();
+		op.execute();
+	}
+
+	private void execute() {
+		Connection connection = null;
+		TableRow row = new TableRow("daac");
+		row.set("assetid ", "ratess", "intval");
+		ParameterizedDataResultSet obj = null;
+		try {
+			connection = DbConnection.getDbConnection();
+			obj = new ParameterizedDataResultSet();
+			String qStr = "SELECT * from paramdata";
+			select(connection, qStr, obj);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DbConnection.releaseResources(connection);
+		}
+
+		List<ParameterizedData> data = obj.getData();
+		for (ParameterizedData parameterizedData : data) {
+			System.out.println(parameterizedData);
+		}
+
+	}
+}
