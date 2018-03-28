@@ -5,14 +5,14 @@
 	<artifactId>pm-services</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 
-	<!-- <dependencies>
+	<dependencies>
 		<dependency>
-			<groupId>com.sun.jersey</groupId>
-			<artifactId>jersey-json</artifactId>
-			<version>1.8</version>
-		</dependency>
-		
-	</dependencies> -->
+    <groupId>mysql</groupId>
+    <artifactId>mysql-connector-java</artifactId>
+    <version>5.1.6</version>
+</dependency>
+
+	</dependencies>
 
 	<build>
 
