@@ -90,7 +90,6 @@ public class InsertOperations {
 
 	private void execute() {
 		Connection connection = null;
-		DbConnection adt = new DbConnection();
 		TableRow row = new TableRow("daac");
 		row.set("assetid ", "pump6");
 		row.set("ratess", 10.9f);
@@ -104,8 +103,9 @@ public class InsertOperations {
 			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
+		}finally {
+			DbConnection.releaseResources(connection);
 		}
-		adt.releaseResources(connection);
 	}
 
 	public static void main(String[] args) {
