@@ -78,8 +78,18 @@ assetsManagementApp.directive("assetsManagement", function () {
             $scope.updateAsset = function () {
 
             }
-            $scope.removeAsset = function () {
-
+            $scope.removeAsset = function (rmAsset) {
+            	for(var i = 0;i < $scope.assets.length;i++){
+            		if($scope.assets[i].assetID === rmAsset.assetID){
+            			$scope.assets.splice(i,1);
+            			break;
+            		}
+            	}
+            }
+            $scope.showAssetInfo = function(asset){
+            	$scope.assetInfo = asset;
+            	 $("#assetInfoBox").modal("show");
+            	console.log(asset);
             }
         },
         link: function (scope, $element, $attr) {
