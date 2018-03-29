@@ -35,6 +35,11 @@ public class DbConnection {
 	public DbConnection() {
 	}
 
+	public static void main(String[] args) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
+		Connection dbConnection = getDbConnection();
+		System.out.println(dbConnection);
+	}
+	
 	/**
 	 * 
 	 * {@inheritDoc}
@@ -56,16 +61,12 @@ public class DbConnection {
 
 		String strHostName = dbProperties.getProperty(HOSTNAME);
 		Properties properties = getDBProperties(strLoginUID, strLoginPassword);
-		// String dbUrl = DEFAULT_DBURL + strHostName + ":" + portNumber + "/" + dbName;
-		String dbUrl = "jdbc:oracle:thin:@localhost:1521:xe";
+		 String dbUrl = DEFAULT_DBURL + strHostName + ":" + portNumber + "/" + dbName;
+		//String dbUrl = "jdbc:oracle:thin:@localhost:1521:xe";
 		// System.out.println("dbURL-" + dbUrl + "-");
 		Connection mConnection = null;
-		PreparedStatement preparedStatement = null;
-		boolean connectionEstablished = false;
-
 		Class.forName(dbDriver).newInstance();
 		mConnection = DriverManager.getConnection(dbUrl, properties);
-
 		return mConnection;
 	}
 

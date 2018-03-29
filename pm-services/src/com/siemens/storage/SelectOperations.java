@@ -44,8 +44,8 @@ public class SelectOperations {
 			DbConnection.releaseResources(connection);
 		}
 
-		List<ParameterizedData> data = obj.getData();
-		for (ParameterizedData parameterizedData : data) {
+		List<Object> data = obj.getData();
+		for (Object parameterizedData : data) {
 			System.out.println(parameterizedData);
 		}
 

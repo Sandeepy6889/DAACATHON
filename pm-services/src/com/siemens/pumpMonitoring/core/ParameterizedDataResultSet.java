@@ -7,7 +7,7 @@ import java.util.List;
 
 public class ParameterizedDataResultSet implements DbRowToObject{
 
-	private List<ParameterizedData> pdata = new ArrayList<>();
+	private List<Object> pdata = new ArrayList<>();
 	
 	@Override
 	public void fill(ResultSet rs) throws SQLException {
@@ -23,9 +23,8 @@ public class ParameterizedDataResultSet implements DbRowToObject{
 		pdata.add(param);
 	}
 	
-	public List<ParameterizedData> getData() {
+	public List<Object> getData() {
 		return pdata;
-
 	}
 
 	/*create table paramdata(assetid varchar2(100) primary key,assetname varchar2(100), ratedpower number(10,2),motorefficiency number(10,2),
