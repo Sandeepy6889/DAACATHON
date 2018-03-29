@@ -57,6 +57,10 @@ public class ParameterizedDataService {
 		row.set("minratedflowofpump", pumpData.getMinRatedFlowOfPump());
 		row.set("waterdensity", pumpData.getWaterDensity());
 		row.set("threslt", pumpData.getThreadholdLT());
+		row.set("suctiondiameter", pumpData.getSuctionDiameter());
+		row.set("dischargediameter", pumpData.getDischargeDiameter());
+		row.set("eleveationdiff", pumpData.getEleveationDiff());
+		
 		ParameterizedDataDAO dao = new ParameterizedDataDAO();
 		boolean isSuccess = dao.insert(row);
 		if (isSuccess)

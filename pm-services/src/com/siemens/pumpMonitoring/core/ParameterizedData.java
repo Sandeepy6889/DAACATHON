@@ -12,6 +12,9 @@ public class ParameterizedData {
 	private double minRatedFlowOfPump;
 	private double waterDensity;
 	private double threadholdLT;
+	private double suctionDiameter;
+	private double dischargeDiameter;
+	private double eleveationDiff;
 
 	@Override
 	public String toString() {
@@ -24,10 +27,12 @@ public class ParameterizedData {
 		result.append("minRatedFlowOfPump : ").append(minRatedFlowOfPump);
 		result.append("waterDensity : ").append(waterDensity);
 		result.append("threadholdLT : ").append(threadholdLT);
-		
+		result.append("suctionDiameter : ").append(suctionDiameter);
+		result.append("dischargeDiameter : ").append(dischargeDiameter);
+		result.append("eleveationDiff : ").append(eleveationDiff);
 		return result.toString();
 	}
-	
+
 	public String getAssetID() {
 		return assetID;
 	}
@@ -90,6 +95,30 @@ public class ParameterizedData {
 
 	public void setThreadholdLT(double threadholdLT) {
 		this.threadholdLT = threadholdLT;
+	}
+
+	public double getSuctionDiameter() {
+		return suctionDiameter;
+	}
+
+	public void setSuctionDiameter(double suctionDiameter) {
+		this.suctionDiameter = suctionDiameter;
+	}
+
+	public double getDischargeDiameter() {
+		return dischargeDiameter;
+	}
+
+	public void setDischargeDiameter(double dischargeDiameter) {
+		this.dischargeDiameter = dischargeDiameter;
+	}
+
+	public double getEleveationDiff() {
+		return eleveationDiff;
+	}
+
+	public void setEleveationDiff(double eleveationDiff) {
+		this.eleveationDiff = eleveationDiff;
 	}
 
 }

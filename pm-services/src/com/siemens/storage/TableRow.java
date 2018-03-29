@@ -17,7 +17,7 @@ public class TableRow {
 	}
 
 	public void set(String columnName, Object columnValue) {
-		columns.put(columnName.toUpperCase().trim(), columnValue);
+		columns.put(columnName.trim(), columnValue);
 	}
 
 	public String getTablename() {

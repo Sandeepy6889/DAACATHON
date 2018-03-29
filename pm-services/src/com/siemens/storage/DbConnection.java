@@ -38,6 +38,7 @@ public class DbConnection {
 	public static void main(String[] args) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
 		Connection dbConnection = getDbConnection();
 		System.out.println(dbConnection);
+		releaseResources(dbConnection);
 	}
 	
 	/**

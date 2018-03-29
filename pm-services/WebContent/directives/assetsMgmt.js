@@ -14,6 +14,9 @@ function getAssetClass() {
         this.minRatedFlowOfPump = defaults.minRatedFlowOfPump;
         this.waterDensity = defaults.waterDensity;
         this.threadholdLT = defaults.threadholdLT;
+        this.suctionDiameter= defaults.suctionDiameter,
+        this.dischargeDiameter= defaults.dischargeDiameter,
+        this.eleveationDiff= defaults.eleveationDiff
     }
     Asset.prototype.toggle = function () {
 
@@ -68,7 +71,10 @@ assetsManagementApp.directive("assetsManagement", function () {
                     motorRatedSpeed: $scope.motorRatedSpeed,
                     minRatedFlowOfPump: $scope.minRatedFlowOfPump,
                     waterDensity: $scope.waterDensity,
-                    threadholdLT: $scope.threadholdLT
+                    threadholdLT: $scope.threadholdLT,
+                    suctionDiameter: $scope.suctionDiameter,
+                    dischargeDiameter: $scope.dischargeDiameter,
+                    eleveationDiff: $scope.eleveationDiff
                 });
                  assetService.addAsset(asset).then(function (asset) {
                      $scope.assets.push(asset);

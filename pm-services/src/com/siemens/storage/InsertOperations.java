@@ -36,9 +36,7 @@ public class InsertOperations {
 		query.append("insert into ").append(row.getTablename()).append("(");
 		List<String> columnNames = row.getColumnNames();
 		for (int i = 0; i < columnNames.size(); i++) {
-			query.append("\"");
 			query.append(columnNames.get(i));
-			query.append("\"");
 			params.append("?");
 			if (!(columnNames.size() - 1 == i)) {
 				query.append(",");
@@ -63,13 +61,14 @@ public class InsertOperations {
 
 	private void setValue(int type, String columnName, Object columnValue, PreparedStatement pstmt, int index)
 			throws NumberFormatException, SQLException {
-
+		System.out.println("column name "+columnName+"  Type "+type);
 		switch (type) {
 		case Types.INTEGER:
 			pstmt.setInt(index, (Integer) columnValue);
 			break;
 		case Types.NUMERIC:
 		case Types.DECIMAL:
+		case Types.REAL:
 			double val = 0;
 			if (columnValue instanceof Integer)
 				val = ((Integer) columnValue).doubleValue();

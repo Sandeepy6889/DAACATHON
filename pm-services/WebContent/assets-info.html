@@ -52,14 +52,24 @@
                             </div>
                             <div class="form-group">
                                 <label>Water density</label>
-                                <select class="form-control" ng-model="waterDensity">
-                                    <option selected>0</option>
-                                    <option>1</option>
-                                </select>
+                                <input class="form-control" ng-model="waterDensity" placeholder="Enter text">
                             </div>
                             <div class="form-group">
                                 <label>Threadhold limit</label>
                                 <input class="form-control" ng-model="threadholdLT" placeholder="Enter text">
+                            </div>
+                             <div class="form-group">
+                                <label>Suction Diameter</label>
+                                <input class="form-control" ng-model="suctionDiameter" placeholder="Enter text">
+                            </div>
+                            
+                             <div class="form-group">
+                                <label>Discharge Diameter</label>
+                                <input class="form-control" ng-model="dischargeDiameter" placeholder="Enter text">
+                            </div>
+                             <div class="form-group">
+                                <label>Elevation Difference</label>
+                                <input class="form-control" ng-model="eleveationDiff" placeholder="Enter text">
                             </div>
                         </form>
                     </div>
@@ -148,6 +158,18 @@
                             <div class="form-group">
                                 <label>Threadhold limit</label>
                                 <span style="float: right" ng-bind="assetInfo.threadholdLT"/>
+                            </div>
+                            <div class="form-group">
+                                <label>Suction Diameter</label>
+                                <span style="float: right" ng-bind="assetInfo.dischargeDiameter"/>
+                            </div>
+                            <div class="form-group">
+                                <label>Discharge Diameter</label>
+                                <span style="float: right" ng-bind="assetInfo.dischargeDiameter"/>
+                            </div>
+                            <div class="form-group">
+                                <label>Elevation Difference</label>
+                                <span style="float: right" ng-bind="assetInfo.eleveationDiff"/>
                             </div>
                     </div>
                     <div class="modal-footer">
