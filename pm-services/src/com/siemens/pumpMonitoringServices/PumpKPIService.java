@@ -8,9 +8,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import com.siemens.dao.ParameterizedDataDAO;
 import com.siemens.dao.PumpKPIDAO;
-import com.siemens.pumpMonitoring.core.ParameterizedDataResultSet;
 import com.siemens.pumpMonitoring.core.PumpKPIResultSet;
 
 @Path("/kpi")
@@ -26,9 +24,9 @@ public class PumpKPIService {
 		PumpKPIResultSet obj = new PumpKPIResultSet();
 		return dao.get(qStr, obj);
 	}
-	
+
 	public static void main(String[] args) {
-		String qStr = "SELECT * from Calculated_KPI";
+		String qStr = "SELECT * from Calculated_KPI where AssetId =assetid";
 		PumpKPIDAO dao = new PumpKPIDAO();
 		PumpKPIResultSet obj = new PumpKPIResultSet();
 		System.out.println(dao.get(qStr, obj));
