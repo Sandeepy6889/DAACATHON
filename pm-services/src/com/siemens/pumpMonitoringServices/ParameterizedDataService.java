@@ -11,7 +11,6 @@ import javax.ws.rs.core.MediaType;
 
 import com.siemens.dao.ParameterizedDataDAO;
 import com.siemens.pumpMonitoring.core.ParameterizedData;
-import com.siemens.pumpMonitoring.core.ParameterizedDataResultSet;
 import com.siemens.storage.TableRow;
 
 @Path("/assetPrmtz")
@@ -39,7 +38,7 @@ public class ParameterizedDataService {
 	public List<Object> getAll() {
 		String qStr = "SELECT * from paramdata";
 		ParameterizedDataDAO dao = new ParameterizedDataDAO();
-		ParameterizedDataResultSet obj = new ParameterizedDataResultSet();
+		ParameterizedData obj = new ParameterizedData();
 		return dao.get(qStr, obj);
 	}
 
@@ -60,7 +59,7 @@ public class ParameterizedDataService {
 		row.set("suctiondiameter", pumpData.getSuctionDiameter());
 		row.set("dischargediameter", pumpData.getDischargeDiameter());
 		row.set("eleveationdiff", pumpData.getEleveationDiff());
-		
+
 		ParameterizedDataDAO dao = new ParameterizedDataDAO();
 		boolean isSuccess = dao.insert(row);
 		if (isSuccess)
