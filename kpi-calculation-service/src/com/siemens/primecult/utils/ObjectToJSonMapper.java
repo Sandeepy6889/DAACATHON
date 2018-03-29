@@ -1,4 +1,4 @@
-package com.siemens.primecult.kpiUtils;
+package com.siemens.primecult.utils;
 
 import java.io.IOException;
 

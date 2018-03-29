@@ -1,4 +1,4 @@
-package com.siemens.primecult.kpiModels;
+package com.siemens.primecult.models;
 
 public class ValueRt {
 
