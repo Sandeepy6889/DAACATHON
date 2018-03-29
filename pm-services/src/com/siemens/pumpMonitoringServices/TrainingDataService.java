@@ -13,6 +13,7 @@ import javax.ws.rs.core.MediaType;
 
 import com.siemens.dao.DBUtil;
 import com.siemens.pumpMonitoring.core.TrainingDataRecord;
+import com.siemens.storage.TableRow;
 
 @Path("/modelTraining")
 public class TrainingDataService {
@@ -25,7 +26,7 @@ public class TrainingDataService {
 		record.setyHeight(20);
 		data.add(record);
 	}
-	
+
 	@GET
 	@Path("/getAssetsIds")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -33,22 +34,30 @@ public class TrainingDataService {
 		String qString = "select * from paramdata";
 		return DBUtil.getColumnValues(qString, "assetid");
 	}
-	
+
 	@GET
 	@Path("/getAssetTrainingData/{assetId}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Object> getAll(@PathParam("assetId") String assetId) {
-		String qString = "select * from Training_Data where AssetId='" + assetId+"'";
+		String qString = "select * from Training_Data where AssetId='" + assetId + "'";
 		List<Object> records = DBUtil.get(qString, new TrainingDataRecord());
 		return records;
 	}
-	
+
 	@POST
 	@Path("/insert")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public TrainingDataRecord add(TrainingDataRecord trainingRecord) {
-		data.add(trainingRecord);
-		return trainingRecord;
+		TableRow row = new TableRow("Training_Data");
+		row.set("AssetId", trainingRecord.getAssetId());
+		row.set("Flow", trainingRecord.getxFlow());
+		row.set("TDH", trainingRecord.getyHeight());
+		row.set("Efficiency", trainingRecord.getyEta());
+		boolean isSuccess = DBUtil.insert(row);
+		if (isSuccess)
+			return trainingRecord;
+		else
+			return null;
 	}
 }

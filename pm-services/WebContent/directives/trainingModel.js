@@ -68,7 +68,7 @@ trainingModelApp.directive("assetTrainingModel", function () {
             });
 
             $scope.getAssetTrainingData = function(){
-            	if('-1' === $scope.assetId.value){
+            	if($scope.assetId === null){
             		$scope.trainingRecords=[];
             		return;
             	}
@@ -79,6 +79,7 @@ trainingModelApp.directive("assetTrainingModel", function () {
             
             $scope.addTraningRecord = function () {
                 var record = new TraningRecord({
+                	assetId: $scope.assetId.value,
                     xFlow: $scope.xFlow,
                     yHeight: $scope.yHeight,
                     yEta: $scope.yEta

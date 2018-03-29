@@ -9,7 +9,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import com.siemens.dao.ParameterizedDataDAO;
+import com.siemens.dao.DBUtil;
 import com.siemens.pumpMonitoring.core.ParameterizedData;
 import com.siemens.storage.TableRow;
 
@@ -37,9 +37,8 @@ public class ParameterizedDataService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Object> getAll() {
 		String qStr = "SELECT * from paramdata";
-		ParameterizedDataDAO dao = new ParameterizedDataDAO();
 		ParameterizedData obj = new ParameterizedData();
-		return dao.get(qStr, obj);
+		return DBUtil.get(qStr, obj);
 	}
 
 	@POST
@@ -60,8 +59,7 @@ public class ParameterizedDataService {
 		row.set("dischargediameter", pumpData.getDischargeDiameter());
 		row.set("eleveationdiff", pumpData.getEleveationDiff());
 
-		ParameterizedDataDAO dao = new ParameterizedDataDAO();
-		boolean isSuccess = dao.insert(row);
+		boolean isSuccess = DBUtil.insert(row);
 		if (isSuccess)
 			return pumpData;
 		else
