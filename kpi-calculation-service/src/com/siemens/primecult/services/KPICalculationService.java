@@ -18,10 +18,9 @@ public class KPICalculationService {
 	@Path("/calculate")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public ValueRt getUsers(ValueRt plainText) {
-		//Object obj = new ObjectToJSonMapper().mapJSonStrToObj(plainText,ValueRt.class);
-		System.out.println(plainText);
-		return plainText;
+	public ValueRt post(ValueRt requestData) {
+		System.out.println(requestData);
+		return requestData;
 	}
 	
 	

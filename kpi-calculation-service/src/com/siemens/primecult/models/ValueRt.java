@@ -1,5 +1,8 @@
 package com.siemens.primecult.models;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class ValueRt {
 
 	private String assetID;
@@ -8,6 +11,7 @@ public class ValueRt {
 
 	private double[] values;
 
+	public ValueRt() {}
 	public ValueRt(String assetID, long timeStamp, double[] values) {
 		this.setAssetID(assetID);
 		this.setTimeStamp(timeStamp);
