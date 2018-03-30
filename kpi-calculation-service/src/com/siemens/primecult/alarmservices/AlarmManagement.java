@@ -26,37 +26,37 @@ public class AlarmManagement {
 				Arrays.asList(AlarmStatus.GONE, AlarmStatus.GONE, AlarmStatus.GONE, AlarmStatus.GONE));
 	}
 
-	public void setAlarmsState(KpiData calculatedKPI, KpiData refrencedKPI, String asset_id, ValueRt rawValues) {
+	public void setAlarmsState(KpiData calculatedKPI, KpiData refrencedKPI, ValueRt rawValues) {
 		// get threshold from db
-		float threshold = fetchThresholdFromDb(asset_id);
+		float threshold = fetchThresholdFromDb(rawValues.getAssetID());
 		// check for TDH alarm
-		if (KPIAlarmService.checkKpiStateChange(calculatedKPI, refrencedKPI, threshold,AlarmTypes.TDH, asset_id,
-				currentAlarmsStatus))
-			changeStateInCacheAndDb(asset_id, AlarmTypes.TDH, rawValues);
+		if (KPIAlarmService.checkKpiStateChange(calculatedKPI, refrencedKPI, threshold, AlarmTypes.TDH,
+				rawValues.getAssetID(), currentAlarmsStatus))
+			changeStateInCacheAndDb(AlarmTypes.TDH, rawValues);
 
 		// check for efficiency alarm
-		if (KPIAlarmService.checkKpiStateChange(calculatedKPI, refrencedKPI, threshold, AlarmTypes.EFFICIENCY, asset_id,
-				currentAlarmsStatus))
-			changeStateInCacheAndDb(asset_id, AlarmTypes.EFFICIENCY, rawValues);
+		if (KPIAlarmService.checkKpiStateChange(calculatedKPI, refrencedKPI, threshold, AlarmTypes.EFFICIENCY,
+				rawValues.getAssetID(), currentAlarmsStatus))
+			changeStateInCacheAndDb(AlarmTypes.EFFICIENCY, rawValues);
 
 		// check for blockage alarm
-		if (PreventiveAlarmService.checkPreventiveAlarmStateChange(AlarmTypes.BLOCKAGE, asset_id, rawValues,
-				currentAlarmsStatus))
-			changeStateInCacheAndDb(asset_id, AlarmTypes.BLOCKAGE, rawValues);
+		if (PreventiveAlarmService.checkPreventiveAlarmStateChange(AlarmTypes.BLOCKAGE, rawValues, currentAlarmsStatus))
+			changeStateInCacheAndDb(AlarmTypes.BLOCKAGE, rawValues);
 
 		// check for dryrun alarm
-		if (PreventiveAlarmService.checkPreventiveAlarmStateChange(AlarmTypes.DRYRUN, asset_id, rawValues,
-				currentAlarmsStatus))
-			changeStateInCacheAndDb(asset_id, AlarmTypes.DRYRUN, rawValues);
+		if (PreventiveAlarmService.checkPreventiveAlarmStateChange(AlarmTypes.DRYRUN, rawValues, currentAlarmsStatus))
+			changeStateInCacheAndDb(AlarmTypes.DRYRUN, rawValues);
 	}
 
 	private float fetchThresholdFromDb(String assetId) {
-		List<Object> values = DBUtil.getColumnValues("select threslt from paramdata where assetid='"+assetId+"'", "threslt");
-		return values.size() == 0 ? 0 : (Float)((Pair)values.get(0)).getValue();
+		List<Object> values = DBUtil.getColumnValues("select threslt from paramdata where assetid='" + assetId + "'",
+				"threslt");
+		return values.size() == 0 ? 0 : (Float) ((Pair) values.get(0)).getValue();
 	}
 
-	private void changeStateInCacheAndDb(String asset_id, AlarmTypes alarmType, ValueRt rawValues) {
-		int stateInCache = currentAlarmsStatus.get(asset_id).get(alarmType.getIndex());
+	private void changeStateInCacheAndDb(AlarmTypes alarmType, ValueRt rawValues) {
+		int stateInCache = currentAlarmsStatus.get(rawValues.getAssetID()).get(alarmType.getIndex());
+		String asset_id = rawValues.getAssetID();
 		switch (stateInCache) {
 		case AlarmStatus.RAISED:
 			currentAlarmsStatus.get(asset_id).set(alarmType.getIndex(), AlarmStatus.GONE);
@@ -67,8 +67,8 @@ public class AlarmManagement {
 		default:
 			currentAlarmsStatus.get(asset_id).set(alarmType.getIndex(), AlarmStatus.GONE);
 		}
-		
-		float [] measuredValues = rawValues.getValues();
+
+		float[] measuredValues = rawValues.getValues();
 		TableRow row = new TableRow("alarms");
 		row.set("asset_id", asset_id);
 		row.set("fluid_flow", measuredValues[PumpMonitorConstant.FLUID_FLOW_RATE]);
@@ -77,7 +77,7 @@ public class AlarmManagement {
 		row.set("motor_power_input", measuredValues[PumpMonitorConstant.MOTOR_POWER_INPUT]);
 		row.set("alarm_type", alarmType.getValue());
 		row.set("alarm_status", currentAlarmsStatus.get(asset_id).get(alarmType.getIndex()));
-		row.set("timestamp" , rawValues.getTimeStamp());
+		row.set("timestamp", rawValues.getTimeStamp());
 		if (DBUtil.insert(row)) {
 			System.out.println("Inserted successfully");
 		} else

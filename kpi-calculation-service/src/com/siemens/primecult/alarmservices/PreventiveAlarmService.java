@@ -10,10 +10,10 @@ import com.siemens.primecult.models.ValueRt;
 
 public class PreventiveAlarmService {
 
-	public static boolean checkPreventiveAlarmStateChange(AlarmTypes alarmType, String asset_id, ValueRt rawValues,
+	public static boolean checkPreventiveAlarmStateChange(AlarmTypes alarmType, ValueRt rawValues,
 			Map<String, List<Integer>> currentAlarmsStatus) {
 		int currentState = checkIfPreventiveAlarm(alarmType, rawValues) ? AlarmStatus.RAISED : AlarmStatus.GONE;
-		int previousStae = currentAlarmsStatus.get(asset_id).get(alarmType.getIndex());
+		int previousStae = currentAlarmsStatus.get(rawValues.getAssetID()).get(alarmType.getIndex());
 		return (currentState != previousStae);
 	}
 
