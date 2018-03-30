@@ -16,6 +16,7 @@ public class PumpKPIResultSet implements DbRowToObject {
 		kpi.setEfficiency(rs.getDouble("Efficiency"));
 		kpi.setTDH(rs.getDouble("TDH"));
 		kpi.setFlow(rs.getDouble("Flow"));
+		kpi.setTimeStamp(rs.getDate("TimeStamp"));
 		pdata.add(kpi);
 	}
 

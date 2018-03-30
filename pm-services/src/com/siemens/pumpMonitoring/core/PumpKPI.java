@@ -1,11 +1,22 @@
 package com.siemens.pumpMonitoring.core;
 
+import java.sql.Date;
+
 public class PumpKPI {
 	private double TDH;
 	private double efficiency;
 	private double flow;
 	private String assetID;
 	private int id;
+	private Date timeStamp;
+
+	public Date getTimeStamp() {
+		return timeStamp;
+	}
+
+	public void setTimeStamp(Date timeStamp) {
+		this.timeStamp = timeStamp;
+	}
 
 	@Override
 	public String toString() {
