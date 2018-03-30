@@ -26,7 +26,7 @@ public class PumpKPIService {
 	}
 
 	public static void main(String[] args) {
-		String qStr = "SELECT * from Calculated_KPI where AssetId =assetid";
+		String qStr = "SELECT * from Calculated_KPI";
 		PumpKPIDAO dao = new PumpKPIDAO();
 		PumpKPIResultSet obj = new PumpKPIResultSet();
 		System.out.println(dao.get(qStr, obj));

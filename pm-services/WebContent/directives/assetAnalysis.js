@@ -43,6 +43,5 @@ assetsAnalysisApp.directive("assetsAnalysis", function () {
                  $scope.kpis = result;
              });
         }
-
     };
 });

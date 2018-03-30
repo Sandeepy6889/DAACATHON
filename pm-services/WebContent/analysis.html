@@ -16,6 +16,43 @@
 						</select>
 
 					</div>
+<!-- /.row -->
+            <div class="row">
+                
+                <div class="col-lg-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                           Alarms
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                          <table class="table table-hover">
+                                    
+                                    <tbody>
+                                        <tr>
+											<td><div id="circle" class="offline blockage" onClick = 'blockage()'></div></td>
+                                            <td>Blockage</td>
+                                            <td><button type="button" class="btn btn-danger"  onClick = 'suppressBlockage()'>Suppress</button></td>
+                                        </tr>
+                                        <tr>
+											<td><div id="circle" class="offline lowPumpEfficiency" onClick = 'lowPumpEfficiency()'></div></td>
+                                            <td>Low Pump Efficiency</td>
+                                            <td><button type="button" class="btn btn-danger"  onClick = 'suppressLowPumpEfficiency()'>Suppress</button></td>
+                                        </tr>
+                                        <tr>
+											<td><div id="circle" class="offline dryRunning" onClick = 'dryRunning()'></div></td>
+                                            <td>Dry Running</td>
+                                            <td><button type="button" class="btn btn-danger"  onClick = 'suppressDryRunning()'>Suppress</button></td>
+                                        </tr>
+                                    </tbody>
+                                </table>	 
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+				</div>
+                <!-- /.row -->
 				</form>
 			</div>
 		</div>
