@@ -1,6 +1,6 @@
-package com.siemens.primecult.utils;
+package com.siemens.primecult.constants;
 
-public class PumpMonitorConstant {
+public interface PumpMonitorConstant {
 
 	public static final int FLUID_FLOW_RATE = 0;
 	public static final int SUCT_PRESSURE= 1;
