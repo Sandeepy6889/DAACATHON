@@ -11,6 +11,7 @@ import com.siemens.primecult.constants.PumpMonitorConstant;
 import com.siemens.primecult.models.KpiData;
 import com.siemens.primecult.models.ValueRt;
 import com.siemens.storage.DBUtil;
+import com.siemens.storage.Pair;
 import com.siemens.storage.TableRow;
 
 public class AlarmManagement {
@@ -50,8 +51,8 @@ public class AlarmManagement {
 	}
 
 	private float fetchThresholdFromDb(String assetId) {
-
-		return 10;
+		List<Object> values = DBUtil.getColumnValues("select threslt from paramdata where assetid='"+assetId+"'", "threslt");
+		return values.size() == 0 ? 0 : (Float)((Pair)values.get(0)).getValue();
 	}
 
 	private void changeStateInCacheAndDb(String asset_id, AlarmTypes alarmType, ValueRt rawValues) {
