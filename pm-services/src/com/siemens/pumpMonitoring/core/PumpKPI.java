@@ -1,31 +1,22 @@
 package com.siemens.pumpMonitoring.core;
 
-import java.sql.Date;
-
 public class PumpKPI {
 	private double TDH;
 	private double efficiency;
 	private double flow;
 	private String assetID;
 	private int id;
-	private Date timeStamp;
+	private long timeStamp;
 
-	public Date getTimeStamp() {
+	public long getTimeStamp() {
 		return timeStamp;
 	}
 
-	public void setTimeStamp(Date timeStamp) {
+	public void setTimeStamp(long timeStamp) {
 		this.timeStamp = timeStamp;
 	}
 
-	@Override
-	public String toString() {
-		StringBuilder result = new StringBuilder();
-		result.append("id : ").append(id).append(", assetID : ").append(assetID);
-		result.append("TDH : ").append(TDH).append(", efficiency : ").append(efficiency);
-		result.append(", flow : ").append(flow).append(", assetID : ").append(assetID);
-		return result.toString();
-	}
+	
 	
 	public int getId() {
 		return id;
@@ -41,6 +32,12 @@ public class PumpKPI {
 
 	public void setTDH(double tDH) {
 		TDH = tDH;
+	}
+
+	@Override
+	public String toString() {
+		return "PumpKPI [TDH=" + TDH + ", efficiency=" + efficiency + ", flow=" + flow + ", assetID=" + assetID
+				+ ", id=" + id + ", timeStamp=" + timeStamp + "]";
 	}
 
 	public double getEfficiency() {

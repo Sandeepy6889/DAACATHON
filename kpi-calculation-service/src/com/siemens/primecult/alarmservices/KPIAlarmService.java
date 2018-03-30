@@ -10,23 +10,23 @@ import com.siemens.primecult.models.KpiData;
 public class KPIAlarmService {
 
 	public static boolean checkKpiStateChange(KpiData calculatedValue, KpiData refrencedValue, float threshold,
-			int alarmType, String asset_id, Map<String, List<Integer>> currentAlarmsStatus) {
+			AlarmTypes alarmType, String asset_id, Map<String, List<Integer>> currentAlarmsStatus) {
 		int currentState = checkIfKPIAlarm(calculatedValue, refrencedValue, threshold , alarmType) ? AlarmStatus.RAISED
 				: AlarmStatus.GONE;
-		int previousStae = currentAlarmsStatus.get(asset_id).get(alarmType);
+		int previousStae = currentAlarmsStatus.get(asset_id).get(alarmType.getIndex());
 		return (currentState != previousStae);
 	}
 
 	private static boolean checkIfKPIAlarm(KpiData calculatedValue, KpiData refrencedValue, float threshold,
-			int alarmType) {
+			AlarmTypes alarmType) {
 		float refrenceValue = 0;
 		float calculateValue = 0;
 		switch (alarmType) {
-		case AlarmTypes.TDH:
+		case TDH:
 			refrenceValue = refrencedValue.getTdh();
 			calculateValue = calculatedValue.getTdh();
 			break;
-		case AlarmTypes.EFFICIENCY:
+		case EFFICIENCY:
 			refrenceValue = refrencedValue.getEfficiency();
 			calculateValue = calculatedValue.getEfficiency();
 			break;			
