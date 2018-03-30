@@ -11,16 +11,13 @@ import org.opcfoundation.ua.builtintypes.LocalizedText;
 import org.opcfoundation.ua.builtintypes.NodeId;
 import org.opcfoundation.ua.core.ApplicationDescription;
 import org.opcfoundation.ua.core.ApplicationType;
-import org.opcfoundation.ua.core.MessageSecurityMode;
 import org.opcfoundation.ua.core.TimestampsToReturn;
 import org.opcfoundation.ua.transport.security.SecurityMode;
-import org.opcfoundation.ua.transport.security.SecurityPolicy;
 
 import com.amazonaws.services.iot.client.AWSIotException;
 import com.amazonaws.services.iot.client.AWSIotMqttClient;
 import com.prosysopc.ua.ApplicationIdentity;
 import com.prosysopc.ua.ServiceException;
-import com.prosysopc.ua.UserIdentity;
 import com.prosysopc.ua.client.UaClient;
 import com.siemens.primecult.models.ValueRt;
 import com.siemens.primecult.utils.ObjectToJSonMapper;
@@ -35,7 +32,7 @@ public class PumpDataPublisher {
 
 	public PumpDataPublisher() {
 		initOPCUAClient();
-		initMqttClient();
+		initClient();
 		addShutDownHookThread();
 	}
 
@@ -56,7 +53,7 @@ public class PumpDataPublisher {
 
 	}
 
-	private void initMqttClient() {
+	private void initClient() {
 		String clientEndpoint = "a22j678ixe7pxh.iot.us-east-2.amazonaws.com";
 		String clientId = "centrifugalPump";
 
@@ -72,44 +69,35 @@ public class PumpDataPublisher {
 		}
 	}
 
-	/*
-	 * private void initOPCUAClient() { try { uaClient = new
-	 * UaClient("opc.tcp://This-PC:53530/OPCUA/SimulationServer"); final
-	 * ApplicationIdentity identity = ApplicationIdentity
-	 * .loadOrCreateCertificate(getApplicationDescription(), "Organisation", null,
-	 * null, true); uaClient.setApplicationIdentity(identity);
-	 * uaClient.setSecurityMode(SecurityMode.NONE); uaClient.connect();
-	 * 
-	 * } catch (Exception exception) { exception.printStackTrace(); } }
-	 */
-
 	private void initOPCUAClient() {
 		try {
-			uaClient = new UaClient("opc.tcp://192.168.27.12:4841/OpcUaServer_901");
+			uaClient = new UaClient("opc.tcp://This-PC:53530/OPCUA/SimulationServer");
 			final ApplicationIdentity identity = ApplicationIdentity
 					.loadOrCreateCertificate(getApplicationDescription(), "Organisation", null, null, true);
 			uaClient.setApplicationIdentity(identity);
-			uaClient.setSecurityMode(new SecurityMode(SecurityPolicy.NONE, MessageSecurityMode.None));
-			uaClient.setUserIdentity(new UserIdentity("alam", "daac"));
+			uaClient.setSecurityMode(SecurityMode.NONE);
+			uaClient.connect();
+
 		} catch (Exception exception) {
-
+			exception.printStackTrace();
 		}
-
 	}
 
 	/*
-	 * private static ApplicationDescription getApplicationDescription() { String
-	 * APP_NAME = "SimulationServer"; ApplicationDescription appDescription = new
-	 * ApplicationDescription(); appDescription.setApplicationName(new
-	 * LocalizedText(APP_NAME + "@localhost", Locale.ENGLISH));
-	 * appDescription.setApplicationUri("urn:localhost:OPCUA:" + APP_NAME);
-	 * appDescription.setProductUri("urn:prosysopc.com:OPCUA:" + APP_NAME);
-	 * appDescription.setApplicationType(ApplicationType.Client); return
-	 * appDescription; }
+	 * private void initClient() throws URISyntaxException, SecureIdentityException,
+	 * IOException, SessionActivationException { uaClient = new
+	 * UaClient("opc.tcp://192.168.27.12:4841/OpcUaServer_901"); final
+	 * ApplicationIdentity identity =
+	 * ApplicationIdentity.loadOrCreateCertificate(getApplicationDescription(),
+	 * "Organisation", null, null, true); uaClient.setApplicationIdentity(identity);
+	 * uaClient.setSecurityMode(new SecurityMode(NONE, None));
+	 * uaClient.setUserIdentity(new UserIdentity("alam", "daac"));
+	 * 
+	 * }
 	 */
 
-	private ApplicationDescription getApplicationDescription() {
-		String APP_NAME = "OpcUaServer_901";
+	private static ApplicationDescription getApplicationDescription() {
+		String APP_NAME = "SimulationServer";
 		ApplicationDescription appDescription = new ApplicationDescription();
 		appDescription.setApplicationName(new LocalizedText(APP_NAME + "@localhost", Locale.ENGLISH));
 		appDescription.setApplicationUri("urn:localhost:OPCUA:" + APP_NAME);
@@ -117,6 +105,17 @@ public class PumpDataPublisher {
 		appDescription.setApplicationType(ApplicationType.Client);
 		return appDescription;
 	}
+
+	/*
+	 * private ApplicationDescription getApplicationDescription() { String APP_NAME
+	 * = "OpcUaServer_901"; ApplicationDescription appDescription = new
+	 * ApplicationDescription(); appDescription.setApplicationName(new
+	 * LocalizedText(APP_NAME + "@localhost", Locale.ENGLISH));
+	 * appDescription.setApplicationUri("urn:localhost:OPCUA:" + APP_NAME);
+	 * appDescription.setProductUri("urn:prosysopc.com:OPCUA:" + APP_NAME);
+	 * appDescription.setApplicationType(ApplicationType.Client); return
+	 * appDescription; }
+	 */
 
 	private void subscribeAssetData(String assetID) {
 		try {
@@ -145,19 +144,18 @@ public class PumpDataPublisher {
 	}
 
 	private static NodeId[] getNodeIds(String assetID) {
-
-		NodeId ffNode = new NodeId(2, assetID + "FF||OUT");
-		NodeId psNode = new NodeId(2, assetID + "Ps|1|OUT");
-		NodeId pdNode = new NodeId(2, assetID + "Pd|1|OUT");
-		NodeId epmNode = new NodeId(2, assetID + "PWR|1|OUT");
-		return new NodeId[] { ffNode, psNode, pdNode, epmNode };
-
 		/*
-		 * NodeId nodeId1 = new NodeId(5, "Counter1"); NodeId nodeId2 = new NodeId(5,
-		 * "Random1"); NodeId nodeId3 = new NodeId(5, "Sawtooth1"); NodeId nodeId4 = new
-		 * NodeId(5, "Sinusoid1"); return new NodeId[] { nodeId1, nodeId2, nodeId3,
-		 * nodeId4 };
+		 * NodeId ffNode = new NodeId(2, assetID+"FF||OUT"); NodeId psNode = new
+		 * NodeId(2, assetID+"Ps|1|OUT"); NodeId pdNode = new NodeId(2,
+		 * assetID+"Pd|1|OUT"); NodeId epmNode = new NodeId(2, assetID+"PWR|1|OUT");
+		 * return new NodeId[] {ffNode, psNode, pdNode, epmNode};
 		 */
+
+		NodeId nodeId1 = new NodeId(5, "Counter1");
+		NodeId nodeId2 = new NodeId(5, "Random1");
+		NodeId nodeId3 = new NodeId(5, "Sawtooth1");
+		NodeId nodeId4 = new NodeId(5, "Sinusoid1");
+		return new NodeId[] { nodeId1, nodeId2, nodeId3, nodeId4 };
 	}
 
 	private void readAndPublish(String assetID, NodeId[] nodeIds) throws AWSIotException {
