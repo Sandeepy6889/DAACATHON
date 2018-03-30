@@ -24,7 +24,6 @@ import com.siemens.primecult.utils.ObjectToJSonMapper;
 import com.siemens.primecult.utils.Util;
 import com.siemens.primecult.utils.Util.KeyStorePasswordPair;
 
-
 public class PumpDataPublisher {
 	private static final String PUMP_TOPIC = "centrifugalPumpData";
 	private AWSIotMqttClient awsIotClient;
