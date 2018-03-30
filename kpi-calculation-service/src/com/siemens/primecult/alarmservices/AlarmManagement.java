@@ -26,13 +26,13 @@ public class AlarmManagement {
 		// get threshold from db
 		float threshold = fetchThresholdFromDb(asset_id);
 		// check for TDH alarm
-		if (KPIAlarmService.checkKpiStateChange(calculatedKPI.getTdh(), refrencedKPI.getTdh(), threshold,
-				AlarmTypes.TDH, asset_id, currentAlarmsStatus))
+		if (KPIAlarmService.checkKpiStateChange(calculatedKPI, refrencedKPI, threshold, AlarmTypes.TDH, asset_id,
+				currentAlarmsStatus))
 			changeStateInCacheAndDb(asset_id, AlarmTypes.TDH, rawValues);
 
 		// check for efficiency alarm
-		if (KPIAlarmService.checkKpiStateChange(calculatedKPI.getEfficiency(), refrencedKPI.getEfficiency(), threshold,
-				AlarmTypes.EFFICIENCY, asset_id, currentAlarmsStatus))
+		if (KPIAlarmService.checkKpiStateChange(calculatedKPI, refrencedKPI, threshold, AlarmTypes.EFFICIENCY, asset_id,
+				currentAlarmsStatus))
 			changeStateInCacheAndDb(asset_id, AlarmTypes.EFFICIENCY, rawValues);
 
 		// check for blockage alarm
@@ -47,14 +47,13 @@ public class AlarmManagement {
 	}
 
 	private float fetchThresholdFromDb(String assetId) {
-		
+
 		return 10;
 	}
-	
+
 	private void changeStateInCacheAndDb(String asset_id, int alarmType, ValueRt rawValues) {
 		int stateInCache = currentAlarmsStatus.get(asset_id).get(alarmType);
 		switch (stateInCache) {
-
 		case AlarmStatus.RAISED:
 			currentAlarmsStatus.get(asset_id).set(alarmType, AlarmStatus.GONE);
 			break;
