@@ -20,6 +20,8 @@ public class KPICalculationService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public ValueRt post(ValueRt requestData) {
 		System.out.println(requestData);
+		KPICalculator kpiCalculator = new KPICalculator();
+		kpiCalculator.calculateKPI(requestData);
 		return requestData;
 	}
 	

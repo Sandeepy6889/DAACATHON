@@ -12,6 +12,7 @@ public class ValueRt {
 	private double[] values;
 
 	public ValueRt() {}
+	
 	public ValueRt(String assetID, long timeStamp, double[] values) {
 		this.setAssetID(assetID);
 		this.setTimeStamp(timeStamp);
