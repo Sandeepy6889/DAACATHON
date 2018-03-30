@@ -11,7 +11,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
-import com.siemens.pumpMonitoring.core.Configuration;
+import javax.security.auth.login.Configuration;
 
 /**
  * Provides the Method for Changing password in MYSQL DB.
@@ -52,7 +52,7 @@ public class DbConnection {
 	 */
 	public static Connection getDbConnection()
 			throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
-		Properties dbProperties = Configuration.getDbProperties();
+		Properties dbProperties = DBConfiguration.getDbProperties();
 		String portNumber = dbProperties.getProperty(PORT).trim();
 		String dbDriver = dbProperties.getProperty(DBDRIVER).trim();
 		String dbName = dbProperties.getProperty(DB_NAME).trim();

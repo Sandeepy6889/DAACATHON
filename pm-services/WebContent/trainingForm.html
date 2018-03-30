@@ -15,9 +15,8 @@
             <form class="form-inline" action="/action">
                 <div class="form-group">
                     <label for="email">Select Asset</label>
-                    <select class="form-control">
-                        <option>Pump 1</option>
-                        <option>Pump 2</option>
+                    <select ng-change="getAssetTrainingData()" class="form-control" ng-model="assetId" ng-options="ids.value for ids in assetsIds">
+                    <option value="">-- Select AssestID --</option>
                     </select>
 
                 </div>

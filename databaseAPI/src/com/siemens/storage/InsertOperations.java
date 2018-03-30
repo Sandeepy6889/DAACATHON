@@ -61,6 +61,7 @@ public class InsertOperations {
 
 	private void setValue(int type, String columnName, Object columnValue, PreparedStatement pstmt, int index)
 			throws NumberFormatException, SQLException {
+		System.out.println("column name "+columnName+"  Type "+type);
 		switch (type) {
 		case Types.INTEGER:
 			pstmt.setInt(index, (Integer) columnValue);

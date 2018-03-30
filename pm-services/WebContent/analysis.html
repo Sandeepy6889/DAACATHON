@@ -1,12 +1,27 @@
 <div id="page-wrapper">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg-12">
-                    <h1 class="page-header">Asset Analysis</h1>
-                </div>
-                <!-- /.col-lg-12 -->
-            </div>
-            <!-- /.row -->
-        </div>
-        <!-- /.container-fluid -->
-    </div>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-lg-12">
+				<h1 class="page-header">Asset Analysis</h1>
+			</div>
+			<!-- /.col-lg-12 -->
+		</div>
+		<div class="row">
+			<div class="col-lg-12">
+				<form class="form-inline" action="/action">
+					<div class="form-group">
+						<label for="">Select Asset</label>
+						 <select class="form-control" ng-repeat="kpi in kpis">
+							<option >{{kpi.assetID}}</option>
+						</select>
+
+					</div>
+				</form>
+			</div>
+		</div>
+		<div class="row">{{kpis}}</div>
+		<!-- /.row -->
+	</div>
+	<!-- /.container-fluid -->
+</div>
+

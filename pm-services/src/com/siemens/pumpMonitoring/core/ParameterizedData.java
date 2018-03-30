@@ -1,9 +1,15 @@
 package com.siemens.pumpMonitoring.core;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
-public class ParameterizedData {
+public class ParameterizedData  implements DbRowToObject{
+	private List<Object> pdata = new ArrayList<>();
 	private String assetID;
 	private String assetName;
 	private double ratedPower;
@@ -120,5 +126,27 @@ public class ParameterizedData {
 	public void setEleveationDiff(double eleveationDiff) {
 		this.eleveationDiff = eleveationDiff;
 	}
+
+	@Override
+	public void fill(ResultSet rs) throws SQLException {
+		ParameterizedData param = new ParameterizedData();
+		param.setAssetID(rs.getString("assetid"));
+		param.setAssetName(rs.getString("assetname"));
+		param.setMotorEfficiency(Double.valueOf(rs.getDouble("motorefficiency")));
+		param.setRatedPower(Double.valueOf(rs.getDouble("ratedpower")));
+		param.setMotorRatedSpeed(Double.valueOf(rs.getDouble("motorratedspeed")));
+		param.setMinRatedFlowOfPump(Double.valueOf(rs.getDouble("minratedflowofpump")));
+		param.setWaterDensity(Double.valueOf(rs.getDouble("waterdensity")));
+		param.setThreadholdLT(Double.valueOf(rs.getDouble("threslt")));
+		param.setSuctionDiameter(Double.valueOf(rs.getDouble("suctiondiameter")));
+		param.setDischargeDiameter(Double.valueOf(rs.getDouble("dischargediameter")));
+		param.setEleveationDiff(Double.valueOf(rs.getDouble("eleveationdiff")));
+		pdata.add(param);
+	}
+
+	public List<Object> getData() {
+		return pdata;
+	}
+
 
 }

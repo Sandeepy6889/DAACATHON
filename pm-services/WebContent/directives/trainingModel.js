@@ -6,9 +6,12 @@ trainingModelApp = angular.module("trainingModelApp", [])
 function getTraningRecordClass() {
     function TraningRecord(defaults) {
         defaults = defaults || {};
+        this.assetId = defaults.assetId;
+        this.id = defaults.id;
         this.xFlow = defaults.xFlow;
         this.yHeight = defaults.yHeight;
         this.yEta = defaults.yEta;
+        
     }
     TraningRecord.prototype.toggle = function () {
 
@@ -21,12 +24,20 @@ trainingModelApp.factory("TraningRecord", getTraningRecordClass);
 
 trainingModelApp.factory("trainingDataService", function ($http, TraningRecord, $q, baseUri) {
     return {
-        getAll: function () {
+        getAssetTrainingData: function (assetId) {
             var deferred = $q.defer();
-            var promise = $http.get(baseUri + "/modelTraining/getAll/");
+            var promise = $http.get(baseUri + "/modelTraining/getAssetTrainingData/"+assetId);
             promise.then(function (response) {
                 var result = response.data.map(function (assetParams) { return new TraningRecord(assetParams); });
                 deferred.resolve(result);
+            });
+            return deferred.promise;
+        },
+        getAssetsIDS : function(){
+        	var deferred = $q.defer();
+            var promise = $http.get(baseUri + "/modelTraining/getAssetsIds");
+            promise.then(function (response) {
+                deferred.resolve(response.data);
             });
             return deferred.promise;
         },
@@ -50,16 +61,25 @@ trainingModelApp.directive("assetTrainingModel", function () {
         templateUrl: 'trainingForm.html',
         controller: function ($scope, TraningRecord, trainingDataService) {
             $scope.trainingRecords = [];
-            trainingDataService.getAll().then(function (result) {
-                console.log("all data ", result);
-                $scope.trainingRecords = result;
+            $scope.assetsIds = [];
+            $scope.assetId = '';
+            trainingDataService.getAssetsIDS().then(function (result) {
+                $scope.assetsIds = result;
             });
-            //  $scope.trainingRecords.push(new TraningRecord());
-            window.scope = $scope;
 
-            $scope.getAllTrainingRecords = function () { }
+            $scope.getAssetTrainingData = function(){
+            	if($scope.assetId === null){
+            		$scope.trainingRecords=[];
+            		return;
+            	}
+            	trainingDataService.getAssetTrainingData($scope.assetId.value).then(function (result) {
+                    $scope.trainingRecords = result;
+                });
+            }
+            
             $scope.addTraningRecord = function () {
                 var record = new TraningRecord({
+                	assetId: $scope.assetId.value,
                     xFlow: $scope.xFlow,
                     yHeight: $scope.yHeight,
                     yEta: $scope.yEta
