@@ -9,11 +9,11 @@ public class ValueRt {
 
 	private long timeStamp;
 
-	private double[] values;
+	private float[] values;
 
 	public ValueRt() {}
 	
-	public ValueRt(String assetID, long timeStamp, double[] values) {
+	public ValueRt(String assetID, long timeStamp, float[] values) {
 		this.setAssetID(assetID);
 		this.setTimeStamp(timeStamp);
 		this.setValues(values);
@@ -35,11 +35,11 @@ public class ValueRt {
 		this.timeStamp = timeStamp;
 	}
 
-	public double[] getValues() {
+	public float[] getValues() {
 		return values;
 	}
 
-	public void setValues(double[] values) {
+	public void setValues(float[] values) {
 		this.values = values;
 	}
 }
