@@ -1,14 +1,25 @@
 package com.siemens.primecult.alarmservices;
 
+import static com.siemens.primecult.alarmservices.KPIAlarmService.checkKpiStateChange;
+import static com.siemens.primecult.alarmservices.PreventiveAlarmService.checkPreventiveAlarmStateChange;
+import static com.siemens.primecult.constants.AlarmStatus.GONE;
+import static com.siemens.primecult.constants.AlarmStatus.RAISED;
+import static com.siemens.primecult.constants.AlarmTypes.BLOCKAGE;
+import static com.siemens.primecult.constants.AlarmTypes.DRYRUN;
+import static com.siemens.primecult.constants.AlarmTypes.EFFICIENCY;
+import static com.siemens.primecult.constants.AlarmTypes.TDH;
+import static com.siemens.primecult.constants.PumpMonitorConstant.DISCH_PRESSURE;
+import static com.siemens.primecult.constants.PumpMonitorConstant.FLUID_FLOW_RATE;
+import static com.siemens.primecult.constants.PumpMonitorConstant.MOTOR_POWER_INPUT;
+import static com.siemens.primecult.constants.PumpMonitorConstant.SUCT_PRESSURE;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.siemens.primecult.constants.AlarmStatus;
 import com.siemens.primecult.constants.AlarmTypes;
-import com.siemens.primecult.constants.PumpMonitorConstant;
-import com.siemens.primecult.models.KpiData;
+import com.siemens.primecult.models.KPIData;
 import com.siemens.primecult.models.ValueRt;
 import com.siemens.storage.DBUtil;
 import com.siemens.storage.Pair;
@@ -21,31 +32,30 @@ public class AlarmManagement {
 		makeEntryToManageAlarmsForAsset("1");
 	}
 
-	public static void makeEntryToManageAlarmsForAsset(String asset_id) {
-		currentAlarmsStatus.put(asset_id,
-				Arrays.asList(AlarmStatus.GONE, AlarmStatus.GONE, AlarmStatus.GONE, AlarmStatus.GONE));
+	public static void makeEntryToManageAlarmsForAsset(String assetId) {
+		currentAlarmsStatus.put(assetId, Arrays.asList(GONE, GONE, GONE, GONE));
 	}
 
-	public void setAlarmsState(KpiData calculatedKPI, KpiData refrencedKPI, ValueRt rawValues) {
+	public void setAlarmsState(KPIData calculatedKPI, KPIData refrencedKPI, ValueRt rawValue) {
 		// get threshold from db
-		float threshold = fetchThresholdFromDb(rawValues.getAssetID());
+		float threshold = fetchThresholdFromDb(rawValue.getAssetID());
 		// check for TDH alarm
-		if (KPIAlarmService.checkKpiStateChange(calculatedKPI, refrencedKPI, threshold, AlarmTypes.TDH,
-				rawValues.getAssetID(), currentAlarmsStatus))
-			changeStateInCacheAndDb(AlarmTypes.TDH, rawValues);
+		if (checkKpiStateChange(calculatedKPI, refrencedKPI, threshold, TDH, rawValue.getAssetID(),
+				currentAlarmsStatus))
+			changeStateInCacheAndDb(TDH, rawValue);
 
 		// check for efficiency alarm
-		if (KPIAlarmService.checkKpiStateChange(calculatedKPI, refrencedKPI, threshold, AlarmTypes.EFFICIENCY,
-				rawValues.getAssetID(), currentAlarmsStatus))
-			changeStateInCacheAndDb(AlarmTypes.EFFICIENCY, rawValues);
+		if (checkKpiStateChange(calculatedKPI, refrencedKPI, threshold, EFFICIENCY, rawValue.getAssetID(),
+				currentAlarmsStatus))
+			changeStateInCacheAndDb(EFFICIENCY, rawValue);
 
 		// check for blockage alarm
-		if (PreventiveAlarmService.checkPreventiveAlarmStateChange(AlarmTypes.BLOCKAGE, rawValues, currentAlarmsStatus))
-			changeStateInCacheAndDb(AlarmTypes.BLOCKAGE, rawValues);
+		if (checkPreventiveAlarmStateChange(BLOCKAGE, rawValue, currentAlarmsStatus))
+			changeStateInCacheAndDb(BLOCKAGE, rawValue);
 
 		// check for dryrun alarm
-		if (PreventiveAlarmService.checkPreventiveAlarmStateChange(AlarmTypes.DRYRUN, rawValues, currentAlarmsStatus))
-			changeStateInCacheAndDb(AlarmTypes.DRYRUN, rawValues);
+		if (checkPreventiveAlarmStateChange(DRYRUN, rawValue, currentAlarmsStatus))
+			changeStateInCacheAndDb(DRYRUN, rawValue);
 	}
 
 	private float fetchThresholdFromDb(String assetId) {
@@ -55,28 +65,28 @@ public class AlarmManagement {
 	}
 
 	private void changeStateInCacheAndDb(AlarmTypes alarmType, ValueRt rawValues) {
-		int stateInCache = currentAlarmsStatus.get(rawValues.getAssetID()).get(alarmType.getIndex());
-		String asset_id = rawValues.getAssetID();
+		String assetId = rawValues.getAssetID();
+		int stateInCache = currentAlarmsStatus.get(assetId).get(alarmType.getIndex());
 		switch (stateInCache) {
-		case AlarmStatus.RAISED:
-			currentAlarmsStatus.get(asset_id).set(alarmType.getIndex(), AlarmStatus.GONE);
+		case RAISED:
+			currentAlarmsStatus.get(assetId).set(alarmType.getIndex(), GONE);
 			break;
-		case AlarmStatus.GONE:
-			currentAlarmsStatus.get(asset_id).set(alarmType.getIndex(), AlarmStatus.RAISED);
+		case GONE:
+			currentAlarmsStatus.get(assetId).set(alarmType.getIndex(), RAISED);
 			break;
 		default:
-			currentAlarmsStatus.get(asset_id).set(alarmType.getIndex(), AlarmStatus.GONE);
+			currentAlarmsStatus.get(assetId).set(alarmType.getIndex(), GONE);
 		}
 
 		float[] measuredValues = rawValues.getValues();
 		TableRow row = new TableRow("alarms");
-		row.set("asset_id", asset_id);
-		row.set("fluid_flow", measuredValues[PumpMonitorConstant.FLUID_FLOW_RATE]);
-		row.set("suction_pressure", measuredValues[PumpMonitorConstant.SUCT_PRESSURE]);
-		row.set("discharge_pressure", measuredValues[PumpMonitorConstant.DISCH_PRESSURE]);
-		row.set("motor_power_input", measuredValues[PumpMonitorConstant.MOTOR_POWER_INPUT]);
+		row.set("asset_id", assetId);
+		row.set("fluid_flow", measuredValues[FLUID_FLOW_RATE]);
+		row.set("suction_pressure", measuredValues[SUCT_PRESSURE]);
+		row.set("discharge_pressure", measuredValues[DISCH_PRESSURE]);
+		row.set("motor_power_input", measuredValues[MOTOR_POWER_INPUT]);
 		row.set("alarm_type", alarmType.getValue());
-		row.set("alarm_status", currentAlarmsStatus.get(asset_id).get(alarmType.getIndex()));
+		row.set("alarm_status", currentAlarmsStatus.get(assetId).get(alarmType.getIndex()));
 		row.set("timestamp", rawValues.getTimeStamp());
 		if (DBUtil.insert(row)) {
 			System.out.println("Inserted successfully");

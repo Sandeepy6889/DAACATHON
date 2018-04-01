@@ -98,7 +98,8 @@ public class Util {
         return new KeyStorePasswordPair(keyStore, keyPassword);
     }
 
-    private static List<Certificate> loadCertificatesFromFile(final String filename) {
+    @SuppressWarnings("unchecked")
+	private static List<Certificate> loadCertificatesFromFile(final String filename) {
         File file = new File(filename);
         if (!file.exists()) {
             System.out.println("Certificate file: " + filename + " is not found.");
