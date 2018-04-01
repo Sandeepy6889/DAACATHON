@@ -2,7 +2,6 @@
 <html lang="en">
 
 <head>
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,8 +10,10 @@
 
     <title>Pump Monitoring</title>
 
+    
 
-    <script src="js/angular.js"></script>
+<!-- Custom css -->
+<link href="custom-css/pump.css" rel="stylesheet">
 
     <!-- Bootstrap Core CSS -->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -41,7 +42,7 @@
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/jquery/jquery.js"></script>
 
-
+	<script src="js/angular.js"></script>
     <!-- Bootstrap Core JavaScript -->
     <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
 
@@ -59,49 +60,11 @@
     <!-- Directives -->
     <script src="directives/trainingModel.js"></script>
     <script src="directives/assetsMgmt.js"></script>
-     <script src="directives/assetAnalysis.js"></script>
+    <script src="directives/assetAnalysis.js"></script>
     <script src="directives/assetReport.js"></script>
     <script src="js/pumpMonitoring.js"></script>
 
-<link href="dist/css/circle.css" rel="stylesheet">
-   <script src="vendor/flot/excanvas.min.js"></script>
-    <script src="vendor/flot/jquery.flot.js"></script>
-    <script src="vendor/flot/jquery.flot.pie.js"></script>
-    <script src="vendor/flot/jquery.flot.resize.js"></script>
-    <script src="vendor/flot/jquery.flot.time.js"></script>
-    <script src="vendor/flot-tooltip/jquery.flot.tooltip.min.js"></script>
-    <script src="data/flot-data.js"></script>
-	<script>
 
-function blockage(){
-debugger;
-$('.blockage').removeClass("offline");
-        $('.blockage').addClass("online");
-}
-function suppressBlockage(){debugger;
-$('.blockage').removeClass("online");
-        $('.blockage').addClass("offline");
-}
-function lowPumpEfficiency(){
-debugger;
-$('.lowPumpEfficiency').removeClass("offline");
-        $('.lowPumpEfficiency').addClass("online");
-}
-function suppressLowPumpEfficiency(){debugger;
-$('.lowPumpEfficiency').removeClass("online");
-        $('.lowPumpEfficiency').addClass("offline");
-}
-function dryRunning(){
-debugger;
-$('.dryRunning').removeClass("offline");
-        $('.dryRunning').addClass("online");
-}
-function suppressDryRunning(){debugger;
-$('.dryRunning').removeClass("online");
-        $('.dryRunning').addClass("offline");
-}
-
-</script>
 </head>
 
 <body ng-app="assetsMgmtApp">

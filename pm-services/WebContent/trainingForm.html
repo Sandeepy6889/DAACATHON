@@ -1,5 +1,37 @@
-<div id="page-wrapper">
+<head>
+    <style>
+        /* Absolute Center Spinner */
 
+        img {
+            width: 300px;
+            height: 300px;
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            margin-left: -150px;
+            margin-top: -150px;
+        }
+
+        #loadingDiv {
+            position: absolute;
+            top: 0px;
+            right: 0px;
+            width: 100%;
+            height: 100%;
+            background-color: #ffffff;
+            background-image: url('images/model.gif');
+            background-repeat: no-repeat;
+            background-position: center;
+            z-index: 10000000;
+            opacity: 0.4;
+            filter: alpha(opacity=40);
+            /* For IE8 and earlier */
+        }
+    </style>
+</head>
+
+<div id="page-wrapper">
+    <div id="loadingDiv" ng-show="isTeachingModel"></div>
     <div class="row">
         <div class="col-lg-12">
             <h1 class="page-header">Train Models</h1>
@@ -12,25 +44,37 @@
 
     <div class="row">
         <div class="col-lg-12">
-            <form class="form-inline" action="/action">
+            <form class="form-inline" novalidate>
                 <div class="form-group">
                     <label for="email">Select Asset</label>
-                    <select ng-change="getAssetTrainingData()" class="form-control" ng-model="assetId" ng-options="ids.value for ids in assetsIds">
-                    <option value="">-- Select AssestID --</option>
+                    <select ng-change="getAssetTrainingData()" class="form-control" ng-model="assetId"
+                        ng-options="id for id in assetsIds">
+                        <option value="">-- Select AssestID --</option>
                     </select>
 
                 </div>
             </form>
         </div>
     </div>
-    <div class="row" style="margin-top: 10px">
+    <div class="row v-gap">
+
         <div class="col-lg-12">
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#trainingModalDialog">Add Trainig record</button>
-            <button type="button" class="btn btn-primary">Teach</button>
+            <button type="button" ng-show="assetMaxValues.length < 1" class="btn btn-primary gap" data-toggle="modal" data-target="#maxValuesForModelDiaglog">Add Max values</button>
+            <button type="button" ng-show="assetId.length > 0" class="btn btn-primary gap" data-toggle="modal" data-target="#trainingModalDialog">Add Trainig record</button>
+            <button type="button" ng-show="assetId.length > 0" class="btn btn-primary gap" ng-click="trainingModel()">Teach</button>
         </div>
     </div>
 
-    <div class="row" style="margin-top: 10px">
+    <div class="row" ng-show="isAlertEnable">
+        <div class="col-lg-12">
+            <div class="alert fade in" id="modelMessage">
+                <strong>{{title}}</strong>
+                {{message}}
+
+            </div>
+        </div>
+    </div>
+    <div class="row">
         <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
@@ -74,36 +118,124 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Training Data</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+                    <h3 class="modal-title" id="exampleModalLongTitle">Training Data
+                    </h3>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form role="form">
+                    <form role="form" name="trainingData" novalidate>
+                        <div class="form-group error">All fields are required</div>
                         <div class="form-group">
+                            <span class="error" ng-show="trainingData.xFlow.$error.pattern">Not a number</span>
+                            <div class="form-group error">{{maxValueErrors[0]}}</div>
                             <div class="input-group">
                                 <div class="input-group-addon">x-Flow</div>
-                                <input ng-model="xFlow" type="text" class="form-control" id="xFlow" placeholder="">
+                                <input name="xFlow" ng-required="true" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" ng-model="xFlow" type="text" class="form-control"
+                                    id="xFlow">
+                                    
+                                <div class="input-group-addon">Max:{{assetMaxValues[0].xFlow}}</div>
                             </div>
                         </div>
                         <div class="form-group">
+                            <span class="error" ng-show="trainingData.yHeight.$error.pattern">Not a number</span>
+                            <div class="form-group error">{{maxValueErrors[1]}}</div>
                             <div class="input-group">
                                 <div class="input-group-addon">y-Height</div>
-                                <input ng-model="yHeight" type="text" class="form-control" id="yHeight" placeholder="">
+                                <input name="yHeight" ng-required="true" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" ng-model="yHeight" type="text" class="form-control"
+                                    id="yHeight">
+                                <div class="input-group-addon">Max:{{assetMaxValues[0].yHeight}}</div>
                             </div>
                         </div>
                         <div class="form-group">
+                            <span class="error" ng-show="trainingData.yEta.$error.pattern">Not a number</span>
+                            <div class="form-group error">{{maxValueErrors[2]}}</div>
                             <div class="input-group">
                                 <div class="input-group-addon">y-Eta</div>
-                                <input ng-model="yEta" type="text" class="form-control" id="yEta" placeholder="">
+                                <input name="yEta" ng-required="true" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" ng-model="yEta" type="text" class="form-control"
+                                    id="yEta" >
+                                 <div class="input-group-addon">Max:{{assetMaxValues[0].yEta}}</div>
                             </div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" ng-click="addTraningRecord()">Save changes</button>
+                    <button type="button" class="btn btn-primary" ng-disabled="trainingData.$invalid" ng-click="addTraningRecord()">Save changes
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Modal -->
+    <div class="modal fade" id="maxValuesForModelDiaglog" tabindex="-1" role="dialog" aria-labelledby="maxValuesForModelDiaglog"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="exampleModalLongTitle">asset model max values 
+                    </h3>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form role="form" name="trainingMaxValues" novalidate>
+                        <div class="form-group error">All fields are required</div>
+                        <div class="form-group">
+                            <span class="error" ng-show="trainingMaxValues.xFlowM.$error.pattern">Not a number</span>
+                            <div class="input-group">
+                                <div class="input-group-addon">Max x-Flow</div>
+                                <input name="xFlowM" ng-required="true" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" ng-model="xFlowM" type="text" class="form-control"
+                                    id="xFlowM" placeholder="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <span class="error" ng-show="trainingMaxValues.yHeightM.$error.pattern">Not a number</span>
+                            <div class="input-group">
+                                <div class="input-group-addon">Max y-Height</div>
+                                <input name="yHeightM" ng-required="true" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" ng-model="yHeightM" type="text" class="form-control"
+                                    id="yHeightM" placeholder="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <span class="error" ng-show="trainingMaxValues.yEtaM.$error.pattern">Not a number</span>
+                            <div class="input-group">
+                                <div class="input-group-addon">Max y-Eta</div>
+                                <input name="yEtaM" ng-required="true" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" ng-model="yEtaM" type="text" class="form-control"
+                                    id="yEtaM" placeholder="">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" ng-disabled="trainingMaxValues.$invalid" ng-click="registerAssetMaxValues()">Save changes
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <!-- Modal -->
+    <div class="modal fade" data-keyboard="false" data-backdrop="static" id="teachModalDialog" tabindex="-1" role="dialog" aria-labelledby="teachModalDialog"
+        aria-hidden="true">
+        <div class="col-lg-3">
+            <div class="modal-dialog vertical-align-center">
+                <div class="modal-content">
+                    <div class="modal-header">
+
+                        <h4 class="modal-title" id="myModalLabel">Model is being trained...
+                        </h4>
+
+                    </div>
+                    <div class="modal-body">
+                        <img class="img-responsive" src="images/model.gif" alt="" srcset="">
+                    </div>
+
                 </div>
             </div>
         </div>

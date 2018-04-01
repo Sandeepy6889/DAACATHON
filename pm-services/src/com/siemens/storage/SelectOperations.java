@@ -29,7 +29,7 @@ public class SelectOperations {
 		while (rs.next()) {
 			Pair p = new Pair();
 			p.setValue(rs.getObject(columnname));
-			values.add(p);
+			values.add(rs.getObject(columnname));
 		}
 	}
 

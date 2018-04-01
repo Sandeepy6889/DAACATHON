@@ -59,9 +59,6 @@ assetsManagementApp.directive("assetsManagement", function () {
                  console.log("all data ", result);
                  $scope.assets = result;
              });
-            window.scope = $scope;
-            //  $scope.trainingRecords.push(new TraningRecord());
-            window.scope = $scope;
             $scope.addNewAsset = function () {
                 var asset = new Asset({
                     assetID: $scope.assetID,
@@ -77,9 +74,9 @@ assetsManagementApp.directive("assetsManagement", function () {
                     eleveationDiff: $scope.eleveationDiff
                 });
                  assetService.addAsset(asset).then(function (asset) {
-                     $scope.assets.push(asset);
-                     $("#exampleModalLong").modal("hide");
-                 });
+                      $scope.assets.push(asset);
+                      $("#exampleModalLong").modal("hide");
+                  });
             }
             $scope.updateAsset = function () {
 

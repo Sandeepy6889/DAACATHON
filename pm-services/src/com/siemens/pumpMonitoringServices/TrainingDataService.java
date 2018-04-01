@@ -9,6 +9,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 
 import com.siemens.dao.DBUtil;
@@ -30,16 +31,16 @@ public class TrainingDataService {
 	@GET
 	@Path("/getAssetsIds")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Object> getAllAssetsIDs() {
+	public GenericEntity<List<Object>>  getAllAssetsIDs() {
 		String qString = "select * from paramdata";
-		return DBUtil.getColumnValues(qString, "assetid");
+		return new GenericEntity<List<Object>>(DBUtil.getColumnValues(qString, "assetid")) {};
 	}
 
 	@GET
 	@Path("/getAssetTrainingData/{assetId}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Object> getAll(@PathParam("assetId") String assetId) {
-		String qString = "select * from Training_Data where AssetId='" + assetId + "'";
+		String qString = "select * from training_data where AssetId='" + assetId + "'";
 		List<Object> records = DBUtil.get(qString, new TrainingDataRecord());
 		return records;
 	}
@@ -49,7 +50,7 @@ public class TrainingDataService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public TrainingDataRecord add(TrainingDataRecord trainingRecord) {
-		TableRow row = new TableRow("Training_Data");
+		TableRow row = new TableRow("training_data");
 		row.set("AssetId", trainingRecord.getAssetId());
 		row.set("Flow", trainingRecord.getxFlow());
 		row.set("TDH", trainingRecord.getyHeight());
@@ -59,5 +60,31 @@ public class TrainingDataService {
 			return trainingRecord;
 		else
 			return null;
+	}
+	
+	@POST
+	@Path("/insert/maxValues")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public TrainingDataRecord addMaxValues(TrainingDataRecord trainingRecord) {
+		TableRow row = new TableRow("training_data_max_allowed_values");
+		row.set("AssetId", trainingRecord.getAssetId());
+		row.set("Flow", trainingRecord.getxFlow());
+		row.set("TDH", trainingRecord.getyHeight());
+		row.set("Efficiency", trainingRecord.getyEta());
+		boolean isSuccess = DBUtil.insert(row);
+		if (isSuccess)
+			return trainingRecord;
+		else
+			return null;
+	}
+	
+	@GET
+	@Path("/getAssetMaxValues/{assetId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Object> getMaxTrainingValues(@PathParam("assetId") String assetId) {
+		String qString = "select * from training_data_max_allowed_values where AssetId='" + assetId + "'";
+		List<Object> records = DBUtil.get(qString, new TrainingDataRecord());
+		return records;
 	}
 }
