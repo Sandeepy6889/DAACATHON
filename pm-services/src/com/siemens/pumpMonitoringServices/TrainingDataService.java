@@ -61,30 +61,4 @@ public class TrainingDataService {
 		else
 			return null;
 	}
-	
-	@POST
-	@Path("/insert/maxValues")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public TrainingDataRecord addMaxValues(TrainingDataRecord trainingRecord) {
-		TableRow row = new TableRow("training_data_max_allowed_values");
-		row.set("AssetId", trainingRecord.getAssetId());
-		row.set("Flow", trainingRecord.getxFlow());
-		row.set("TDH", trainingRecord.getyHeight());
-		row.set("Efficiency", trainingRecord.getyEta());
-		boolean isSuccess = DBUtil.insert(row);
-		if (isSuccess)
-			return trainingRecord;
-		else
-			return null;
-	}
-	
-	@GET
-	@Path("/getAssetMaxValues/{assetId}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public List<Object> getMaxTrainingValues(@PathParam("assetId") String assetId) {
-		String qString = "select * from training_data_max_allowed_values where AssetId='" + assetId + "'";
-		List<Object> records = DBUtil.get(qString, new TrainingDataRecord());
-		return records;
-	}
 }

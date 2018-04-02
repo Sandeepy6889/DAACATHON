@@ -126,34 +126,27 @@
                     <form role="form" name="trainingData" novalidate>
                         <div class="form-group error">All fields are required</div>
                         <div class="form-group">
-                            <span class="error" ng-show="trainingData.xFlow.$error.pattern">Not a number</span>
-                            <div class="form-group error">{{maxValueErrors[0]}}</div>
+                            <span class="error" ng-show="trainingData.xFlow.$error.pattern">Not a valid number</span>
                             <div class="input-group">
                                 <div class="input-group-addon">x-Flow</div>
-                                <input name="xFlow" ng-required="true" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" ng-model="xFlow" type="text" class="form-control"
+                                <input name="xFlow" ng-required="true" ng-pattern="/^[0-9]+(\.[0-9]{1,3})?$/" ng-model="xFlow" type="text" class="form-control"
                                     id="xFlow">
-                                    
-                                <div class="input-group-addon">Max:{{assetMaxValues[0].xFlow}}</div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <span class="error" ng-show="trainingData.yHeight.$error.pattern">Not a number</span>
-                            <div class="form-group error">{{maxValueErrors[1]}}</div>
+                            <span class="error" ng-show="trainingData.yHeight.$error.pattern">Not a valid number</span>
                             <div class="input-group">
                                 <div class="input-group-addon">y-Height</div>
-                                <input name="yHeight" ng-required="true" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" ng-model="yHeight" type="text" class="form-control"
+                                <input name="yHeight" ng-required="true" ng-pattern="/^[0-9]+(\.[0-9]{1,3})?$/" ng-model="yHeight" type="text" class="form-control"
                                     id="yHeight">
-                                <div class="input-group-addon">Max:{{assetMaxValues[0].yHeight}}</div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <span class="error" ng-show="trainingData.yEta.$error.pattern">Not a number</span>
-                            <div class="form-group error">{{maxValueErrors[2]}}</div>
+                            <span class="error" ng-show="trainingData.yEta.$error.pattern">Not a valid number</span>
                             <div class="input-group">
                                 <div class="input-group-addon">y-Eta</div>
-                                <input name="yEta" ng-required="true" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" ng-model="yEta" type="text" class="form-control"
+                                <input name="yEta" ng-required="true" ng-pattern="/^[0-9]+(\.[0-9]{1,3})?$/" ng-model="yEta" type="text" class="form-control"
                                     id="yEta" >
-                                 <div class="input-group-addon">Max:{{assetMaxValues[0].yEta}}</div>
                             </div>
                         </div>
                     </form>
@@ -167,57 +160,6 @@
         </div>
     </div>
 </div>
-
-<div class="row">
-    <!-- Modal -->
-    <div class="modal fade" id="maxValuesForModelDiaglog" tabindex="-1" role="dialog" aria-labelledby="maxValuesForModelDiaglog"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 class="modal-title" id="exampleModalLongTitle">asset model max values 
-                    </h3>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form role="form" name="trainingMaxValues" novalidate>
-                        <div class="form-group error">All fields are required</div>
-                        <div class="form-group">
-                            <span class="error" ng-show="trainingMaxValues.xFlowM.$error.pattern">Not a number</span>
-                            <div class="input-group">
-                                <div class="input-group-addon">Max x-Flow</div>
-                                <input name="xFlowM" ng-required="true" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" ng-model="xFlowM" type="text" class="form-control"
-                                    id="xFlowM" placeholder="">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <span class="error" ng-show="trainingMaxValues.yHeightM.$error.pattern">Not a number</span>
-                            <div class="input-group">
-                                <div class="input-group-addon">Max y-Height</div>
-                                <input name="yHeightM" ng-required="true" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" ng-model="yHeightM" type="text" class="form-control"
-                                    id="yHeightM" placeholder="">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <span class="error" ng-show="trainingMaxValues.yEtaM.$error.pattern">Not a number</span>
-                            <div class="input-group">
-                                <div class="input-group-addon">Max y-Eta</div>
-                                <input name="yEtaM" ng-required="true" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" ng-model="yEtaM" type="text" class="form-control"
-                                    id="yEtaM" placeholder="">
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" ng-disabled="trainingMaxValues.$invalid" ng-click="registerAssetMaxValues()">Save changes
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
 
 <div class="row">
     <!-- Modal -->

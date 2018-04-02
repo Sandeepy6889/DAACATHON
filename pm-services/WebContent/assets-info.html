@@ -39,70 +39,70 @@
 							</div>
 							<div class="form-group">
 								<span class="error"
-									ng-show="assetInfo.ratedPower.$error.pattern">Not a
+									ng-show="assetInfo.ratedPower.$error.pattern">Not a valid 
 									number</span> <input name="ratedPower" ng-required="true"
-									ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.01"
+									ng-pattern="/^\s*(?=.*[1-9])\d*(?:\.\d{1,3})?\s*$/" step="0.01"
 									class="form-control" ng-model="ratedPower"
 									placeholder="Rated Power (KW)">
 							</div>
 							<div class="form-group">
 								<span class="error"
-									ng-show="assetInfo.motorEfficiency.$$error.pattern">Not
-									a number</span> <input name="motorEfficiency" ng-required="true"
-									ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" class="form-control"
+									ng-show="assetInfo.motorEfficiency.$error.pattern">Not
+									a valid number</span> <input name="motorEfficiency" ng-required="true"
+									ng-pattern="/^\s*(?=.*[1-9])\d*(?:\.\d{1,3})?\s*$/" class="form-control"
 									ng-model="motorEfficiency"
 									placeholder="Efficiency of motor (%)">
 							</div>
 							<div class="form-group">
 								<span class="error"
-									ng-show="assetInfo.motorRatedSpeed.$error.pattern">Not a
+									ng-show="assetInfo.motorRatedSpeed.$error.pattern">Not a valid
 									number</span> <input name="motorRatedSpeed" ng-required="true"
-									ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" class="form-control"
+									ng-pattern="/^\s*(?=.*[1-9])\d*(?:\.\d{1,3})?\s*$/" class="form-control"
 									ng-model="motorRatedSpeed"
 									placeholder="Rated speed of the motor">
 							</div>
 							<div class="form-group">
 								<span class="error"
 									ng-show="assetInfo.minRatedFlowOfPump.$error.pattern">Not
-									a number</span> <input name="minRatedFlowOfPump" ng-required="true"
-									ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" class="form-control"
+									a valid number</span> <input name="minRatedFlowOfPump" ng-required="true"
+									ng-pattern="/^\s*(?=.*[1-9])\d*(?:\.\d{1,3})?\s*$/" class="form-control"
 									ng-model="minRatedFlowOfPump"
 									placeholder="Minimum rated flow of the pump">
 							</div>
 							<div class="form-group">
 								<span class="error"
-									ng-show="assetInfo.waterDensity.$error.pattern">Not a
+									ng-show="assetInfo.waterDensity.$error.pattern">Not a valid 
 									number</span> <input name="waterDensity" ng-required="true"
-									ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" class="form-control"
-									ng-model="waterDensity" placeholder="Water density">
+									ng-pattern="/^\s*(?=.*[1-9])\d*(?:\.\d{1,3})?\s*$/" class="form-control"
+									ng-model="waterDensity" placeholder="Fluid density">
 							</div>
 							<div class="form-group">
 								<span class="error"
-									ng-show="assetInfo.threadholdLT.$error.pattern">Not a
+									ng-show="assetInfo.threadholdLT.$error.pattern">Not a valid
 									number</span> <input name="threadholdLT" ng-required="true"
-									ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" class="form-control"
+									ng-pattern="/^\s*(?=.*[1-9])\d*(?:\.\d{1,3})?\s*$/" class="form-control"
 									ng-model="threadholdLT" placeholder="Threadhold limit">
 							</div>
 							<div class="form-group">
 								<span class="error"
-									ng-show="assetInfo.suctionDiameter.$error.pattern">Not a
+									ng-show="assetInfo.suctionDiameter.$error.pattern">Not a valid
 									number</span> <input name="suctionDiameter" ng-required="true"
-									ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" class="form-control"
+									ng-pattern="/^\s*(?=.*[1-9])\d*(?:\.\d{1,3})?\s*$/" class="form-control"
 									ng-model="suctionDiameter" placeholder="Suction Diameter">
 							</div>
 
 							<div class="form-group">
 								<span class="error"
 									ng-show="assetInfo.dischargeDiameter.$error.pattern">Not
-									a number</span> <input name="dischargeDiameter" ng-required="true"
-									ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" class="form-control"
+									a valid number</span> <input name="dischargeDiameter" ng-required="true"
+									ng-pattern="/^\s*(?=.*[1-9])\d*(?:\.\d{1,3})?\s*$/" class="form-control"
 									ng-model="dischargeDiameter" placeholder="Discharge Diameter">
 							</div>
 							<div class="form-group">
 								<span class="error"
-									ng-show="assetInfo.eleveationDiff.$error.pattern">Not a
-									number</span> <input name="eleveationDiff" ng-required="true"
-									ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" class="form-control"
+									ng-show="assetInfo.eleveationDiff.$error.pattern">Not a 
+									valid number</span> <input name="eleveationDiff" ng-required="true"
+									ng-pattern="/^\s*(?=.*[1-9])\d*(?:\.\d{1,3})?\s*$/" class="form-control"
 									ng-model="eleveationDiff" placeholder="Elevation Difference">
 							</div>
 						</form>

@@ -39,15 +39,6 @@ trainingModelApp.factory("trainingDataService", function ($http, TraningRecord, 
             });
             return deferred.promise;
         },
-        getAssetTraingMaxValues: function (assetId) {
-            var deferred = $q.defer();
-            var promise = $http.get(baseUri + "/modelTraining/getAssetMaxValues/" + assetId);
-            promise.then(function (response) {
-                var result = response.data.map(function (assetParams) { return new TraningRecord(assetParams); });
-                deferred.resolve(result);
-            });
-            return deferred.promise;
-        },
         getAssetsIDS: function () {
             var deferred = $q.defer();
             var promise = $http.get(baseUri + "/modelTraining/getAssetsIds");
@@ -59,14 +50,6 @@ trainingModelApp.factory("trainingDataService", function ($http, TraningRecord, 
         addTraningRecord: function (traningRecordData) {
             var deferred = $q.defer();
             var promise = $http.post(baseUri + "/modelTraining/insert", traningRecordData);
-            promise.then(function (response) {
-                deferred.resolve(new TraningRecord(response.data));
-            });
-            return deferred.promise;
-        },
-        addMaxValuesForModel: function (maxValuesRecord) {
-            var deferred = $q.defer();
-            var promise = $http.post(baseUri + "/modelTraining/insert/maxValues", maxValuesRecord);
             promise.then(function (response) {
                 deferred.resolve(new TraningRecord(response.data));
             });
@@ -98,9 +81,6 @@ trainingModelApp.directive("assetTrainingModel", function () {
             $scope.title = '';
             $scope.message = '';
             $scope.isAlertEnable = false;
-            $scope.assetMaxValues = [];
-            $scope.maxValuesButtonDiabled = true;
-            $scope.maxValueErrors = [];
 
             trainingDataService.getAssetsIDS().then(function (result) {
                 $scope.assetsIds = result;
@@ -124,34 +104,6 @@ trainingModelApp.directive("assetTrainingModel", function () {
             }
 
             $scope.addTraningRecord = function () {
-            	$scope.maxValueErrors = [];
-            	var isvalid = true;
-            	var msg = '';
-            	if((msg = getErrorMessage($scope.xFlow, $scope.assetMaxValues[0].xFlow)).length > 0){
-            		$scope.maxValueErrors.push(msg);
-            		isvalid  = false;
-            	}
-            	else{
-            		$scope.maxValueErrors.push(msg);
-            	}
-                
-            	if((msg = getErrorMessage($scope.yHeight, $scope.assetMaxValues[0].yHeight)).length > 0){
-            		$scope.maxValueErrors.push(msg);
-            		isvalid  = false;
-            	}
-            	else{
-            		$scope.maxValueErrors.push(msg);
-            	}
-            	if((msg = getErrorMessage($scope.yEta, $scope.assetMaxValues[0].yEta)).length > 0){
-            		$scope.maxValueErrors.push(msg);
-            		isvalid  = false;
-            	}
-            	else{
-            		$scope.maxValueErrors.push(msg);
-            	}
-            	if(!isvalid)
-            		return;
-            	
                 var record = new TraningRecord({
                     assetId: $scope.assetId,
                     xFlow: $scope.xFlow,
@@ -161,20 +113,6 @@ trainingModelApp.directive("assetTrainingModel", function () {
                 trainingDataService.addTraningRecord(record).then(function (result) {
                     $scope.trainingRecords.push(result);
                     $("#trainingModalDialog").modal("hide");
-                });
-            }
-
-            $scope.registerAssetMaxValues = function () {
-                var record = new TraningRecord({
-                    assetId: $scope.assetId,
-                    xFlow: $scope.xFlowM,
-                    yHeight: $scope.yHeightM,
-                    yEta: $scope.yEtaM
-                });
-                trainingDataService.addMaxValuesForModel(record).then(function (result) {
-                    $scope.maxValues.push(result);
-                    $scope.maxValuesButtonDiabled = true;
-                    $("#maxValuesForModelDiaglog").modal("hide");
                 });
             }
 
