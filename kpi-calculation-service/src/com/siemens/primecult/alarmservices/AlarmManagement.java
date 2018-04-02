@@ -28,24 +28,29 @@ import com.siemens.storage.TableRow;
 public class AlarmManagement {
 
 	private static Map<String, List<Integer>> currentAlarmsStatus = new HashMap<>();
-	static {
-		makeEntryToManageAlarmsForAsset("1");
+	/*static {
+		makeEntryToManageAlarmsForAsset("pump1");
+	}*/
+	
+	public static List<Integer> getCurrentAlarmStatus(String assetId){		
+		return currentAlarmsStatus.get(assetId);
 	}
-
-	public static void makeEntryToManageAlarmsForAsset(String assetId) {
+	
+	public static void 
+	makeEntryToManageAlarmsForAsset(String assetId) {
 		currentAlarmsStatus.put(assetId, Arrays.asList(GONE, GONE, GONE, GONE));
 	}
 
-	public void setAlarmsState(KPIData calculatedKPI, KPIData refrencedKPI, ValueRt rawValue) {
+	public void setAlarmsState(KPIData calculatedKPI, KPIData refrencedKPI, ValueRt rawValue, boolean isAssetTrained) {
 		// get threshold from db
 		float threshold = fetchThresholdFromDb(rawValue.getAssetID());
 		// check for TDH alarm
-		if (checkKpiStateChange(calculatedKPI, refrencedKPI, threshold, TDH, rawValue.getAssetID(),
+		if (isAssetTrained && checkKpiStateChange(calculatedKPI, refrencedKPI, threshold, TDH, rawValue.getAssetID(),
 				currentAlarmsStatus))
 			changeStateInCacheAndDb(TDH, rawValue);
 
 		// check for efficiency alarm
-		if (checkKpiStateChange(calculatedKPI, refrencedKPI, threshold, EFFICIENCY, rawValue.getAssetID(),
+		if (isAssetTrained && checkKpiStateChange(calculatedKPI, refrencedKPI, threshold, EFFICIENCY, rawValue.getAssetID(),
 				currentAlarmsStatus))
 			changeStateInCacheAndDb(EFFICIENCY, rawValue);
 

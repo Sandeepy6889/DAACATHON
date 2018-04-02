@@ -10,7 +10,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.siemens.primecult.alarmservices.AlarmManagement;
 import com.siemens.primecult.models.KPIData;
@@ -19,6 +21,20 @@ import com.siemens.storage.DBUtil;
 import com.siemens.storage.TableRow;
 
 public class KPICalculator {
+	
+	private static Map<String,Boolean> currentTrainingStatus = new HashMap<>();
+	/*static {
+		makeEntryToManageAssetTrainingStatus("1");
+	}*/
+	
+	public static void makeEntryToManageAssetTrainingStatus(String assetId) {
+		currentTrainingStatus.put(assetId,false);
+	}
+	
+	public static String changeTrainingStatus(String assetId) {		
+		currentTrainingStatus.put(assetId, true);
+		return "success";
+	}
 
 	public void calculateKPI(ValueRt requestData) {
 
@@ -45,19 +61,23 @@ public class KPICalculator {
 		float efficiency = calculateEfficiency(values[DISCH_PRESSURE], values[SUCT_PRESSURE], values[FLUID_FLOW_RATE],
 				values[MOTOR_POWER_INPUT], motorEfficiency);
 		insertKPI("calculated_kpi", tdh, efficiency, requestData);
-
-		float refTDH = getRefValue(requestData.getAssetID(), values[FLUID_FLOW_RATE], "TDH");
-		float refEfficiency = getRefValue(requestData.getAssetID(), values[FLUID_FLOW_RATE], "EFFICIENCY");
-		if (refTDH >= 0 || refEfficiency >= 0)//TODO How to handle the case of model is still untrained
+		boolean isAssetTrained = currentTrainingStatus.get(requestData.getAssetID());
+		float refTDH = 0.0f;
+		float refEfficiency = 0.0f;
+		if(isAssetTrained) 
+		{
+			refTDH = getRefValue(requestData.getAssetID(), values[FLUID_FLOW_RATE], "TDH");
+			refEfficiency = getRefValue(requestData.getAssetID(), values[FLUID_FLOW_RATE], "Efficiency");
 			insertKPI("refrence_kpi", refTDH, refEfficiency, requestData);
-		//TODO what if model is not trained and we have no ref values
-		evaluateAlarmState(tdh, efficiency, refTDH, refEfficiency, requestData);
+		}
+		
+		evaluateAlarmState(tdh, efficiency, refTDH, refEfficiency, requestData, isAssetTrained);
 	}
 
-	private void evaluateAlarmState(float tdh, float efficiency, float refTDH, float refEfficiency, ValueRt requestData) {
+	private void evaluateAlarmState(float tdh, float efficiency, float refTDH, float refEfficiency, ValueRt requestData, boolean isAssetTrained) {
 		KPIData calculatedKPI = new KPIData(requestData.getValues()[FLUID_FLOW_RATE], efficiency, tdh);
 		KPIData refKPI = new KPIData(requestData.getValues()[FLUID_FLOW_RATE], refEfficiency, refTDH);
-		new AlarmManagement().setAlarmsState(calculatedKPI, refKPI, requestData);
+		new AlarmManagement().setAlarmsState(calculatedKPI, refKPI, requestData, isAssetTrained);
 	}
 
 	private boolean insertKPI(String tableName, float tdh, float efficiency, ValueRt requestData) {
@@ -115,6 +135,8 @@ public class KPICalculator {
 	private float calculateEfficiency(float discPress, float suctPress, float fluidFlowRate, float motorPowerInput,
 			float motorEfficiency) {
 
+		if(motorPowerInput <= 0)
+			return 0;
 		return ((discPress - suctPress) * fluidFlowRate) / (2298 * motorPowerInput * motorEfficiency);
 	}
 
