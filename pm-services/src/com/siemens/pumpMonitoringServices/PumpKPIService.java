@@ -30,7 +30,7 @@ public class PumpKPIService {
 	}
 	
 	@GET
-	@Path("/{assetId}/{timeStamp}")
+	@Path("/calculatedKPI/{assetId}/{timeStamp}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Object> getCalculatedAllKPI(@PathParam("assetId") String assetId, @PathParam("timeStamp") long beginTimeStamp) 
 	{
