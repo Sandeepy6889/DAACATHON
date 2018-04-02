@@ -23,9 +23,6 @@ import com.siemens.storage.TableRow;
 public class KPICalculator {
 	
 	private static Map<String,Boolean> currentTrainingStatus = new HashMap<>();
-	/*static {
-		makeEntryToManageAssetTrainingStatus("1");
-	}*/
 	
 	public static void makeEntryToManageAssetTrainingStatus(String assetId) {
 		currentTrainingStatus.put(assetId,false);
@@ -51,8 +48,6 @@ public class KPICalculator {
 		float motorEfficiency = paramaData.getMotorEfficiency();
 
 		float[] values = requestData.getValues();
-		//TODO How to handle the case of fluid density, pipe diameter, motor power input &
-		// motor efficiency <=0???
 		float dischHead = calcDischargeHead(values[DISCH_PRESSURE], fluidDensity, values[FLUID_FLOW_RATE],
 				dischPipeDiameter);
 		float suctionHead = calcSuctionHead(values[SUCT_PRESSURE], fluidDensity, values[FLUID_FLOW_RATE],
@@ -70,7 +65,6 @@ public class KPICalculator {
 			refEfficiency = getRefValue(requestData.getAssetID(), values[FLUID_FLOW_RATE], "Efficiency");
 			insertKPI("refrence_kpi", refTDH, refEfficiency, requestData);
 		}
-		
 		evaluateAlarmState(tdh, efficiency, refTDH, refEfficiency, requestData, isAssetTrained);
 	}
 

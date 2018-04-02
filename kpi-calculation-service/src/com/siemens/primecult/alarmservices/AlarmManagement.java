@@ -28,16 +28,12 @@ import com.siemens.storage.TableRow;
 public class AlarmManagement {
 
 	private static Map<String, List<Integer>> currentAlarmsStatus = new HashMap<>();
-	/*static {
-		makeEntryToManageAlarmsForAsset("pump1");
-	}*/
 	
 	public static List<Integer> getCurrentAlarmStatus(String assetId){		
 		return currentAlarmsStatus.get(assetId);
 	}
 	
-	public static void 
-	makeEntryToManageAlarmsForAsset(String assetId) {
+	public static void makeEntryToManageAlarmsForAsset(String assetId) {
 		currentAlarmsStatus.put(assetId, Arrays.asList(GONE, GONE, GONE, GONE));
 	}
 
