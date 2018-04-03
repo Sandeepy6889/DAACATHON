@@ -112,7 +112,7 @@ assetsAnalysisApp.directive("assetsAnalysis", function() {
 					$scope.calculatedKPIs = result;
 					$scope.isCalculatedKPIs = true;
 					displayDiv();
-					
+					toggleAlarms();
 				});
 				kpiService.getReferencedAllKPI().then(function(result) {
 					console.log("getReferencedAllKPI", result);
@@ -240,4 +240,37 @@ function plot(actualData,RefData,options,chartName) {
 function displayDiv() {
     var x = document.getElementById("kpiDisplay");
     x.style.display = "block";
+}
+
+function toggleAlarms(){
+	debugger;
+	var x = [1,0,1,1];
+	//blockage
+	if(x[0]==1){
+		blockage();
+	}
+	else{
+		suppressBlockage();
+	}
+	//lowPumpEfficiency
+	if(x[1]==1){
+		lowPumpEfficiency();
+	}
+	else{
+		suppressLowPumpEfficiency();
+	}
+	//dryRunning
+	if(x[2]==1){
+		dryRunning();
+	}
+	else{
+		suppressDryRunning();
+	}
+	//deviatedTDH
+	if(x[3]==1){
+		deviatedTDH();
+	}
+	else{
+		suppressDeviatedTDH();
+	}
 }
