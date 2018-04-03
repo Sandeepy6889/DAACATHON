@@ -64,11 +64,6 @@ assetReportApp.directive("assetReport", function() {
 					$scope.alarmTableUrl = 'alarm-table.html';
 	                 console.log("all data ", result);
 	                 $scope.alarms = result;
-	                 setTimeout(() => {
-	                 	$element.find('#dataTables-example').DataTable({
-	                 		responsive: true
-	                 	});
-	 				}, 100);
 	             });
 			}
 		}
