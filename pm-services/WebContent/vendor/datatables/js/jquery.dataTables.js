@@ -4160,12 +4160,10 @@
 		var language = settings.oLanguage;
 		var previousSearch = settings.oPreviousSearch;
 		var features = settings.aanFeatures;
-		var input = '<input type="search" class="'+classes.sFilterInput+'"/>';
+		var input = '<input placeholder=\"Search\" type="search" class="'+classes.sFilterInput+'"/>';
+		input = "<input placeholder=\"Search\" type=\"search\" class=\"form-control input-sm\" aria-controls=\"dataTables-example\">";
 	
-		var str = language.sSearch;
-		str = str.match(/_INPUT_/) ?
-			str.replace('_INPUT_', input) :
-			str+input;
+		var str = input;
 	
 		var filter = $('<div/>', {
 				'id': ! features.f ? tableId+'_filter' : null,

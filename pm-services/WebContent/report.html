@@ -1,12 +1,39 @@
+
+<!-- jQuery -->
+
 <div id="page-wrapper">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg-12">
-                    <h1 class="page-header">Report</h1>
-                </div>
-                <!-- /.col-lg-12 -->
-            </div>
-            <!-- /.row -->
-        </div>
-        <!-- /.container-fluid -->
-    </div>
+	<div class="row">
+		<div class="col-lg-12">
+			<h1 class="page-header">Alarms Report</h1>
+		</div>
+		<!-- /.col-lg-12 -->
+	</div>
+	<div class="row">
+		<div class="col-lg-12">
+			<form class="form-inline" novalidate>
+				<div class="form-group">
+					<label for="email">Select Asset</label> <select
+						ng-change="getAlarms()" class="form-control" ng-model="assetId"
+						ng-options="id for id in assetsIds">
+						<option value="">-- Select AssestID --</option>
+					</select>
+
+				</div>
+			</form>
+		</div>
+	</div>
+	<!-- /.row -->
+	
+				<div id="rightContent" ng-include="alarmTableUrl">
+        		</div>
+			
+
+	<!-- /.row -->
+
+	<!-- /.row -->
+
+	<!-- /.row -->
+
+	<!-- /.row -->
+
+</div>

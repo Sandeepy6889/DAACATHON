@@ -1,6 +1,5 @@
 package com.siemens.pumpMonitoringServices;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -19,21 +18,13 @@ import com.siemens.storage.TableRow;
 @Path("/modelTraining")
 public class TrainingDataService {
 
-	static List<TrainingDataRecord> data = new ArrayList<>();
-	static {
-		TrainingDataRecord record = new TrainingDataRecord();
-		record.setxFlow(50);
-		record.setyEta(10);
-		record.setyHeight(20);
-		data.add(record);
-	}
-
 	@GET
 	@Path("/getAssetsIds")
 	@Produces(MediaType.APPLICATION_JSON)
-	public GenericEntity<List<Object>>  getAllAssetsIDs() {
+	public GenericEntity<List<Object>> getAllAssetsIDs() {
 		String qString = "select * from paramdata";
-		return new GenericEntity<List<Object>>(DBUtil.getColumnValues(qString, "assetid")) {};
+		return new GenericEntity<List<Object>>(DBUtil.getColumnValues(qString, "assetid")) {
+		};
 	}
 
 	@GET

@@ -28,7 +28,7 @@ public class PumpKPIService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Object> getAll() {
-		String qStr = "SELECT * from Calculated_KPI";
+		String qStr = "SELECT * from calculated_kpi";
 		PumpKPIDAO dao = new PumpKPIDAO();
 		PumpKPIResultSet obj = new PumpKPIResultSet();
 		return dao.get(qStr, obj);
@@ -49,7 +49,7 @@ public class PumpKPIService {
 		List<Object> refList =dao.get(qString, obj);
 		System.out.println(refList);
 		
-		String qString1 = "select * from Calculated_KPI where AssetId='" + assetId + "'and timestamp>="+beginTimeStamp+" and timestamp <= "+endTimeStamp+" order by timestamp";
+		String qString1 = "select * from calculated_kpi where AssetId='" + assetId + "'and timestamp>="+beginTimeStamp+" and timestamp <= "+endTimeStamp+" order by timestamp";
 		System.out.println(qString1);
 		PumpKPIDAO dao1 = new PumpKPIDAO();
 		PumpKPIResultSet obj1 = new PumpKPIResultSet();

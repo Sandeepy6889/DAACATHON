@@ -18,9 +18,6 @@ function getAssetClass() {
         this.dischargeDiameter= defaults.dischargeDiameter,
         this.eleveationDiff= defaults.eleveationDiff
     }
-    Asset.prototype.toggle = function () {
-
-    };
     return Asset;
 };
 assetsManagementApp.value("baseUri", "services");
