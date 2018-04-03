@@ -59,9 +59,12 @@ assetsAnalysisApp.factory("kpiService", function($http, KPI,RefKPI, $q, baseUri)
 			var promise = $http.get(baseUri + "/kpi/calculatedKPI/" + assetId + "/"
 					+ timestamp);
 			promise.then(function(response) {
-				var result = response.data.map(function(kpiParams) {
-					return new KPI(kpiParams);
-				});
+				debugger;
+				var result = response.data;
+				console.log("calculatedKPI data ", result);
+//				.map(function(kpiParams) {
+//					return new KPI(kpiParams);
+//				});
 				deferred.resolve(result);
 			});
 			return deferred.promise;
@@ -116,7 +119,7 @@ assetsAnalysisApp.directive("assetsAnalysis", function() {
 					$scope.isReferencedKPIs = true;
 				});
 
-				while(true){
+				/*while(true){
 					if($scope.isCalculatedKPIs === true && $scope.isReferencedKPIs === true){
 						debugger;
 						$scope.isCalculatedKPIs = false;
@@ -173,7 +176,7 @@ assetsAnalysisApp.directive("assetsAnalysis", function() {
 							};
 						plotEfficiency(actualEffData,RefEffData,optionsEff);
 					}
-				}
+				}*/
 			}
 		}
 
