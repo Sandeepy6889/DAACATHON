@@ -37,10 +37,10 @@ public class PumpKPIService {
 	@GET
 	@Path("/calculatedKPI/{assetId}/{timeStamp}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public GenericEntity<List<Object>> getCalculatedAllKPI(@PathParam("assetId") String assetId, @PathParam("timeStamp") long beginTimeStamp) 
+	public List<List<Double[]>> getCalculatedAllKPI(@PathParam("assetId") String assetId, @PathParam("timeStamp") long beginTimeStamp) 
 	{
 
-		List<Object> kpiList = new ArrayList<>();
+		List<List<Double[]>> kpiList = new ArrayList<>();
 		long endTimeStamp = beginTimeStamp+600;
 		String qString = "select * from reference_kpi where AssetId='" + assetId + "'and RefTimeStamp>="+beginTimeStamp+" and RefTimeStamp <= "+endTimeStamp+" order by RefTimeStamp";
 		PumpKPIDAO dao = new PumpKPIDAO();
@@ -54,24 +54,23 @@ public class PumpKPIService {
 		List<Object> calList =dao1.get(qString1, obj1);
 		System.out.println("kpi : "+calList);
 		 
-		List<Object> tDHCalPoints = new ArrayList<>();
-		List<Object> tDHRefPoints = new ArrayList<>();
-		List<Object> effCalPoints = new ArrayList<>();
-		List<Object> effRefPoints = new ArrayList<>();
+		List<Double[]> tDHCalPoints = new ArrayList<>();
+		List<Double[]> tDHRefPoints = new ArrayList<>();
+		List<Double[]> effCalPoints = new ArrayList<>();
+		List<Double[]> effRefPoints = new ArrayList<>();
 		
 		Iterator itrCal = calList.iterator();
 		Iterator itrRef = refList.iterator();
+		int arrayCounter=0;
 		while (itrCal.hasNext() && itrRef.hasNext())
 		{
+			//double []tDHCalPoints = new double[2];
 			PumpKPI calKPI = (PumpKPI)itrCal.next();
 			PumpReferencedKPI refKPI = (PumpReferencedKPI)itrRef.next();
-			
-			
-			tDHCalPoints.add(new ChartPoint(calKPI.getTDH(),calKPI.getFlow()));
-			tDHRefPoints.add(new ChartPoint(refKPI.getRefTDH(),refKPI.getRefFlow()));
-			effCalPoints.add(new ChartPoint(calKPI.getEfficiency(),calKPI.getFlow()));
-			effRefPoints.add(new ChartPoint(refKPI.getRefEfficiency(),refKPI.getRefFlow()));
-			
+			tDHCalPoints.add(new Double[] {calKPI.getTDH(),calKPI.getTDH()});
+			tDHRefPoints.add(new Double[] {refKPI.getRefTDH(),refKPI.getRefFlow()});
+			effCalPoints.add(new Double[] {calKPI.getEfficiency(),calKPI.getFlow()});
+			effRefPoints.add(new Double[] {refKPI.getRefEfficiency(),refKPI.getRefFlow()});
 		}
 		
 		kpiList.add(tDHCalPoints);
@@ -79,23 +78,11 @@ public class PumpKPIService {
 		kpiList.add(effCalPoints);
 		kpiList.add(effRefPoints);
 		
-		GenericEntity<List<Object>> genericEntity = new GenericEntity<List<Object>>(tDHCalPoints) {};
-		
-		GenericEntity<List<Object>> genericEntity2 = new GenericEntity<List<Object>>(tDHRefPoints) {};
-		GenericEntity<List<Object>> genericEntity3 = new GenericEntity<List<Object>>(effCalPoints) {};
-		GenericEntity<List<Object>> genericEntity4 = new GenericEntity<List<Object>>(effRefPoints) {};
-		
-		List<Object> li = new ArrayList<>();
-		li.add(genericEntity);
-		li.add(genericEntity2);
-		li.add(genericEntity3);
-		li.add(genericEntity4);
-		
 		System.out.println(tDHCalPoints);
 		System.out.println(tDHRefPoints);
 		System.out.println(effCalPoints);
 		System.out.println(effRefPoints);
-		return new GenericEntity<List<Object>>(li) {};
+		return kpiList;
 	}
 
 	
@@ -131,25 +118,25 @@ public class PumpKPIService {
 		List<Object> calList =dao1.get(qString1, obj1);
 		System.out.println("kpi : "+calList);
 		
-		ChartPoint []tDHCalPoints = new ChartPoint[calList.size()];
-		ChartPoint []tDHRefPoints = new ChartPoint[calList.size()];
-		ChartPoint []effCalPoints = new ChartPoint[calList.size()];
-		ChartPoint []effRefPoints = new ChartPoint[calList.size()];
+		List<Double[]> tDHCalPoints = new ArrayList<>();
+		List<Double[]> tDHRefPoints = new ArrayList<>();
+		List<Double[]> effCalPoints = new ArrayList<>();
+		List<Double[]> effRefPoints = new ArrayList<>();
 		
 		Iterator itrCal = calList.iterator();
 		Iterator itrRef = refList.iterator();
 		int arrayCounter=0;
 		while (itrCal.hasNext() && itrRef.hasNext())
 		{
+			//double []tDHCalPoints = new double[2];
 			PumpKPI calKPI = (PumpKPI)itrCal.next();
 			PumpReferencedKPI refKPI = (PumpReferencedKPI)itrRef.next();
-			
-			tDHCalPoints[arrayCounter] = new ChartPoint(calKPI.getTDH(),calKPI.getFlow());
-			tDHRefPoints[arrayCounter] = new ChartPoint(refKPI.getRefTDH(),refKPI.getRefFlow());
-			effCalPoints[arrayCounter] = new ChartPoint(calKPI.getEfficiency(),calKPI.getFlow());
-			effRefPoints[arrayCounter] = new ChartPoint(refKPI.getRefEfficiency(),refKPI.getRefFlow());
-			arrayCounter++;
+			tDHCalPoints.add(new Double[] {calKPI.getTDH(),calKPI.getTDH()});
+			tDHRefPoints.add(new Double[] {refKPI.getRefTDH(),refKPI.getRefFlow()});
+			effCalPoints.add(new Double[] {calKPI.getEfficiency(),calKPI.getFlow()});
+			effRefPoints.add(new Double[] {refKPI.getRefEfficiency(),refKPI.getRefFlow()});
 		}
+		
 		System.out.println(tDHCalPoints);
 		System.out.println(tDHRefPoints);
 		System.out.println(effCalPoints);
