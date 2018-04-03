@@ -72,13 +72,9 @@ assetsAnalysisApp.factory("kpiService", function($http, KPI,RefKPI, $q, baseUri)
 		getReferencedAllKPI : function() {
 			var deferred = $q.defer();
 			var assetId = 'assetid';
-			var timestamp = 1522393670;
-			var promise = $http.get(baseUri + "/kpi/referencedKPI/" + assetId + "/"
-					+ timestamp);
+			var promise = $http.get(baseUri + "/kpi/referencedKPI/" + assetId);
 			promise.then(function(response) {
-				var result = response.data.map(function(RefkpiParams) {
-					return new RefKPI(RefkpiParams);
-				});
+				var result = response.data;
 				deferred.resolve(result);
 			});
 			return deferred.promise;
@@ -109,75 +105,10 @@ assetsAnalysisApp.directive("assetsAnalysis", function() {
 			$scope.getKpi = function() {
 				kpiService.getCalculatedAllKPI().then(function(result) {
 					console.log("getCalculatedKPI", result);
-					$scope.calculatedKPIs = result;
-					$scope.isCalculatedKPIs = true;
 					displayDiv();
+					plotCharts(result);
 					toggleAlarms();
 				});
-				kpiService.getReferencedAllKPI().then(function(result) {
-					console.log("getReferencedAllKPI", result);
-					$scope.referencedKPIs = result;
-					$scope.isReferencedKPIs = true;
-				});
-
-				/*while(true){
-					if($scope.isCalculatedKPIs === true && $scope.isReferencedKPIs === true){
-						debugger;
-						$scope.isCalculatedKPIs = false;
-						$scope.isReferencedKPIs = false;
-						break;
-						TDHChartName="#flot-line-chart1";
-						var actualTDHData,RefTDHData;
-						
-						var optionsTDH = {
-								series : {
-									lines : {
-										show : true
-									},
-									points : {
-										show : true
-									}
-								},
-								grid : {
-									hoverable : true
-								// IMPORTANT! this is needed for tooltip to work
-								},
-								yaxis : {
-									min : -1.2,
-									max : 1.2
-								}
-							};
-						plot(actualTDHData,RefTDHData,optionsTDH);
-						TDHChartName="#flot-line-chart2";
-						var optionsEff = {
-								series : {
-									lines : {
-										show : true
-									},
-									points : {
-										show : true
-									}
-								},
-								grid : {
-									hoverable : true
-								// IMPORTANT! this is needed for tooltip to work
-								},
-								yaxis : {
-									min : -1.2,
-									max : 1.2
-								},
-								tooltip : true,
-								tooltipOpts : {
-									content : "'%s' of %x.1 is %y.4",
-									shifts : {
-										x : -60,
-										y : 25
-									}
-								}
-							};
-						plotEfficiency(actualEffData,RefEffData,optionsEff);
-					}
-				}*/
 			}
 		}
 
@@ -225,17 +156,6 @@ function suppressDeviatedTDH() {
 	$('.deviatedTDH').addClass("offline");
 }
 
-function plot(actualData,RefData,options,chartName) {
-	debugger;
-
-	var plotObj = $.plot($(chartName), [ {
-		data : actualData,
-		label : "Actual"
-	}, {
-		data : RefData,
-		label : "Reference"
-	} ], options);
-}
 
 function displayDiv() {
     var x = document.getElementById("kpiDisplay");
@@ -273,4 +193,68 @@ function toggleAlarms(){
 	else{
 		suppressDeviatedTDH();
 	}
+}
+
+function plotCharts(result){
+	debugger;
+
+	tDHChartName="#flot-line-chart1";
+	var actualTDHData=result[0];
+	var refTDHData=result[1];
+	
+	var optionsTDH = {
+			series : {
+				lines : {
+					show : true
+				},
+				points : {
+					show : true
+				}
+			},
+			grid : {
+				hoverable : true
+			// IMPORTANT! this is needed for tooltip to work
+			},
+			yaxis : {
+				min : 0,
+				max : 30
+			}
+		};
+	plot(actualTDHData,refTDHData,optionsTDH,tDHChartName);
+	effChartName="#flot-line-chart2";
+	var actualEffData=result[2];
+	var refEffData=result[3];
+	var optionsEff = {
+			series : {
+				lines : {
+					show : true
+				},
+				points : {
+					show : true
+				}
+			},
+			grid : {
+				hoverable : true
+			// IMPORTANT! this is needed for tooltip to work
+			},
+			yaxis : {
+				min : 0,
+				max : 30
+			}
+		};
+	plot(actualEffData,refEffData,optionsEff,effChartName);
+
+
+}
+
+function plot(actualData,RefData,options,chartName) {
+	debugger;
+
+	var plotObj = $.plot($(chartName), [ {
+		data : actualData,
+		label : "Actual"
+	}, {
+		data : RefData,
+		label : "Reference"
+	} ], options);
 }

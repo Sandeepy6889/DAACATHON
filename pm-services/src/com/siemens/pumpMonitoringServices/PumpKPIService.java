@@ -67,10 +67,10 @@ public class PumpKPIService {
 			//double []tDHCalPoints = new double[2];
 			PumpKPI calKPI = (PumpKPI)itrCal.next();
 			PumpReferencedKPI refKPI = (PumpReferencedKPI)itrRef.next();
-			tDHCalPoints.add(new Double[] {calKPI.getTDH(),calKPI.getTDH()});
-			tDHRefPoints.add(new Double[] {refKPI.getRefTDH(),refKPI.getRefFlow()});
-			effCalPoints.add(new Double[] {calKPI.getEfficiency(),calKPI.getFlow()});
-			effRefPoints.add(new Double[] {refKPI.getRefEfficiency(),refKPI.getRefFlow()});
+			tDHCalPoints.add(new Double[] {calKPI.getFlow(),calKPI.getTDH()});
+			tDHRefPoints.add(new Double[] {refKPI.getRefFlow(),refKPI.getRefTDH()});
+			effCalPoints.add(new Double[] {calKPI.getFlow(),calKPI.getEfficiency()});
+			effRefPoints.add(new Double[] {refKPI.getRefFlow(),refKPI.getRefEfficiency()});
 		}
 		
 		kpiList.add(tDHCalPoints);
