@@ -6,90 +6,93 @@
 			</div>
 			<!-- /.col-lg-12 -->
 		</div>
-		<div class="row">
-			<div class="col-lg-12">
-				<form class="form-inline" action="/action">
-					<div class="form-group">
-						<label for="">Select Asset</label>
-						 <select class="form-control" ng-repeat="kpi in kpis">
-							<option >{{kpi.assetID}}</option>
-						</select>
+	
+		
+		 <div class="row">
+        <div class="col-lg-12">
+            <form class="form-inline" novalidate>
+                <div class="form-group">
+                    <label for="email">Select Asset</label>
+                    <select ng-change="getKpi()" class="form-control" ng-model="assetId"
+                        ng-options="id for id in assetsIds">
+                        <option value="">-- Select AssestID --</option>
+                    </select>
 
+                </div>
+            </form>
+        </div>
+    </div>
+		
+		<!-- /.row -->
+		<div class="row">
+
+			<div class="col-lg-12">
+				<div class="panel panel-default">
+					<div class="panel-heading">Alarms</div>
+					<!-- /.panel-heading -->
+					<div class="panel-body">
+						<table class="table table-hover">
+
+							<tbody>
+								<tr>
+									<td><div id="circle" class="offline blockage"
+											onClick='blockage()'></div></td>
+									<td><h4>Blockage</h4></td>
+
+									<td><div id="circle" class="offline dryRunning"
+											onClick='dryRunning()'></div></td>
+									<td><h4>Dry Running</h4></td>
+
+
+								</tr>
+								<tr>
+									<td><div id="circle" class="offline lowPumpEfficiency"
+											onClick='lowPumpEfficiency()'></div></td>
+									<td><h4>Low Pump Efficiency</h4></td>
+
+									<td><div id="circle" class="offline deviatedTDH"
+											onClick='deviatedTDH()'></div></td>
+									<td><h4>Deviated TDH</h4></td>
+
+								</tr>
+							</tbody>
+						</table>
+						<td><button type="button" class="btn btn-danger"
+								onClick='plot()'>Suppress</button></td>
 					</div>
-<!-- /.row -->
-            <div class="row">
-                
-                <div class="col-lg-12">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                           Alarms
-                        </div>
-                        <!-- /.panel-heading -->
-                        <div class="panel-body">
-                          <table class="table table-hover">
-                                    
-                                    <tbody>
-                                        <tr>
-											<td><div id="circle" class="offline blockage" onClick = 'blockage()'></div></td>
-                                            <td><h2>Blockage</h2></td>
-                                            
-                                            <td><div id="circle" class="offline dryRunning" onClick = 'dryRunning()'></div></td>
-                                            <td><h2>Dry Running</h2></td>
-                                           
-                                            
-                                        </tr>
-                                        <tr>
-											<td><div id="circle" class="offline lowPumpEfficiency" onClick = 'lowPumpEfficiency()'></div></td>
-                                            <td><h2>Low Pump Efficiency</h2></td>
-                                            
-                                             <td><div id="circle" class="offline deviatedTDH" onClick = 'deviatedTDH()'></div></td>
-                                            <td><h2>Deviated TDH</h2></td>
-                                            
-                                        </tr>
-                                    </tbody>
-                                </table>	
-                                <td><button type="button" class="btn btn-danger"  onClick = 'plot()'>Suppress</button></td> 
-                        </div>
-                        <!-- /.panel-body -->
-                    </div>
-                    <!-- /.panel -->
-                </div>
-                
-                                <!-- /.col-lg-6 -->
-                <div class="col-lg-6">
-                     <div class="panel panel-default">
-                        <div class="panel-heading">
-                            TDH vs. Flow
-                        </div>
-                        <!-- /.panel-heading -->
-                        <div class="panel-body">
-                            <div class="flot-chart">
-                                <div class="flot-chart-content" id="flot-line-chart1"></div>
-                            </div>
-                        </div>
-                        <!-- /.panel-body -->
-                    </div>
-                </div>
-				<div class="col-lg-6">
-                     <div class="panel panel-default">
-                        <div class="panel-heading">
-                             Efficiency vs. Flow
-                        </div>
-                        <!-- /.panel-heading -->
-                        <div class="panel-body">
-                            <div class="flot-chart">
-                                <div class="flot-chart-content" id="flot-line-chart2"></div>
-                            </div>
-                        </div>
-                        <!-- /.panel-body -->
-                    </div>
-                </div>
-    
-                
+					<!-- /.panel-body -->
 				</div>
-                <!-- /.row -->
-				</form>
+				<!-- /.panel -->
 			</div>
+
+			<!-- /.col-lg-6 -->
+			<div class="col-lg-6">
+				<div class="panel panel-default">
+					<div class="panel-heading">TDH vs. Flow</div>
+					<!-- /.panel-heading -->
+					<div class="panel-body">
+						<div class="flot-chart">
+							<div class="flot-chart-content" id="flot-line-chart1"></div>
+						</div>
+					</div>
+					<!-- /.panel-body -->
+				</div>
+			</div>
+			<div class="col-lg-6">
+				<div class="panel panel-default">
+					<div class="panel-heading">Efficiency vs. Flow</div>
+					<!-- /.panel-heading -->
+					<div class="panel-body">
+						<div class="flot-chart">
+							<div class="flot-chart-content" id="flot-line-chart2"></div>
+						</div>
+					</div>
+					<!-- /.panel-body -->
+				</div>
+			</div>
+
+
+			<!-- /.row -->
 		</div>
 		<!-- /.row -->
 	</div>

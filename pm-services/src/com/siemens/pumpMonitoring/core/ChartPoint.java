@@ -2,6 +2,15 @@ package com.siemens.pumpMonitoring.core;
 
 public class ChartPoint {
 
+	@Override
+	public String toString() {
+		return "ChartPoint [x=" + x + ", y=" + y + "]";
+	}
+	public ChartPoint(double x, double y) {
+		super();
+		this.x = x;
+		this.y = y;
+	}
 	private double x;
 	private double y;
 	public double getX() {
@@ -15,6 +24,6 @@ public class ChartPoint {
 	}
 	public void setY(double y) {
 		this.y = y;
-	}
+	} 
 	
 }
