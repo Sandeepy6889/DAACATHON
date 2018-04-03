@@ -80,6 +80,9 @@ public class InsertOperations {
 		case Types.VARCHAR:
 			pstmt.setString(index, String.valueOf(columnValue));
 			break;
+		case Types.BIGINT:
+			pstmt.setLong(index, (Long)columnValue);
+			break;
 		default:
 			System.out.println(columnName + " not mapped to any value");
 			break;
