@@ -111,6 +111,7 @@ assetsAnalysisApp.directive("assetsAnalysis", function() {
 					console.log("getCalculatedKPI", result);
 					$scope.calculatedKPIs = result;
 					$scope.isCalculatedKPIs = true;
+					displayDiv();
 					
 				});
 				kpiService.getReferencedAllKPI().then(function(result) {
@@ -234,4 +235,9 @@ function plot(actualData,RefData,options,chartName) {
 		data : RefData,
 		label : "Reference"
 	} ], options);
+}
+
+function displayDiv() {
+    var x = document.getElementById("kpiDisplay");
+    x.style.display = "block";
 }
