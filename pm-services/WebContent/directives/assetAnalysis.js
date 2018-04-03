@@ -54,27 +54,30 @@ assetsAnalysisApp.factory("kpiService", function($http, KPI,RefKPI, $q, baseUri)
 		},
 		getCalculatedAllKPI : function() {
 			var deferred = $q.defer();
-			var assetId = 'assetid';
-			var timestamp = 1522393670;
+			debugger;
+			var assetId = $('#selectedAsset').find(":selected").text();
+//			var timestamp = (new Date).getTime();
+//			console.log("selectedAsset", assetId);
+//			var assetId = 'assetid';
+			var timestamp = 1522393678;
 			var promise = $http.get(baseUri + "/kpi/calculatedKPI/" + assetId + "/"
 					+ timestamp);
 			promise.then(function(response) {
 				debugger;
 				var result = response.data;
 				console.log("calculatedKPI data ", result);
-//				.map(function(kpiParams) {
-//					return new KPI(kpiParams);
-//				});
 				deferred.resolve(result);
 			});
 			return deferred.promise;
 		},
-		getReferencedAllKPI : function() {
+		getAlarmStatus : function() {
 			var deferred = $q.defer();
-			var assetId = 'assetid';
-			var promise = $http.get(baseUri + "/kpi/referencedKPI/" + assetId);
+			var assetId = $('#selectedAsset').find(":selected").text();
+			//var assetId = 'assetid';
+			var promise = $http.get(baseUri + "/kpi/getAlarmStatus/" + assetId);
 			promise.then(function(response) {
 				var result = response.data;
+				console.log("alarm status data ", result);
 				deferred.resolve(result);
 			});
 			return deferred.promise;
@@ -107,7 +110,39 @@ assetsAnalysisApp.directive("assetsAnalysis", function() {
 					console.log("getCalculatedKPI", result);
 					displayDiv();
 					plotCharts(result);
-					toggleAlarms();
+					kpiService.getAlarmStatus().then(function(result) {
+						console.log("getAlarmStatus", result);
+						var x = result;
+						//blockage
+						if(x[0]==1){
+							blockage();
+						}
+						else{
+							suppressBlockage();
+						}
+						//lowPumpEfficiency
+						if(x[1]==1){
+							lowPumpEfficiency();
+						}
+						else{
+							suppressLowPumpEfficiency();
+						}
+						//dryRunning
+						if(x[2]==1){
+							dryRunning();
+						}
+						else{
+							suppressDryRunning();
+						}
+						//deviatedTDH
+						if(x[3]==1){
+							deviatedTDH();
+						}
+						else{
+							suppressDeviatedTDH();
+						}
+					});
+
 				});
 			}
 		}
@@ -162,38 +197,7 @@ function displayDiv() {
     x.style.display = "block";
 }
 
-function toggleAlarms(){
-	debugger;
-	var x = [1,0,1,1];
-	//blockage
-	if(x[0]==1){
-		blockage();
-	}
-	else{
-		suppressBlockage();
-	}
-	//lowPumpEfficiency
-	if(x[1]==1){
-		lowPumpEfficiency();
-	}
-	else{
-		suppressLowPumpEfficiency();
-	}
-	//dryRunning
-	if(x[2]==1){
-		dryRunning();
-	}
-	else{
-		suppressDryRunning();
-	}
-	//deviatedTDH
-	if(x[3]==1){
-		deviatedTDH();
-	}
-	else{
-		suppressDeviatedTDH();
-	}
-}
+function toggleAlarms(){}
 
 function plotCharts(result){
 	debugger;

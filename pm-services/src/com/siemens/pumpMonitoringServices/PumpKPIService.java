@@ -37,18 +37,20 @@ public class PumpKPIService {
 	@GET
 	@Path("/calculatedKPI/{assetId}/{timeStamp}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<List<Double[]>> getCalculatedAllKPI(@PathParam("assetId") String assetId, @PathParam("timeStamp") long beginTimeStamp) 
+	public List<List<Double[]>> getCalculatedAllKPI(@PathParam("assetId") String assetId, @PathParam("timeStamp") long endTimeStamp) 
 	{
 
 		List<List<Double[]>> kpiList = new ArrayList<>();
-		long endTimeStamp = beginTimeStamp+600;
+		long beginTimeStamp = endTimeStamp-600;
 		String qString = "select * from reference_kpi where AssetId='" + assetId + "'and RefTimeStamp>="+beginTimeStamp+" and RefTimeStamp <= "+endTimeStamp+" order by RefTimeStamp";
+		System.out.println(qString);
 		PumpKPIDAO dao = new PumpKPIDAO();
 		PumpReferencedKPIResultSet obj = new PumpReferencedKPIResultSet();
 		List<Object> refList =dao.get(qString, obj);
 		System.out.println(refList);
 		
 		String qString1 = "select * from Calculated_KPI where AssetId='" + assetId + "'and timestamp>="+beginTimeStamp+" and timestamp <= "+endTimeStamp+" order by timestamp";
+		System.out.println(qString1);
 		PumpKPIDAO dao1 = new PumpKPIDAO();
 		PumpKPIResultSet obj1 = new PumpKPIResultSet();
 		List<Object> calList =dao1.get(qString1, obj1);
@@ -61,7 +63,7 @@ public class PumpKPIService {
 		
 		Iterator itrCal = calList.iterator();
 		Iterator itrRef = refList.iterator();
-		int arrayCounter=0;
+
 		while (itrCal.hasNext() && itrRef.hasNext())
 		{
 			//double []tDHCalPoints = new double[2];
@@ -87,59 +89,19 @@ public class PumpKPIService {
 
 	
 	@GET
-	@Path("/referencedKPI/{assetId}/{timeStamp}")
+	@Path("/getAlarmStatus/{assetId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Object> getReferencedAllKPI(@PathParam("assetId") String assetId, @PathParam("timeStamp") long beginTimeStamp) 
+	public List<Integer> getReferencedAllKPI(@PathParam("assetId") String assetId) 
 	{
-		long endTimeStamp = beginTimeStamp+600;
-		String qString = "select * from reference_kpi where AssetId='" + assetId + "'and RefTimeStamp>="+beginTimeStamp+" and RefTimeStamp <= "+endTimeStamp;
-		PumpKPIDAO dao = new PumpKPIDAO();
-		PumpReferencedKPIResultSet obj = new PumpReferencedKPIResultSet();
-		List<Object> list =dao.get(qString, obj);
-		System.out.println("kpi Ref: "+list);
+		List<Integer> list = new ArrayList<>();
+		list.add(1);
+		list.add(0);
+		list.add(1);
+		list.add(0);
+		System.out.println(list);
 		return list;
 	}
 	
 	
-	public static void main(String[] args) {
-
-		String assetId="assetid";
-		long beginTimeStamp = 1522393670;
-		long endTimeStamp = beginTimeStamp+600;
-		String qString = "select * from reference_kpi where AssetId='" + assetId + "'and RefTimeStamp>="+beginTimeStamp+" and RefTimeStamp <= "+endTimeStamp+" order by RefTimeStamp";
-		PumpKPIDAO dao = new PumpKPIDAO();
-		PumpReferencedKPIResultSet obj = new PumpReferencedKPIResultSet();
-		List<Object> refList =dao.get(qString, obj);
-		System.out.println(refList);
-		
-		String qString1 = "select * from Calculated_KPI where AssetId='" + assetId + "'and timestamp>="+beginTimeStamp+" and timestamp <= "+endTimeStamp+" order by timestamp";
-		PumpKPIDAO dao1 = new PumpKPIDAO();
-		PumpKPIResultSet obj1 = new PumpKPIResultSet();
-		List<Object> calList =dao1.get(qString1, obj1);
-		System.out.println("kpi : "+calList);
-		
-		List<Double[]> tDHCalPoints = new ArrayList<>();
-		List<Double[]> tDHRefPoints = new ArrayList<>();
-		List<Double[]> effCalPoints = new ArrayList<>();
-		List<Double[]> effRefPoints = new ArrayList<>();
-		
-		Iterator itrCal = calList.iterator();
-		Iterator itrRef = refList.iterator();
-		int arrayCounter=0;
-		while (itrCal.hasNext() && itrRef.hasNext())
-		{
-			//double []tDHCalPoints = new double[2];
-			PumpKPI calKPI = (PumpKPI)itrCal.next();
-			PumpReferencedKPI refKPI = (PumpReferencedKPI)itrRef.next();
-			tDHCalPoints.add(new Double[] {calKPI.getTDH(),calKPI.getTDH()});
-			tDHRefPoints.add(new Double[] {refKPI.getRefTDH(),refKPI.getRefFlow()});
-			effCalPoints.add(new Double[] {calKPI.getEfficiency(),calKPI.getFlow()});
-			effRefPoints.add(new Double[] {refKPI.getRefEfficiency(),refKPI.getRefFlow()});
-		}
-		
-		System.out.println(tDHCalPoints);
-		System.out.println(tDHRefPoints);
-		System.out.println(effCalPoints);
-		System.out.println(effRefPoints);
-	}
+	public static void main(String[] args) {}
 }
