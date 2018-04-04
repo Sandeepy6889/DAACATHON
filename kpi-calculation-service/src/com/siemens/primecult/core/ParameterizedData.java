@@ -1,4 +1,4 @@
-package com.siemens.primecult.kpiServices;
+package com.siemens.primecult.core;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

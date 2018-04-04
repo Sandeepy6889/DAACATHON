@@ -29,7 +29,7 @@ public class AlarmManagement {
 
 	private static Map<String, List<Integer>> currentAlarmsStatus = new HashMap<>();
 	
-	public static List<Integer> getCurrentAlarmStatus(String assetId){		
+	public static List<Integer> getCurrentAlarmStatus(String assetId){	
 		return currentAlarmsStatus.get(assetId);
 	}
 	
