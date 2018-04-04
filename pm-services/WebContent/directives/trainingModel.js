@@ -72,6 +72,14 @@ trainingModelApp.factory("trainingDataService", function ($http, TraningRecord, 
                 deferred.resolve(response.data);
             });
             return deferred.promise;
+        },
+        notifyModelStatus: function (assetId) {
+            var deferred = $q.defer();
+            var promise = $http.get($rootScope.notifyTrainingStatusUrl + "/" + assetId);
+            promise.then(function (response) {
+                deferred.resolve(response.data);
+            });
+            return deferred.promise;
         }
     }
 });
@@ -164,21 +172,31 @@ trainingModelApp.directive("assetTrainingModel", function () {
                 var assetId = $scope.assetId;
                 if (assetId !== null) {
                     $scope.isTeachingModel = true;
-                    trainingDataService.trainigModel(assetId).then(function (result) {
+                    trainingDataService.trainigModel(assetId).then(function (modelResult) {
                         $scope.isAlertEnable = true;
-                        if (result === "success") {
-                            $scope.title = 'Success!';
-                            $scope.message = 'Model trained successfully';
-                            $element.find('#modelMessage').removeClass('alert-danger');
-                            $element.find('#modelMessage').addClass('alert-success');
+                        $element.find('#modelMessage').removeClass('alert-danger');
+                		$element.find('#modelMessage').removeClass('alert-success');
+                        if (modelResult === "success"){
+                        	trainingDataService.notifyModelStatus(assetId).then(function (notifyResult) {
+                            	if (notifyResult === "success") {
+                            		$scope.title = 'Success!';
+                            		$scope.message = 'Model trained successfully and notification sent';
+                            		$element.find('#modelMessage').addClass('alert-success');
+                            	}
+                            	else {
+                            		$scope.title = 'Failure!';
+                            		$scope.message = 'Model trained successfully and but notification failed';
+                            		$element.find('#modelMessage').addClass('alert-danger');
+                            	}
+                            	$scope.isTeachingModel = false;
+                        	 });
+                        	}
+                        else{
+                        	$scope.title = 'Failure!';
+                    		$element.find('#modelMessage').addClass('alert-danger');
+                    		$scope.isTeachingModel = false;
                         }
-                        else {
-                            $scope.title = 'Failure!';
-                            $scope.message = result;
-                            $element.find('#modelMessage').removeClass('alert-success');
-                            $element.find('#modelMessage').addClass('alert-danger');
-                        }
-                        $scope.isTeachingModel = false;
+                        
                     });
                 }
 
