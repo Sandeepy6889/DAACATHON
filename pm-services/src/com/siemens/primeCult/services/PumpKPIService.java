@@ -1,4 +1,4 @@
-package com.siemens.pumpMonitoringServices;
+package com.siemens.primeCult.services;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,12 +18,12 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import com.siemens.dao.DBUtil;
 import com.siemens.dao.PumpKPIDAO;
-import com.siemens.pumpMonitoring.core.PumpKPI;
-import com.siemens.pumpMonitoring.core.PumpKPIResultSet;
-import com.siemens.pumpMonitoring.core.PumpReferencedKPI;
-import com.siemens.pumpMonitoring.core.PumpReferencedKPIResultSet;
+import com.siemens.primeCult.core.PumpKPI;
+import com.siemens.primeCult.core.PumpKPIResultSet;
+import com.siemens.primeCult.core.PumpReferencedKPI;
+import com.siemens.primeCult.core.PumpReferencedKPIResultSet;
+import com.siemens.storage.DBUtil;
 import com.siemens.storage.DbConnection;
 import com.siemens.storage.TableRow;
 
@@ -52,7 +52,7 @@ public class PumpKPIService {
 		//insertRows(beginTimeStamp, assetId);
 		String qString = "select * from refrence_kpi where AssetId='" + assetId + "'and Timestmp>="
 				+ beginTimeStamp + " and Timestmp <= " + endTimeStamp + " order by Timestmp";
-		System.out.println(qString);
+		//System.out.println(qString);
 		PumpKPIDAO dao = new PumpKPIDAO();
 		PumpReferencedKPIResultSet obj = new PumpReferencedKPIResultSet();
 		List<Object> refList = dao.get(qString, obj);
@@ -89,10 +89,10 @@ public class PumpKPIService {
 		kpiList.add(effCalPoints);
 		kpiList.add(effRefPoints);
 
-		System.out.println(tDHCalPoints);
-		System.out.println(tDHRefPoints);
-		System.out.println(effCalPoints);
-		System.out.println(effRefPoints);
+	//	System.out.println(tDHCalPoints);
+	//	System.out.println(tDHRefPoints);
+	//	System.out.println(effCalPoints);
+	//	System.out.println(effRefPoints);
 		return kpiList;
 	}
 

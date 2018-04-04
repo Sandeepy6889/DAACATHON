@@ -7,8 +7,8 @@ import java.sql.Statement;
 import java.util.List;
 
 import com.siemens.dao.Pair;
-import com.siemens.pumpMonitoring.core.DbRowToObject;
-import com.siemens.pumpMonitoring.core.ParameterizedData;
+import com.siemens.primeCult.core.DbRowToObject;
+import com.siemens.primeCult.core.ParameterizedData;
 
 public class SelectOperations {
 

@@ -3,12 +3,6 @@ trainingModelApp = angular.module("trainingModelApp", [])
         console.log("trainingModelApp initialized")
     })
 
-function getErrorMessage(value, maxValue){
-	if(value > maxValue)
-		return " should be less than or equal to "+maxValue;
-	return "";
-}
-    
 function getTraningRecordClass() {
     function TraningRecord(defaults) {
         defaults = defaults || {};
@@ -55,6 +49,22 @@ trainingModelApp.factory("trainingDataService", function ($http, TraningRecord, 
             });
             return deferred.promise;
         },
+        updateTraningRecord: function (traningRecordData) {
+            var deferred = $q.defer();
+            var promise = $http.post(baseUri + "/modelTraining/update", traningRecordData);
+            promise.then(function (response) {
+                deferred.resolve(response.data);
+            });
+            return deferred.promise;
+        },
+        deleteTraningRecord: function (traningRecordId) {
+            var deferred = $q.defer();
+            var promise = $http.get(baseUri + "/modelTraining/delete/"+traningRecordId);
+            promise.then(function (response) {
+                deferred.resolve(response.data);
+            });
+            return deferred.promise;
+        },
         trainigModel: function (assetId) {
             var deferred = $q.defer();
             var promise = $http.get($rootScope.modelURI + "/train?asset_id=" + assetId);
@@ -81,39 +91,72 @@ trainingModelApp.directive("assetTrainingModel", function () {
             $scope.title = '';
             $scope.message = '';
             $scope.isAlertEnable = false;
+            $scope.operation = '';
+            $scope.oprTitle = '';
+            $scope.id = '';
 
             trainingDataService.getAssetsIDS().then(function (result) {
                 $scope.assetsIds = result;
             });
+            
+            $scope.setOperation = function(opr, title, record){
+            	$scope.oprTitle = title;
+            	$scope.operation = opr;
+            	if(opr === 'UPDATE'){
+	            	$scope.xFlow = record.xFlow;
+	            	$scope.yHeight = record.yHeight;
+	            	$scope.yEta = record.yEta;
+	            	$scope.id = record.id;
+            	}
+            	else{
+            		$scope.xFlow = '';
+	            	$scope.yHeight = '';
+	            	$scope.yEta = '';
+	            	$scope.id = 0;
+            	}
+            }
 
             $scope.getAssetTrainingData = function () {
                 $scope.isAlertEnable = false;
                 if ($scope.assetId === null) {
                     $scope.trainingRecords = [];
-                    $scope.assetMaxValues = [];
                     return;
                 }
                 trainingDataService.getAssetTrainingData($scope.assetId).then(function (result) {
                     $scope.trainingRecords = result;
                 });
-                
-                trainingDataService.getAssetTraingMaxValues($scope.assetId).then(function (result) {
-                    $scope.assetMaxValues = result;
-                });
-                
             }
-
+            
             $scope.addTraningRecord = function () {
                 var record = new TraningRecord({
+                	id: $scope.id,
                     assetId: $scope.assetId,
                     xFlow: $scope.xFlow,
                     yHeight: $scope.yHeight,
                     yEta: $scope.yEta
                 });
-                trainingDataService.addTraningRecord(record).then(function (result) {
-                    $scope.trainingRecords.push(result);
-                    $("#trainingModalDialog").modal("hide");
-                });
+                
+                if($scope.operation === 'ADD')
+                {
+	                trainingDataService.addTraningRecord(record).then(function (result) {
+	                    $scope.trainingRecords.push(result);
+	                    $("#trainingModalDialog").modal("hide");
+	                });
+                }else if($scope.operation === 'UPDATE'){
+                	trainingDataService.updateTraningRecord(record).then(function (result) {
+                		var list = $scope.trainingRecords;
+                		for(var i = 0;i<list.length;i++)
+                		{
+                			if(list[i].id === record.id){
+                				list[i].xFlow = record.xFlow,
+                				list[i].yHeight = record.yHeight,
+                				list[i].yEta = record.yEta;
+                				break;
+                			}
+                		}
+	                    $("#trainingModalDialog").modal("hide");
+	                });
+                }
             }
 
             $scope.trainingModel = function () {
@@ -139,6 +182,19 @@ trainingModelApp.directive("assetTrainingModel", function () {
                     });
                 }
 
+            },
+            $scope.deleteTraningRecord = function (recordId) {
+            	
+            	trainingDataService.deleteTraningRecord(recordId).then(function (result) {
+            		if(result === 'SUCCESS'){
+            			for(var i = 0;i < $scope.trainingRecords.length;i++){
+            				if($scope.trainingRecords[i].id === recordId){
+            					$scope.trainingRecords.splice(i,1);
+            					break;
+            				}
+            			}
+            		}
+                });
             }
         },
         link: function (scope, $element, $attr) {

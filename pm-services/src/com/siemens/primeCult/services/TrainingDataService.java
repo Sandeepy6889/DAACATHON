@@ -1,4 +1,4 @@
-package com.siemens.pumpMonitoringServices;
+package com.siemens.primeCult.services;
 
 import java.util.List;
 
@@ -11,8 +11,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 
-import com.siemens.dao.DBUtil;
-import com.siemens.pumpMonitoring.core.TrainingDataRecord;
+import com.siemens.primeCult.core.TrainingDataRecord;
+import com.siemens.storage.DBUtil;
 import com.siemens.storage.TableRow;
 
 @Path("/modelTraining")
@@ -42,14 +42,49 @@ public class TrainingDataService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public TrainingDataRecord add(TrainingDataRecord trainingRecord) {
 		TableRow row = new TableRow("training_data");
-		row.set("AssetId", trainingRecord.getAssetId());
-		row.set("Flow", trainingRecord.getxFlow());
-		row.set("TDH", trainingRecord.getyHeight());
-		row.set("Efficiency", trainingRecord.getyEta());
-		boolean isSuccess = DBUtil.insert(row);
+		row.add("AssetId", trainingRecord.getAssetId());
+		row.add("Flow", trainingRecord.getxFlow());
+		row.add("TDH", trainingRecord.getyHeight());
+		row.add("Efficiency", trainingRecord.getyEta());
+		int id = DBUtil.insert(row);
+		trainingRecord.setId(id);
+		boolean isSuccess = id != -1;
 		if (isSuccess)
 			return trainingRecord;
 		else
 			return null;
+	}
+
+	@POST
+	@Path("/update")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.TEXT_PLAIN)
+	public String update(TrainingDataRecord trainingRecord) {
+		TableRow row = new TableRow("training_data");
+		row.add("AssetId", trainingRecord.getAssetId());
+		row.add("Flow", trainingRecord.getxFlow());
+		row.add("TDH", trainingRecord.getyHeight());
+		row.add("Efficiency", trainingRecord.getyEta());
+		row.where("id", trainingRecord.getId());
+		System.out.println("Id = " + trainingRecord.getId());
+		boolean isSuccess = DBUtil.update(row);
+		if (isSuccess)
+			return "SUCCESS";
+		else
+			return "FAIL";
+	}
+
+	@GET
+	@Path("/delete/{recordId}")
+	@Produces(MediaType.TEXT_PLAIN)
+	public String delete(@PathParam("recordId") String recordId) {
+		TableRow row = new TableRow("training_data");
+		row.where("id", Integer.valueOf(recordId));
+		boolean isSuccess = DBUtil.delete(row);
+		System.out.println("Deleted : "+isSuccess+" id "+recordId);
+		if (isSuccess)
+			return "SUCCESS";
+		else
+			return "FAIL";
 	}
 }

@@ -1,4 +1,4 @@
-package com.siemens.pumpMonitoring.core;
+package com.siemens.primeCult.core;
 
 import java.io.IOException;
 import java.io.InputStream;

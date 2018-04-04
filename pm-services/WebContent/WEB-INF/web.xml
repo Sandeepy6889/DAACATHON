@@ -6,7 +6,7 @@
 	<display-name>Restful Web Application</display-name>
 	<filter>
 		<filter-name>CORS</filter-name>
-		<filter-class>com.siemens.cors.filters.CorsHandler</filter-class>
+		<filter-class>com.siemens.primeCult.cors.filters.CorsHandler</filter-class>
 	</filter>
 	<filter-mapping>
 		<filter-name>CORS</filter-name>
@@ -17,7 +17,7 @@
 		<servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
 		<init-param>
 			<param-name>com.sun.jersey.config.property.packages</param-name>
-			<param-value>com.siemens.pumpMonitoringServices</param-value>
+			<param-value>com.siemens.primeCult.services</param-value>
 		</init-param>
 		<init-param>
 			<param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>

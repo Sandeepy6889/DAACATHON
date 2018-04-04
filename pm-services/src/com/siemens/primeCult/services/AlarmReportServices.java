@@ -1,4 +1,4 @@
-package com.siemens.pumpMonitoringServices;
+package com.siemens.primeCult.services;
 
 import java.util.List;
 
@@ -8,9 +8,9 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import com.siemens.dao.DBUtil;
-import com.siemens.pumpMonitoring.core.Alarm;
-import com.siemens.pumpMonitoring.core.TrainingDataRecord;
+import com.siemens.primeCult.core.Alarm;
+import com.siemens.primeCult.core.TrainingDataRecord;
+import com.siemens.storage.DBUtil;
 
 @Path("/alarms")
 public class AlarmReportServices {

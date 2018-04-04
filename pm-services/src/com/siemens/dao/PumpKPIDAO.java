@@ -5,7 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.siemens.pumpMonitoring.core.DbRowToObject;
+import com.siemens.primeCult.core.DbRowToObject;
 import com.siemens.storage.DbConnection;
 import com.siemens.storage.SelectOperations;
 

@@ -1,4 +1,4 @@
-package com.siemens.pumpMonitoring.core;
+package com.siemens.primeCult.core;
 
 public class ChartPoint {
 

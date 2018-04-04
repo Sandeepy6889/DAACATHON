@@ -11,16 +11,46 @@ public class TableRow {
 	private String tablename;
 	private int id;
 	Map<String, Object> columns;
+	Map<String, Object> whereColumns;
 
 	public TableRow(String tablename) {
 		this.tablename = tablename;
 		columns = new HashMap<>();
+		whereColumns = new HashMap<>();
 	}
 
-	public void set(String columnName, Object columnValue) {
+	public void add(String columnName, Object columnValue) {
 		columns.put(columnName.trim(), columnValue);
 	}
 	
+	public void update(String columnName, Object columnValue) {
+		columns.put(columnName.trim(), columnValue);
+	}
+
+	public void set(String... columns) {
+		for (int i = 0; i < columns.length; i++) {
+			add(columns[i], "");
+		}
+	}
+	
+	public void where(String columnName, Object columnValue) {
+		whereColumns.put(columnName, columnValue);
+	}
+	
+	public List<String> getWhereColumnNames() {
+		List<String> clmns = new ArrayList<>();
+		for (Entry<String, Object> entry : whereColumns.entrySet())
+			clmns.add((String) entry.getKey());
+		return clmns;
+	}
+	
+	public List<String> getColumnNames() {
+		List<String> clmns = new ArrayList<>();
+		for (Entry<String, Object> entry : columns.entrySet())
+			clmns.add((String) entry.getKey());
+		return clmns;
+	}
+
 	public int getId() {
 		return id;
 	}
@@ -48,17 +78,8 @@ public class TableRow {
 	public Object getValue(String columnName) {
 		return columns.get(columnName);
 	}
-
-	public List<String> getColumnNames() {
-		List<String> clmns = new ArrayList<>();
-		for (Entry<String, Object> entry : columns.entrySet())
-			clmns.add((String) entry.getKey());
-		return clmns;
-	}
-
-	public void set(String... columns) {
-		for (int i = 0; i < columns.length; i++) {
-			set(columns[i], "");
-		}
+	
+	public Object getWhereValue(String columnName) {
+		return whereColumns.get(columnName);
 	}
 }

@@ -11,7 +11,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
-import com.siemens.pumpMonitoring.core.Configuration;
+import com.siemens.primeCult.core.Configuration;
 
 /**
  * Provides the Method for Changing password in MYSQL DB.

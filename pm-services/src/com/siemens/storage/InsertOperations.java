@@ -13,9 +13,9 @@ import java.util.Map;
 
 public class InsertOperations {
 
-	public void insert(Connection connection, TableRow row) throws SQLException {
+	public int insert(Connection connection, TableRow row) throws SQLException {
 		Map<String, Integer> columnsMetaData = getTableMetaData(connection, row);
-		insert(connection, row, columnsMetaData);
+		return insert(connection, row, columnsMetaData);
 	}
 
 	private Map<String, Integer> getTableMetaData(Connection connection, TableRow row) throws SQLException {
@@ -29,7 +29,7 @@ public class InsertOperations {
 		return columnsMetaData;
 	}
 
-	private void insert(Connection connection, TableRow row, Map<String, Integer> columnsMetaData)
+	private int insert(Connection connection, TableRow row, Map<String, Integer> columnsMetaData)
 			throws NumberFormatException, SQLException {
 		StringBuilder query = new StringBuilder();
 		StringBuilder params = new StringBuilder(") values(");
@@ -55,7 +55,15 @@ public class InsertOperations {
 			setValue(columnType, cName, row.getValue(cName), pstmt, i + 1);
 		}
 		System.out.println("Affected rows : " + pstmt.executeUpdate());
-
+		int id = 0;
+		try (ResultSet generatedKeys = pstmt.getGeneratedKeys()) {
+			if (generatedKeys.next()) {
+				id = generatedKeys.getInt(1);
+			} else {
+				id = -1;
+			}
+		}
+		return id;
 	}
 
 	private void setValue(int type, String columnName, Object columnValue, PreparedStatement pstmt, int index)
@@ -80,7 +88,7 @@ public class InsertOperations {
 			pstmt.setString(index, String.valueOf(columnValue));
 			break;
 		case Types.BIGINT:
-			pstmt.setLong(index, (Long)columnValue);
+			pstmt.setLong(index, (Long) columnValue);
 			break;
 		default:
 			System.out.println(columnName + " not mapped to any value");
@@ -90,20 +98,18 @@ public class InsertOperations {
 
 	private void execute() {
 		Connection connection = null;
-		TableRow row = new TableRow("daac");
-		row.set("assetid ", "pump6");
-		row.set("ratess", 10.9f);
-		row.set("intval", 10);
+		TableRow row = new TableRow("training_data");
+		row.add("AssetId ", "pump1");
 		try {
 			connection = DbConnection.getDbConnection();
-			for (int i = 0; i < 5; i++) {
-				insert(connection, createRow());
+			for (int i = 0; i < 1; i++) {
+				insert(connection, row);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
-		}finally {
+		} finally {
 			DbConnection.releaseResources(connection);
 		}
 	}
@@ -117,14 +123,14 @@ public class InsertOperations {
 
 	private TableRow createRow() {
 		TableRow row = new TableRow("paramdata");
-		row.set("assetid ", "pumpMon" + i);
-		row.set("assetname ", "assetname" + i);
-		row.set("ratedpower", 10.9f + i);
-		row.set("motorefficiency", 16.9f + i);
-		row.set("motorratedspeed", 54.9f + i);
-		row.set("minratedflowofpump", 43.9f + i);
-		row.set("waterdensity", 30.9f + i);
-		row.set("threslt", 0.8);
+		row.add("assetid ", "pumpMon" + i);
+		row.add("assetname ", "assetname" + i);
+		row.add("ratedpower", 10.9f + i);
+		row.add("motorefficiency", 16.9f + i);
+		row.add("motorratedspeed", 54.9f + i);
+		row.add("minratedflowofpump", 43.9f + i);
+		row.add("waterdensity", 30.9f + i);
+		row.add("threslt", 0.8);
 		i++;
 		return row;
 	}
