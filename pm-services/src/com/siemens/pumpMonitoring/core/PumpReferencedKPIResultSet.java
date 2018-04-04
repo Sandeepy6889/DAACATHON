@@ -15,7 +15,7 @@ public class PumpReferencedKPIResultSet implements DbRowToObject {
 		refKPI.setRefEfficiency(rs.getDouble("RefEfficiency"));
 		refKPI.setRefTDH(rs.getDouble("RefTDH"));
 		refKPI.setRefFlow(rs.getDouble("RefFlow"));
-		refKPI.setRefTimeStamp(rs.getLong("RefTimeStamp"));
+		refKPI.setRefTimeStamp(rs.getLong("Timestmp"));
 		pdata.add(refKPI);
 	}
 

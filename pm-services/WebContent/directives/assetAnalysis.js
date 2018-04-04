@@ -65,7 +65,7 @@ assetsAnalysisApp.factory("kpiService", function($http, KPI,RefKPI, $q, baseUri)
 			promise.then(function(response) {
 				debugger;
 				var result = response.data;
-				console.log("calculatedKPI data ", result);
+				//console.log("calculatedKPI data ", result);
 				deferred.resolve(result);
 			});
 			return deferred.promise;
@@ -77,7 +77,7 @@ assetsAnalysisApp.factory("kpiService", function($http, KPI,RefKPI, $q, baseUri)
 			var promise = $http.get(baseUri + "/kpi/getAlarmStatus/" + assetId);
 			promise.then(function(response) {
 				var result = response.data;
-				console.log("alarm status data ", result);
+				//console.log("alarm status data ", result);
 				deferred.resolve(result);
 			});
 			return deferred.promise;
@@ -99,7 +99,7 @@ assetsAnalysisApp.directive("assetsAnalysis", function() {
 			$scope.isReferencedKPIs = false;
 			$scope.assetsIds = [];
 			kpiService.getAll().then(function(result) {
-				console.log("all data ", result);
+				//console.log("all data ", result);
 				$scope.kpis = result;
 			});
 			kpiService.getAssetsIDS().then(function(result) {
@@ -110,15 +110,14 @@ assetsAnalysisApp.directive("assetsAnalysis", function() {
 					$scope.alarms = [];
 					return;
 				}
-				var time = 1522786121560;
+				var time = (new Date).getTime();
 				(function liveData() {
 				kpiService.getCalculatedAllKPI(time, $scope.assetId).then(function(result) {
-					time = time + 1;
-					console.log("getCalculatedKPI", result);
+					//console.log("getCalculatedKPI", result);
 					displayDiv();
 					plotCharts(result);
 					kpiService.getAlarmStatus().then(function(result) {
-						console.log("getAlarmStatus", result);
+						//console.log("getAlarmStatus", result);
 						var x = result;
 						//blockage
 						if(x[0]==1){
@@ -149,6 +148,7 @@ assetsAnalysisApp.directive("assetsAnalysis", function() {
 							suppressDeviatedTDH();
 						}
 					});
+					time = time + 1;
 					$timeout(liveData, 1000);
 				});
 				
@@ -231,10 +231,6 @@ function plotCharts(result){
 			grid : {
 				hoverable : true
 			// IMPORTANT! this is needed for tooltip to work
-			},
-			yaxis : {
-				min : 0,
-				max : 30
 			}
 		};
 	plot(actualTDHData,refTDHData,optionsTDH,tDHChartName);
@@ -253,10 +249,6 @@ function plotCharts(result){
 			grid : {
 				hoverable : true
 			// IMPORTANT! this is needed for tooltip to work
-			},
-			yaxis : {
-				min : 0,
-				max : 30
 			}
 		};
 	plot(actualEffData,refEffData,optionsEff,effChartName);
@@ -266,7 +258,9 @@ function plotCharts(result){
 
 function plot(actualData,RefData,options,chartName) {
 	debugger;
-
+	console.log(chartName+" actualData", actualData);
+	console.log(chartName+" RefData", RefData);
+	$(chartName).empty();
 	var plotObj = $.plot($(chartName), [ {
 		data : actualData,
 		label : "Actual"
@@ -274,4 +268,5 @@ function plot(actualData,RefData,options,chartName) {
 		data : RefData,
 		label : "Reference"
 	} ], options);
+	//plotObj.destroy();
 }
