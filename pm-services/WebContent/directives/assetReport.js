@@ -55,9 +55,9 @@ assetReportApp.directive("assetReport", function() {
 				$scope.assetsIds = result;
 			});
 			$scope.getAlarms = function() {
+				$scope.alarmTableUrl = '';
 				if ($scope.assetId === null) {
 					$scope.alarms = [];
-					$scope.alarmTableUrl = '';
 					return;
 				}
 				alarmService.getAlarms($scope.assetId).then(function (result) {

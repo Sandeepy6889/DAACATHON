@@ -1,24 +1,29 @@
 package com.siemens.pumpMonitoringServices;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 
 import com.siemens.dao.DBUtil;
 import com.siemens.dao.PumpKPIDAO;
-import com.siemens.pumpMonitoring.core.ChartPoint;
 import com.siemens.pumpMonitoring.core.PumpKPI;
 import com.siemens.pumpMonitoring.core.PumpKPIResultSet;
 import com.siemens.pumpMonitoring.core.PumpReferencedKPI;
 import com.siemens.pumpMonitoring.core.PumpReferencedKPIResultSet;
+import com.siemens.storage.DbConnection;
+import com.siemens.storage.TableRow;
 
 @Path("/kpi")
 public class PumpKPIService {
@@ -33,66 +38,65 @@ public class PumpKPIService {
 		PumpKPIResultSet obj = new PumpKPIResultSet();
 		return dao.get(qStr, obj);
 	}
-	
+
 	@GET
 	@Path("/calculatedKPI/{assetId}/{timeStamp}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<List<Double[]>> getCalculatedAllKPI(@PathParam("assetId") String assetId, @PathParam("timeStamp") long endTimeStamp) 
-	{
+	public List<List<Double[]>> getCalculatedAllKPI(@PathParam("assetId") String assetId,
+			@PathParam("timeStamp") long endTimeStamp) {
 
 		List<List<Double[]>> kpiList = new ArrayList<>();
-		long beginTimeStamp = endTimeStamp-600;
-		String qString = "select * from reference_kpi where AssetId='" + assetId + "'and RefTimeStamp>="+beginTimeStamp+" and RefTimeStamp <= "+endTimeStamp+" order by RefTimeStamp";
-		System.out.println(qString);
+		long beginTimeStamp = endTimeStamp -30;
+		String qString = "select * from refrence_kpi where AssetId='" + assetId + "'and Timestmp>="
+				+ beginTimeStamp + " and Timestmp <= " + endTimeStamp + " order by Timestmp";
+		// System.out.println(qString);
 		PumpKPIDAO dao = new PumpKPIDAO();
 		PumpReferencedKPIResultSet obj = new PumpReferencedKPIResultSet();
-		List<Object> refList =dao.get(qString, obj);
-		System.out.println(refList);
-		
-		String qString1 = "select * from calculated_kpi where AssetId='" + assetId + "'and timestamp>="+beginTimeStamp+" and timestamp <= "+endTimeStamp+" order by timestamp";
-		System.out.println(qString1);
+		List<Object> refList = dao.get(qString, obj);
+	//	System.out.println(refList);
+
+		String qString1 = "select * from calculated_kpi where AssetId='" + assetId + "'and timestamp>=" + beginTimeStamp
+				+ " and timestamp <= " + endTimeStamp + " order by timestamp";
+	//	System.out.println(qString1);
 		PumpKPIDAO dao1 = new PumpKPIDAO();
 		PumpKPIResultSet obj1 = new PumpKPIResultSet();
-		List<Object> calList =dao1.get(qString1, obj1);
-		System.out.println("kpi : "+calList);
-		 
+		List<Object> calList = dao1.get(qString1, obj1);
+	//	System.out.println("kpi : " + calList);
+
 		List<Double[]> tDHCalPoints = new ArrayList<>();
 		List<Double[]> tDHRefPoints = new ArrayList<>();
 		List<Double[]> effCalPoints = new ArrayList<>();
 		List<Double[]> effRefPoints = new ArrayList<>();
-		
+
 		Iterator itrCal = calList.iterator();
 		Iterator itrRef = refList.iterator();
 
-		while (itrCal.hasNext() && itrRef.hasNext())
-		{
-			//double []tDHCalPoints = new double[2];
-			PumpKPI calKPI = (PumpKPI)itrCal.next();
-			PumpReferencedKPI refKPI = (PumpReferencedKPI)itrRef.next();
-			tDHCalPoints.add(new Double[] {calKPI.getFlow(),calKPI.getTDH()});
-			tDHRefPoints.add(new Double[] {refKPI.getRefFlow(),refKPI.getRefTDH()});
-			effCalPoints.add(new Double[] {calKPI.getFlow(),calKPI.getEfficiency()});
-			effRefPoints.add(new Double[] {refKPI.getRefFlow(),refKPI.getRefEfficiency()});
+		while (itrCal.hasNext()) {
+			// double []tDHCalPoints = new double[2];
+			PumpKPI calKPI = (PumpKPI) itrCal.next();
+			//PumpReferencedKPI refKPI = (PumpReferencedKPI) itrRef.next();
+			tDHCalPoints.add(new Double[] { calKPI.getFlow(), calKPI.getTDH() });
+			//tDHRefPoints.add(new Double[] { refKPI.getRefFlow(), refKPI.getRefTDH() });
+			effCalPoints.add(new Double[] { calKPI.getFlow(), calKPI.getEfficiency() });
+		//	effRefPoints.add(new Double[] { refKPI.getRefFlow(), refKPI.getRefEfficiency() });
 		}
-		
+
 		kpiList.add(tDHCalPoints);
 		kpiList.add(tDHRefPoints);
 		kpiList.add(effCalPoints);
 		kpiList.add(effRefPoints);
-		
-		System.out.println(tDHCalPoints);
-		System.out.println(tDHRefPoints);
-		System.out.println(effCalPoints);
-		System.out.println(effRefPoints);
+
+	//	System.out.println(tDHCalPoints);
+	//	System.out.println(tDHRefPoints);
+	//	System.out.println(effCalPoints);
+	//	System.out.println(effRefPoints);
 		return kpiList;
 	}
 
-	
 	@GET
 	@Path("/getAlarmStatus/{assetId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Integer> getReferencedAllKPI(@PathParam("assetId") String assetId) 
-	{
+	public List<Integer> getReferencedAllKPI(@PathParam("assetId") String assetId) {
 		List<Integer> list = new ArrayList<>();
 		list.add(1);
 		list.add(0);
@@ -101,7 +105,44 @@ public class PumpKPIService {
 		System.out.println(list);
 		return list;
 	}
-	
-	
-	public static void main(String[] args) {}
+
+	public static void main(String[] args) {
+
+		Random random = new Random();
+		long time = new Date().getTime() + 10000;
+		Connection conn = null;
+		try {
+			conn = DbConnection.getDbConnection();
+			PreparedStatement pstmt = conn.prepareStatement(
+					"insert into calculated_kpi(AssetId,Flow,TDH,Efficiency,Timestamp) values(?,?,?,?,?)");
+
+			// Set auto-commit to false
+			conn.setAutoCommit(false);
+
+			for (int i = 0; i < 300; i++) {
+				// Set the variables
+				pstmt.setString(1, "pump1");
+				pstmt.setDouble(2, random.nextInt(30));
+				pstmt.setDouble(3, random.nextInt(30));
+				pstmt.setDouble(4, random.nextInt(30));
+				pstmt.setLong(5, time + i);
+				pstmt.addBatch();
+			}
+			System.out.println("Insert into database");
+			int[] count = pstmt.executeBatch();
+			System.out.println("Row inserted "+count.length);
+			// Explicitly commit statements to apply changes
+			conn.commit();
+			pstmt.close();
+
+		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally {
+			if(conn != null)
+				DbConnection.releaseResources(conn);
+		}
+
+	}
 }

@@ -44,7 +44,6 @@ public class InsertOperations {
 			}
 		}
 		String qString = query.append(params).append(")").toString();
-		System.out.println(qString);
 		PreparedStatement pstmt = connection.prepareStatement(qString);
 		String cName = null;
 		for (int i = 0; i < columnNames.size(); i++) {
@@ -79,6 +78,9 @@ public class InsertOperations {
 			break;
 		case Types.VARCHAR:
 			pstmt.setString(index, String.valueOf(columnValue));
+			break;
+		case Types.BIGINT:
+			pstmt.setLong(index, (Long)columnValue);
 			break;
 		default:
 			System.out.println(columnName + " not mapped to any value");

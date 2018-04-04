@@ -52,14 +52,14 @@ assetsAnalysisApp.factory("kpiService", function($http, KPI,RefKPI, $q, baseUri)
 			});
 			return deferred.promise;
 		},
-		getCalculatedAllKPI : function() {
+		getCalculatedAllKPI : function(timestamp,assetId) {
 			var deferred = $q.defer();
-			debugger;
-			var assetId = $('#selectedAsset').find(":selected").text();
+		//	debugger;
+			//var assetId = $('#selectedAsset').find(":selected").text();
 //			var timestamp = (new Date).getTime();
 //			console.log("selectedAsset", assetId);
 //			var assetId = 'assetid';
-			var timestamp = 1522393678;
+			//var timestamp = 1522393678;
 			var promise = $http.get(baseUri + "/kpi/calculatedKPI/" + assetId + "/"
 					+ timestamp);
 			promise.then(function(response) {
@@ -91,7 +91,7 @@ assetsAnalysisApp.directive("assetsAnalysis", function() {
 			name : "="
 		},
 		templateUrl : 'analysis.html',
-		controller : function($scope, $element, KPI, kpiService) {
+		controller : function($scope, $element,$timeout, KPI, kpiService) {
 			$scope.kpis = [];
 			$scope.calculatedKPIs = [];
 			$scope.referencedKPIs = [];
@@ -106,7 +106,14 @@ assetsAnalysisApp.directive("assetsAnalysis", function() {
 				$scope.assetsIds = result;
 			});
 			$scope.getKpi = function() {
-				kpiService.getCalculatedAllKPI().then(function(result) {
+				if ($scope.assetId === null) {
+					$scope.alarms = [];
+					return;
+				}
+				var time = 1522786121560;
+				(function liveData() {
+				kpiService.getCalculatedAllKPI(time, $scope.assetId).then(function(result) {
+					time = time + 1;
 					console.log("getCalculatedKPI", result);
 					displayDiv();
 					plotCharts(result);
@@ -142,8 +149,14 @@ assetsAnalysisApp.directive("assetsAnalysis", function() {
 							suppressDeviatedTDH();
 						}
 					});
-
+					$timeout(liveData, 1000);
 				});
+				
+				 })();
+				
+				
+				
+				
 			}
 		}
 
