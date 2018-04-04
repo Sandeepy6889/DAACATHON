@@ -4,12 +4,22 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
 	version="3.0">
 	<display-name>kpi-calculation-service</display-name>
+
+	<filter>
+		<filter-name>CORS</filter-name>
+		<filter-class>com.siemens.primecult.filter.CorsHandler</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>CORS</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
 	<servlet>
 		<servlet-name>jersey-serlvet</servlet-name>
 		<servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
 		<init-param>
 			<param-name>com.sun.jersey.config.property.packages</param-name>
-			<param-value>com.siemens.primecult.services</param-value>
+			<param-value>com.siemens.primecult.kpiServices</param-value>
 		</init-param>
 		<init-param>
 			<param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>

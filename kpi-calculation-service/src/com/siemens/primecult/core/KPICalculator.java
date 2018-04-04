@@ -1,4 +1,4 @@
-package com.siemens.primecult.kpiServices;
+package com.siemens.primecult.core;
 
 import static com.siemens.primecult.constants.PumpMonitorConstant.DISCH_PRESSURE;
 import static com.siemens.primecult.constants.PumpMonitorConstant.FLUID_FLOW_RATE;
@@ -21,14 +21,14 @@ import com.siemens.storage.DBUtil;
 import com.siemens.storage.TableRow;
 
 public class KPICalculator {
-	
-	private static Map<String,Boolean> currentTrainingStatus = new HashMap<>();
-	
+
+	private static Map<String, Boolean> currentTrainingStatus = new HashMap<>();
+
 	public static void makeEntryToManageAssetTrainingStatus(String assetId) {
-		currentTrainingStatus.put(assetId,false);
+		currentTrainingStatus.put(assetId, false);
 	}
-	
-	public static String changeTrainingStatus(String assetId) {		
+
+	public static String changeTrainingStatus(String assetId) {
 		currentTrainingStatus.put(assetId, true);
 		return "success";
 	}
@@ -59,8 +59,7 @@ public class KPICalculator {
 		boolean isAssetTrained = currentTrainingStatus.get(requestData.getAssetID());
 		float refTDH = 0.0f;
 		float refEfficiency = 0.0f;
-		if(isAssetTrained) 
-		{
+		if (isAssetTrained) {
 			refTDH = getRefValue(requestData.getAssetID(), values[FLUID_FLOW_RATE], "TDH");
 			refEfficiency = getRefValue(requestData.getAssetID(), values[FLUID_FLOW_RATE], "Efficiency");
 			insertKPI("refrence_kpi", refTDH, refEfficiency, requestData);
@@ -68,7 +67,8 @@ public class KPICalculator {
 		evaluateAlarmState(tdh, efficiency, refTDH, refEfficiency, requestData, isAssetTrained);
 	}
 
-	private void evaluateAlarmState(float tdh, float efficiency, float refTDH, float refEfficiency, ValueRt requestData, boolean isAssetTrained) {
+	private void evaluateAlarmState(float tdh, float efficiency, float refTDH, float refEfficiency, ValueRt requestData,
+			boolean isAssetTrained) {
 		KPIData calculatedKPI = new KPIData(requestData.getValues()[FLUID_FLOW_RATE], efficiency, tdh);
 		KPIData refKPI = new KPIData(requestData.getValues()[FLUID_FLOW_RATE], refEfficiency, refTDH);
 		new AlarmManagement().setAlarmsState(calculatedKPI, refKPI, requestData, isAssetTrained);
@@ -129,7 +129,7 @@ public class KPICalculator {
 	private float calculateEfficiency(float discPress, float suctPress, float fluidFlowRate, float motorPowerInput,
 			float motorEfficiency) {
 
-		if(motorPowerInput <= 0)
+		if (motorPowerInput <= 0)
 			return 0;
 		return ((discPress - suctPress) * fluidFlowRate) / (2298 * motorPowerInput * motorEfficiency);
 	}
