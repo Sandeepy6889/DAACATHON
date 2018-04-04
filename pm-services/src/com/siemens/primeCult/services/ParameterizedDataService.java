@@ -60,6 +60,7 @@ public class ParameterizedDataService {
 		row.add("eleveationdiff", pumpData.getEleveationDiff());
 
 		int id = DBUtil.insert(row);
+		System.out.println("id : "+id);
 		boolean isSuccess = id == -1;
 		if (isSuccess)
 			return pumpData;

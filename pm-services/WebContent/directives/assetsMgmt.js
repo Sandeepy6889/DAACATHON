@@ -90,24 +90,24 @@ assetsManagementApp.directive("assetsManagement", function () {
                 	 if(result !== ""){
                 		 var asset = new Asset(result);
                 		 $scope.assets.push(asset);
-                		 assetService.notifyOpcForSubscription(asset.assetID).then(function (result) {
+                		 assetService.notifyOpcForSubscription($scope.assetID).then(function (result) {
                 			 if(result === 'success'){
                 				 $scope.isAlertEnable = true;
                 				 $scope.title = 'Success!';
-                                 $scope.message = ' Asset '+asset.assetID+' configured successfully';
+                                 $scope.message = ' Asset '+$scope.assetID+' configured successfully';
                                  $element.find('#modelMessage').addClass('alert-success');
                 			 }
                 			 else
                 			 {
                 				 $scope.isAlertEnable = true;
                 				 $scope.title = 'Warning!';
-                                 $scope.message = ' Asset '+asset.assetID+' configured successfully but opc subscription failed';
+                                 $scope.message = ' Asset '+$scope.assetID+' configured successfully but opc subscription failed';
                                  $element.find('#modelMessage').addClass('alert-warning');
                 			 }
                 		 });
                 	 }else{
                 		 $scope.isAlertEnable = true;
-        				 $scope.message = 'Failure! Asset '+asset.assetID+' cannot be configured'; 
+        				 $scope.message = 'Failure! Asset '+$scope.assetID+' cannot be configured'; 
         				 $element.find('#modelMessage').addClass('alert-danger');
                 	 }
                       $("#exampleModalLong").modal("hide");
