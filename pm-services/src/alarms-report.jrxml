@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="alarms-report" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="cf491f41-5eea-455a-97d5-973b512c0450">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Title" fontName="Times New Roman" fontSize="50" isBold="true" pdfFontName="Times-Bold"/>
+	<style name="SubTitle" forecolor="#736343" fontName="Arial" fontSize="18"/>
+	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="Detail" fontName="Arial" fontSize="12"/>
+	<style name="Row" mode="Transparent">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style backcolor="#E6DAC3"/>
+		</conditionalStyle>
+	</style>
+	<field name="asset_id" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="alarm_type" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="alarm_status" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="timestamp" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fluid_flow" class="java.lang.Float">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="suction_pressure" class="java.lang.Float">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="discharge_pressure" class="java.lang.Float">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="motor_power_input" class="java.lang.Float">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="136" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="71668c98-785d-419e-8835-ec2ca98beaa2" style="Title" x="64" y="0" width="432" height="62"/>
+				<textElement verticalAlignment="Middle">
+					<font pdfFontName="Times-Roman"/>
+				</textElement>
+				<text><![CDATA[Alarms Information]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="3d82368d-b613-498b-a77b-db91fc454ec8" style="SubTitle" x="5" y="89" width="58" height="22"/>
+				<textElement>
+					<font fontName="Times New Roman" size="14" pdfFontName="Times-Roman"/>
+				</textElement>
+				<text><![CDATA[Asset ID : ]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="002c7a1c-816c-4602-8da6-fb0e5b88140d" style="Detail" x="69" y="89" width="107" height="22"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{asset_id}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="16" splitType="Stretch">
+			<line>
+				<reportElement uuid="95bbbef3-60ea-4808-a56c-280025cd55d8" positionType="FixRelativeToBottom" x="0" y="15" width="555" height="1"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement uuid="776263e0-30d3-4c28-9034-b5004e1c669b" style="Column header" x="4" y="0" width="69" height="15" forecolor="#736343"/>
+				<textElement/>
+				<text><![CDATA[Type]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c07a261c-1dc4-44f8-8dfd-730d04697222" style="Column header" x="85" y="0" width="69" height="15" forecolor="#736343"/>
+				<textElement/>
+				<text><![CDATA[Status]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="23064a08-a8b3-487e-be82-a20fd8194da1" style="Column header" x="161" y="0" width="69" height="15" forecolor="#736343"/>
+				<textElement/>
+				<text><![CDATA[Date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="9975edae-df09-4579-8a1a-92bff12581a5" style="Column header" x="304" y="0" width="46" height="15" forecolor="#736343"/>
+				<textElement/>
+				<text><![CDATA[Flow]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="92ef33b1-e953-4180-a906-0663cedbcb6b" style="Column header" x="374" y="0" width="40" height="15" forecolor="#736343"/>
+				<textElement/>
+				<text><![CDATA[S. P.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="2fae306f-6265-462a-bc05-2728419c0a95" style="Column header" x="442" y="0" width="42" height="15" forecolor="#736343"/>
+				<textElement/>
+				<text><![CDATA[D. P.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="8803c56f-c899-4c73-a2bc-d023409c55e3" style="Column header" x="496" y="0" width="56" height="15" forecolor="#736343"/>
+				<textElement/>
+				<text><![CDATA[M. Power]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<frame>
+				<reportElement uuid="5744617a-6d4f-481c-b65b-1f841d84f310" style="Row" mode="Opaque" x="0" y="0" width="555" height="15"/>
+				<textField isStretchWithOverflow="true">
+					<reportElement uuid="cbcd04c2-fde6-41c0-9507-155b052bb6a1" style="Detail" x="5" y="0" width="69" height="15"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[$F{alarm_type}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement uuid="b5c2b59e-d892-4dff-8da5-d47294d6c724" style="Detail" x="87" y="0" width="69" height="15"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[($F{alarm_status} == 0) ? 'Gone' : 'Raised']]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement uuid="6e660357-55b2-4925-bb12-cf02e5520b26" style="Detail" x="160" y="0" width="133" height="15"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[(new SimpleDateFormat("dd.MM.yyyy - HH:mm : ss")).format($F{timestamp})]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement uuid="a930a562-f228-44ac-950b-cc6f468ee09c" style="Detail" x="304" y="0" width="44" height="15"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[$F{fluid_flow}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement uuid="ced95625-fa73-402c-9857-9916aba054e6" style="Detail" x="374" y="0" width="40" height="15"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[$F{suction_pressure}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement uuid="0c92e455-4cf8-403d-ae48-967a85272495" style="Detail" x="442" y="0" width="42" height="15"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[$F{discharge_pressure}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement uuid="a4e422c0-0990-4852-8b14-72862d706e0d" style="Detail" x="496" y="0" width="56" height="15"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[$F{motor_power_input}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch">
+			<line>
+				<reportElement uuid="5ed3f580-c560-47b6-9bcf-b815d311791b" positionType="FixRelativeToBottom" x="0" y="3" width="555" height="1"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="25" splitType="Stretch">
+			<frame>
+				<reportElement uuid="0f2e23e4-8160-464f-af64-e684544b6631" mode="Opaque" x="-21" y="1" width="597" height="24" forecolor="#D0B48E" backcolor="#F2EBDF"/>
+				<textField evaluationTime="Report">
+					<reportElement uuid="cde453b7-e564-459e-b886-c4414b593e55" style="Column header" x="533" y="0" width="40" height="20" forecolor="#736343"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement uuid="ccec7f69-d4ed-4239-aea8-d153d1f20806" style="Column header" x="453" y="0" width="80" height="20" forecolor="#736343"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+				</textField>
+				<textField pattern="EEEEE dd MMMMM yyyy">
+					<reportElement uuid="0b014cad-f2e1-4ddc-9724-0ff88bb10fac" style="Column header" x="22" y="1" width="197" height="20" forecolor="#736343"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>
