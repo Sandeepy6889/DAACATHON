@@ -18,8 +18,7 @@ public class ClientInvocationService {
 	@Produces(MediaType.TEXT_PLAIN)
 	@Consumes(MediaType.TEXT_PLAIN)
 	public String assetAdded(@PathParam("assetId") String assetId) {
-		startFetchingData(assetId);
-		return "success";
+		return startFetchingData(assetId);
 	}
 
 	@GET
@@ -27,8 +26,7 @@ public class ClientInvocationService {
 	@Produces(MediaType.TEXT_PLAIN)
 	@Consumes(MediaType.TEXT_PLAIN)
 	public String assetRemoved(@PathParam("assetId") String assetId) {
-		stopFetchingData(assetId);
-		return "success";
+		return stopFetchingData(assetId);
 	}
 
 }

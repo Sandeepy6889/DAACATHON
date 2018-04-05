@@ -24,7 +24,9 @@ public class OPCServerCommunicator {
 	private static final int READ_UPDATE_INTERVAL = 10000;
 	private static final int INITIAL_DELAY = 100;
 
-	public static void startFetchingData(String assetID) {
+	public static String startFetchingData(String assetID) {
+		if(timerMapping.containsKey(assetID))
+			return "asset Id  already subscribed";
 		NodeId[] nodeIds = getNodeIds(assetID);
 		Timer timer = new Timer();
 		timer.scheduleAtFixedRate(new TimerTask() {
@@ -38,11 +40,16 @@ public class OPCServerCommunicator {
 			}
 		}, INITIAL_DELAY, READ_UPDATE_INTERVAL);
 		timerMapping.put(assetID, timer);
+		return "data subscribed";
 	}
 
-	public static void stopFetchingData(String assetID) {
+	public static String stopFetchingData(String assetID) {
+		if(!timerMapping.containsKey(assetID))
+			return "No asset with this ID was subscribed";
 		timerMapping.get(assetID).cancel();
 		timerMapping.remove(assetID);
+		return "successfully unsubscribed";
+		
 	}
 
 	private static NodeId[] getNodeIds(String assetID) {
