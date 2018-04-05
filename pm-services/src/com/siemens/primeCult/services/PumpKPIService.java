@@ -75,13 +75,14 @@ public class PumpKPIService {
 		Iterator itrRef = refList.iterator();
 
 		while (itrCal.hasNext()) {
-			// double []tDHCalPoints = new double[2];
 			PumpKPI calKPI = (PumpKPI) itrCal.next();
-		//	PumpReferencedKPI refKPI = (PumpReferencedKPI) itrRef.next();
 			tDHCalPoints.add(new Double[] { calKPI.getFlow(), calKPI.getTDH() });
-		//	tDHRefPoints.add(new Double[] { refKPI.getRefFlow(), refKPI.getRefTDH() });
 			effCalPoints.add(new Double[] { calKPI.getFlow(), calKPI.getEfficiency() });
-		//	effRefPoints.add(new Double[] { refKPI.getRefFlow(), refKPI.getRefEfficiency() });
+		}
+		while (itrRef.hasNext()) {
+			PumpReferencedKPI refKPI = (PumpReferencedKPI) itrRef.next();
+			tDHRefPoints.add(new Double[] { refKPI.getRefFlow(), refKPI.getRefTDH() });
+			effRefPoints.add(new Double[] { refKPI.getRefFlow(), refKPI.getRefEfficiency() });
 		}
 
 		kpiList.add(tDHCalPoints);
