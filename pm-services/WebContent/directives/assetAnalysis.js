@@ -110,10 +110,12 @@ assetsAnalysisApp.directive("assetsAnalysis", function() {
 					$scope.alarms = [];
 					return;
 				}
-				var time = (new Date).getTime();
+				var time = 1522872125451;
 				(function liveData() {
 				kpiService.getCalculatedAllKPI(time, $scope.assetId).then(function(result) {
 					//console.log("getCalculatedKPI", result);
+					time = time + 1;
+					$timeout(liveData, 1000);
 					displayDiv();
 					plotCharts(result);
 					kpiService.getAlarmStatus().then(function(result) {
@@ -148,8 +150,7 @@ assetsAnalysisApp.directive("assetsAnalysis", function() {
 							suppressDeviatedTDH();
 						}
 					});
-					time = time + 1;
-					$timeout(liveData, 1000);
+					
 				});
 				
 				 })();
