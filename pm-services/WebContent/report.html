@@ -11,66 +11,41 @@
 	<div class="row">
 		<div class="col-lg-12">
 			<form class="form-inline" novalidate>
-				<div class="form-group">
-					<label for="email">Select Asset</label> <select
-						ng-change="getAlarms()" class="form-control" ng-model="assetId"
-						ng-options="id for id in assetsIds">
+				<div class="form-group ">
+					<select class="form-control" ng-model="assetId"
+						ng-options="id for id in assetsIds" ng-change="getAlarms()">
 						<option value="">-- Select Asset ID --</option>
 					</select>
-
 				</div>
 			</form>
 		</div>
 	</div>
-	
-	<a target="_self" href="report/download" download="alarm-reports.pdf">Download</a>
-	
-<!-- 	<div class="row">
-        <div class='col-sm-6'>
-            <div class="form-group">
-                <div class='input-group date' id='from'>
-                    <input type='text' class="form-control" placeholder="From" />
-                    <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
-                    </span>
-                </div>
-            </div>
-        </div>
-        <script type="text/javascript">
-            $(function () {
-                $('#from').datetimepicker();
-            });
-        </script>
-    </div>
-    <div class="row">
-        <div class='col-sm-6'>
-            <div class="form-group">
-                <div class='input-group date' id='To'>
-                    <input type='text' class="form-control" placeholder="To"/>
-                    <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
-                    </span>
-                </div>
-            </div>
-        </div>
-        <script type="text/javascript">
-            $(function () {
-                $('#To').datetimepicker();
-            });
-        </script>
-    </div> -->
-	<!-- /.row -->
-	
-				<div id="rightContent" ng-include="alarmTableUrl">
-        		</div>
-			
 
-	<!-- /.row -->
+	<div class="row v-gap">
+		<div class="col-lg-12">
+			<form class="form-inline" novalidate>
+				<div class="form-group">
+					<label for="email">From</label> <input id="date"
+						type="datetime-local" ng-model="from" class="form-control">
+					<label for="email">To</label> <input id="date"
+						type="datetime-local" ng-model="to" class="form-control">
+				</div>
+			</form>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="form-group">
+				<button type="button" class="btn btn-primary"
+					ng-click="getAlarmsForDuration()">By Duration</button>
+				<button type="button" class="btn btn-primary">Download</button>
+			</div>
+		</div>
+	</div>
 
-	<!-- /.row -->
+	<!-- <a target="_self" href="report/download" download="alarm-reports.pdf">Download</a> -->
 
-	<!-- /.row -->
 
-	<!-- /.row -->
+	<div id="rightContent" ng-include="alarmTableUrl"></div>
 
 </div>

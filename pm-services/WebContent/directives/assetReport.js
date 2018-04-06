@@ -32,6 +32,17 @@ assetReportApp.factory("alarmService", function($http, $q, baseUri,Alarm) {
 			});
 			return deferred.promise;
 		},
+		getAlarmsForDuration : function(assetId, begin, end) {
+			var deferred = $q.defer();
+			var promise = $http.get(baseUri + "/alarms/getAlarms/"+assetId+"/"+begin+"/"+end);
+			promise.then(function(response) {
+				var result = response.data.map(function(alarm) {
+					return new Alarm(alarm);
+				});
+				deferred.resolve(result);
+			});
+			return deferred.promise;
+		},
 		getAssetsIDS : function() {
 			var deferred = $q.defer();
 			var promise = $http.get(baseUri + "/modelTraining/getAssetsIds");
@@ -51,6 +62,8 @@ assetReportApp.directive("assetReport", function() {
 			$scope.assetsIds = [];
 			$scope.alarms = [];
 			$scope.alarmTableUrl = '';
+			$scope.from='';
+			$scope.to='';
 			alarmService.getAssetsIDS().then(function(result) {
 				$scope.assetsIds = result;
 			});
@@ -61,6 +74,16 @@ assetReportApp.directive("assetReport", function() {
 					return;
 				}
 				alarmService.getAlarms($scope.assetId).then(function (result) {
+					$scope.alarmTableUrl = 'alarm-table.html';
+	                 console.log("all data ", result);
+	                 $scope.alarms = result;
+	             });
+			}
+			$scope.getAlarmsForDuration = function(){
+				$scope.alarmTableUrl = '';
+				var beginTimeStamp = new Date($scope.from).getTime();
+				var endTimeStamp = new Date($scope.to).getTime();
+				alarmService.getAlarmsForDuration($scope.assetId,beginTimeStamp,endTimeStamp).then(function (result) {
 					$scope.alarmTableUrl = 'alarm-table.html';
 	                 console.log("all data ", result);
 	                 $scope.alarms = result;

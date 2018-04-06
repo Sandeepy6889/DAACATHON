@@ -1,5 +1,6 @@
 package com.siemens.primeCult.services;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.ws.rs.GET;
@@ -10,16 +11,54 @@ import javax.ws.rs.core.MediaType;
 
 import com.siemens.primeCult.core.Alarm;
 import com.siemens.storage.DBUtil;
+import com.siemens.storage.TableRow;
 
 @Path("/alarms")
 public class AlarmReportServices {
 
 	@GET
-	@Path("/getAlarms/{assetId}")
+	@Path("/getAlarms/{assetId}/")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Object> getAll(@PathParam("assetId") String assetId) {
 		String qString = "select * from alarms where Asset_id='" + assetId + "'";
 		List<Object> records = DBUtil.get(qString, new Alarm());
 		return records;
 	}
+	
+	@GET
+	@Path("/getAlarms/{assetId}/{beginTimestamp}/{endTimestamp}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Object> getAlarmsForDuration(@PathParam("assetId") String assetId,@PathParam("beginTimestamp") String beginTimestamp,@PathParam("endTimestamp") String endTimestamp) {
+		
+		System.out.println("Begin "+beginTimestamp+" End "+endTimestamp);
+		String qString = "select * from alarms where Asset_id='" + assetId + "'and timestamp > "+Long.valueOf(beginTimestamp)+" and timestamp < "+Long.valueOf(endTimestamp) ;
+		List<Object> records = DBUtil.get(qString, new Alarm());
+		return records;
+	}
+	
+	
+	public static void main(String[] args) {
+		
+		long d = new Date().getTime();
+		//1523008536974
+		//Begin 1523008500000 End 1523008800000
+		//Begin 1523008500000 End 1523008740000
+		System.out.println(d+ " date "+new Date());
+		
+		for(int i = 20; i<300;i++) {
+			TableRow row = new TableRow("alarms");
+			row.add("asset_id", "pump1");
+			row.add("fluid_flow", i);
+			row.add("suction_pressure", i);
+			row.add("discharge_pressure", i);
+			row.add("motor_power_input", i);
+			row.add("alarm_type", "TDH");
+			row.add("alarm_status", i%2 == 0 ? 0 :1);
+			row.add("timestamp", new Date().getTime());
+			DBUtil.insert(row);
+			System.out.println(i-19+" row inserted");
+		}
+	}
+	
+	
 }
