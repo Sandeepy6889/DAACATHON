@@ -29,7 +29,7 @@ public class VibrationAlarmService {
 
 		float[] topThreeAmpl = findThreeHighestAmp(freqAmpMapping);
 		float averageAmp = findAvgOfAmplitudes(freqAmpMapping.values());
-		findActualValuesOfDefectFrequencies(freqAmpMapping, 3);
+		float [] defectFrequencies = findActualValuesOfDefectFrequencies(freqAmpMapping, 3);
 		// check for 1st combination
 		if (freqAmpMapping.get(defectFrequencies[0]) == topThreeAmpl[0])
 			if (freqAmpMapping.get(defectFrequencies[2]) >= topThreeAmpl[0] * (0.3)
@@ -58,24 +58,26 @@ public class VibrationAlarmService {
 		return false;
 	}
 
-	private static void findActualValuesOfDefectFrequencies(Map<Float, Float> freqAmpMapping, float range) {
+	private static float [] findActualValuesOfDefectFrequencies(Map<Float, Float> freqAmpMapping, float range) {
 
+		float[] actualDefectFreq = new float[7];
 		for (float freq : freqAmpMapping.keySet()) {
 			if (freq >= defectFrequencies[0] - range && freq <= defectFrequencies[0] + range)
-				defectFrequencies[0] = freq;
+				actualDefectFreq[0] = freq;
 			else if (freq >= defectFrequencies[1] - range && freq <= defectFrequencies[1] + range)
-				defectFrequencies[1] = freq;
+				actualDefectFreq[1] = freq;
 			else if (freq >= defectFrequencies[2] - range && freq <= defectFrequencies[2] + range)
-				defectFrequencies[2] = freq;
+				actualDefectFreq[2] = freq;
 			else if (freq >= defectFrequencies[3] - range && freq <= defectFrequencies[3] + range)
-				defectFrequencies[3] = freq;
+				actualDefectFreq[3] = freq;
 			else if (freq >= defectFrequencies[4] - range && freq <= defectFrequencies[4] + range)
-				defectFrequencies[4] = freq;
+				actualDefectFreq[4] = freq;
 			else if (freq >= defectFrequencies[5] - range && freq <= defectFrequencies[5] + range)
-				defectFrequencies[5] = freq;
+				actualDefectFreq[5] = freq;
 			else if (freq >= defectFrequencies[6] - range && freq <= defectFrequencies[6] + range)
-				defectFrequencies[6] = freq;
+				actualDefectFreq[6] = freq;
 		}
+		return actualDefectFreq;
 	}
 
 	private static float[] findThreeHighestAmp(Map<Float, Float> freqAmpMapping) {
