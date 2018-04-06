@@ -2,12 +2,16 @@ package com.siemens.primecult.alarmservices;
 
 import static com.siemens.primecult.alarmservices.KPIAlarmService.checkKpiStateChange;
 import static com.siemens.primecult.alarmservices.PreventiveAlarmService.checkPreventiveAlarmStateChange;
+import static com.siemens.primecult.alarmservices.VibrationAlarmService.checkVibrationAlarmStateChange;
+
 import static com.siemens.primecult.constants.AlarmStatus.GONE;
 import static com.siemens.primecult.constants.AlarmStatus.RAISED;
+import static com.siemens.primecult.constants.AlarmStatus.NOT_DEFINED;
 import static com.siemens.primecult.constants.AlarmTypes.BLOCKAGE;
 import static com.siemens.primecult.constants.AlarmTypes.DRYRUN;
 import static com.siemens.primecult.constants.AlarmTypes.EFFICIENCY;
 import static com.siemens.primecult.constants.AlarmTypes.TDH;
+import static com.siemens.primecult.constants.AlarmTypes.IMPELLER_WEAR_COMBINATION;
 import static com.siemens.primecult.constants.PumpMonitorConstant.DISCH_PRESSURE;
 import static com.siemens.primecult.constants.PumpMonitorConstant.FLUID_FLOW_RATE;
 import static com.siemens.primecult.constants.PumpMonitorConstant.MOTOR_POWER_INPUT;
@@ -28,13 +32,13 @@ import com.siemens.storage.TableRow;
 public class AlarmManagement {
 
 	private static Map<String, List<Integer>> currentAlarmsStatus = new HashMap<>();
-	
-	public static List<Integer> getCurrentAlarmStatus(String assetId){	
+
+	public static List<Integer> getCurrentAlarmStatus(String assetId) {
 		return currentAlarmsStatus.get(assetId);
 	}
-	
+
 	public static void makeEntryToManageAlarmsForAsset(String assetId) {
-		currentAlarmsStatus.put(assetId, Arrays.asList(GONE, GONE, GONE, GONE));
+		currentAlarmsStatus.put(assetId, Arrays.asList(GONE, GONE, GONE, GONE, GONE));
 	}
 
 	public void setAlarmsState(KPIData calculatedKPI, KPIData refrencedKPI, ValueRt rawValue, boolean isAssetTrained) {
@@ -44,11 +48,15 @@ public class AlarmManagement {
 		if (isAssetTrained && checkKpiStateChange(calculatedKPI, refrencedKPI, threshold, TDH, rawValue.getAssetID(),
 				currentAlarmsStatus))
 			changeStateInCacheAndDb(TDH, rawValue);
+		else
+			currentAlarmsStatus.get(rawValue.getAssetID()).set(TDH.getIndex(), NOT_DEFINED);
 
 		// check for efficiency alarm
-		if (isAssetTrained && checkKpiStateChange(calculatedKPI, refrencedKPI, threshold, EFFICIENCY, rawValue.getAssetID(),
-				currentAlarmsStatus))
+		if (isAssetTrained && checkKpiStateChange(calculatedKPI, refrencedKPI, threshold, EFFICIENCY,
+				rawValue.getAssetID(), currentAlarmsStatus))
 			changeStateInCacheAndDb(EFFICIENCY, rawValue);
+		else
+			currentAlarmsStatus.get(rawValue.getAssetID()).set(EFFICIENCY.getIndex(), NOT_DEFINED);
 
 		// check for blockage alarm
 		if (checkPreventiveAlarmStateChange(BLOCKAGE, rawValue, currentAlarmsStatus))
@@ -57,6 +65,10 @@ public class AlarmManagement {
 		// check for dryrun alarm
 		if (checkPreventiveAlarmStateChange(DRYRUN, rawValue, currentAlarmsStatus))
 			changeStateInCacheAndDb(DRYRUN, rawValue);
+
+		// check for Impeller wear combination alarm
+		if (checkVibrationAlarmStateChange(IMPELLER_WEAR_COMBINATION, rawValue, currentAlarmsStatus))
+			changeStateInCacheAndDb(IMPELLER_WEAR_COMBINATION, rawValue);
 	}
 
 	private float fetchThresholdFromDb(String assetId) {

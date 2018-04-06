@@ -2,10 +2,12 @@ package com.siemens.primecult.constants;
 
 public enum AlarmTypes {
 
-	 TDH(0,""),
-	 EFFICIENCY(1,""),
+	 TDH(0,"TDH"),
+	 EFFICIENCY(1,"EFFICIENCY"),
 	 DRYRUN (2,"DRYRUN"),
-	 BLOCKAGE(3,"BLOCKAGE");
+	 BLOCKAGE(3,"BLOCKAGE"),
+	 IMPELLER_WEAR_COMBINATION(4,"IMPELLER WEAR COMBINATION");
+	
 	 
 	 private int index;
 	 private String value;
