@@ -34,25 +34,25 @@ public class VibrationAlarmService {
 		if (freqAmpMapping.get(defectFrequencies[0]) == topThreeAmpl[0])
 			if (freqAmpMapping.get(defectFrequencies[2]) >= topThreeAmpl[0] * (0.3)
 					&& freqAmpMapping.get(defectFrequencies[3]) >= topThreeAmpl[0] * (0.3))
-				if (freqAmpMapping.get(defectFrequencies[1]) * (0.2) <= averageAmp
-						&& freqAmpMapping.get(defectFrequencies[6]) * (0.2) >= averageAmp)
+				if (freqAmpMapping.get(defectFrequencies[1]) >= (averageAmp + averageAmp * (0.2))
+						&& freqAmpMapping.get(defectFrequencies[6]) >= (averageAmp + averageAmp * (0.2)))
 					return true;
 		// check for 2nd combination
 		if (freqAmpMapping.get(defectFrequencies[1]) == topThreeAmpl[0])
 			if (freqAmpMapping.get(defectFrequencies[4]) >= topThreeAmpl[0] * (0.3)
 					&& freqAmpMapping.get(defectFrequencies[5]) >= topThreeAmpl[0] * (0.3))
-				if (freqAmpMapping.get(defectFrequencies[0]) >= averageAmp * (0.2)
-						&& freqAmpMapping.get(defectFrequencies[6]) >= averageAmp * (0.2))
+				if (freqAmpMapping.get(defectFrequencies[0]) >= (averageAmp + averageAmp * (0.2))
+						&& freqAmpMapping.get(defectFrequencies[6]) >= (averageAmp + averageAmp * (0.2)))
 					return true;
 		// check for 3rd combination
 		float[] ampOfOneSevAndTwo = { freqAmpMapping.get(defectFrequencies[0]),
 				freqAmpMapping.get(defectFrequencies[1]), freqAmpMapping.get(defectFrequencies[6]) };
 		Arrays.sort(ampOfOneSevAndTwo);
 		if (Arrays.equals(topThreeAmpl, ampOfOneSevAndTwo))
-			if (freqAmpMapping.get(defectFrequencies[2]) <= freqAmpMapping.get(defectFrequencies[0]) * (0.3)
-					|| freqAmpMapping.get(defectFrequencies[3]) <= freqAmpMapping.get(defectFrequencies[0]) * (0.3))
-				if (freqAmpMapping.get(defectFrequencies[4]) <= freqAmpMapping.get(defectFrequencies[1]) * (0.3)
-						|| freqAmpMapping.get(defectFrequencies[5]) <= freqAmpMapping.get(defectFrequencies[1]) * (0.3))
+			if (freqAmpMapping.get(defectFrequencies[2]) >= freqAmpMapping.get(defectFrequencies[0]) * (0.3)
+					|| freqAmpMapping.get(defectFrequencies[3]) >= freqAmpMapping.get(defectFrequencies[0]) * (0.3))
+				if (freqAmpMapping.get(defectFrequencies[4]) >= freqAmpMapping.get(defectFrequencies[1]) * (0.3)
+						|| freqAmpMapping.get(defectFrequencies[5]) >= freqAmpMapping.get(defectFrequencies[1]) * (0.3))
 					return true;
 		/// to do///
 		return false;
