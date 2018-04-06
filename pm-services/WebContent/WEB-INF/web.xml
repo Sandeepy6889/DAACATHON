@@ -25,6 +25,17 @@
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
+
+
+	<servlet>
+		<servlet-name>report</servlet-name>
+		<servlet-class>com.siemens.primeCult.servlet.ReportServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>report</servlet-name>
+		<url-pattern>/report/download</url-pattern>
+	</servlet-mapping>
+
 	<servlet-mapping>
 		<servlet-name>jersey-serlvet</servlet-name>
 		<url-pattern>/services/*</url-pattern>
