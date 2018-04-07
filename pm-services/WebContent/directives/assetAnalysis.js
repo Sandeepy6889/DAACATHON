@@ -122,7 +122,6 @@ assetsAnalysisApp.directive("assetsAnalysis", function () {
                 $scope.Timer = $interval(function (){
                     kpiService.getCalculatedAllKPI(new Date().getTime(), $scope.assetId).then(function (result) {
                         if(!$scope.stop){
-                        	console.log('Painting');
                         	plotCharts(result);
                         }
                     });

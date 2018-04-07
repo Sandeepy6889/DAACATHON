@@ -44,12 +44,11 @@
 
     <div class="row">
         <div class="col-lg-12">
-            <form class="form-inline" novalidate>
+            <form class="form-inline" >
                 <div class="form-group">
-                    <label for="email">Select Asset</label>
-                    <select ng-change="getAssetTrainingData()" class="form-control" ng-model="assetId"
-                        ng-options="id for id in assetsIds">
+                    <select ng-change="getAssetTrainingData()" class="form-control" ng-model="assetId">
                         <option value="">-- Select Asset ID --</option>
+                        <option ng-repeat="id in assetsIds" value="{{id}}">{{id}}</option>
                     </select>
 
                 </div>
