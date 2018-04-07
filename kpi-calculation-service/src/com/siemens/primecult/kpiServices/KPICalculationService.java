@@ -11,6 +11,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import com.siemens.primecult.alarmservices.AlarmManagement;
+import com.siemens.primecult.alarmservices.FrequencySamplingService;
 import com.siemens.primecult.core.KPICalculator;
 import com.siemens.primecult.models.ValueRt;
 
@@ -51,5 +52,13 @@ public class KPICalculationService {
 	    AlarmManagement.makeEntryToManageAlarmsForAsset(assetId);
 	    KPICalculator.makeEntryToManageAssetTrainingStatus(assetId);
 	    return "success";
+	}
+	
+	@GET
+	@Path("/fftdata/{assetId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.TEXT_PLAIN)
+	public List<List<Float>> getFFTData(@PathParam("assetId") String assetId) {
+		return FrequencySamplingService.getFFTData(assetId);
 	}
 }
