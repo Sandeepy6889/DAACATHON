@@ -1,15 +1,9 @@
 package com.siemens.primeCult.services;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Random;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -24,7 +18,6 @@ import com.siemens.primeCult.core.PumpKPIResultSet;
 import com.siemens.primeCult.core.PumpReferencedKPI;
 import com.siemens.primeCult.core.PumpReferencedKPIResultSet;
 import com.siemens.storage.DBUtil;
-import com.siemens.storage.DbConnection;
 import com.siemens.storage.TableRow;
 
 @Path("/kpi")
@@ -47,32 +40,31 @@ public class PumpKPIService {
 	public List<List<Double[]>> getCalculatedAllKPI(@PathParam("assetId") String assetId,
 			@PathParam("timeStamp") long endTimeStamp) {
 
-		List<List<Double[]>> kpiList = new ArrayList<>();
-		long beginTimeStamp = endTimeStamp-10;
-		//insertRows(beginTimeStamp, assetId);
-		String qString = "select * from refrence_kpi where AssetId='" + assetId + "'and Timestamp>="
-				+ beginTimeStamp + " and Timestamp <= " + endTimeStamp + " order by Timestamp";
-		//System.out.println(qString);
+		long beginTimeStamp = endTimeStamp - 300000;
 		PumpKPIDAO dao = new PumpKPIDAO();
-		PumpReferencedKPIResultSet obj = new PumpReferencedKPIResultSet();
-		List<Object> refList = dao.get(qString, obj);
-	//	System.out.println(refList);
-
-		String qString1 = "select * from calculated_kpi where AssetId='" + assetId + "'and Timestamp>=" + beginTimeStamp
-				+ " and Timestamp <= " + endTimeStamp + " order by Timestamp";
-	//	System.out.println(qString1);
+		List<List<Double[]>> kpiList = new ArrayList<>();
 		PumpKPIDAO dao1 = new PumpKPIDAO();
 		PumpKPIResultSet obj1 = new PumpKPIResultSet();
+		String qString1 = "select * from calculated_kpi where AssetId='" + assetId + "'and Timestamp>=" + beginTimeStamp
+				+ " and Timestamp <= " + endTimeStamp + " order by Timestamp";
 		List<Object> calList = dao1.get(qString1, obj1);
-	//	System.out.println("kpi : " + calList);
+
+		String qString = "select * from refrence_kpi where AssetId='" + assetId + "'and Timestamp>=" + beginTimeStamp
+				+ " and Timestamp <= " + endTimeStamp + " order by Timestamp";
+		PumpReferencedKPIResultSet obj = new PumpReferencedKPIResultSet();
+		List<Object> refList = dao.get(qString, obj);
+
+		
+		//System.out.println("KPI "+calList.size());
+		//System.out.println("Ref KPI "+refList.size());
 
 		List<Double[]> tDHCalPoints = new ArrayList<>();
 		List<Double[]> tDHRefPoints = new ArrayList<>();
 		List<Double[]> effCalPoints = new ArrayList<>();
 		List<Double[]> effRefPoints = new ArrayList<>();
-
-		Iterator itrCal = calList.iterator();
-		Iterator itrRef = refList.iterator();
+		
+		Iterator<Object> itrCal = calList.iterator();
+		Iterator<Object> itrRef = refList.iterator();
 
 		while (itrCal.hasNext()) {
 			PumpKPI calKPI = (PumpKPI) itrCal.next();
@@ -89,11 +81,6 @@ public class PumpKPIService {
 		kpiList.add(tDHRefPoints);
 		kpiList.add(effCalPoints);
 		kpiList.add(effRefPoints);
-
-	//	System.out.println(tDHCalPoints);
-	//	System.out.println(tDHRefPoints);
-	//	System.out.println(effCalPoints);
-	//	System.out.println(effRefPoints);
 		return kpiList;
 	}
 
@@ -106,143 +93,30 @@ public class PumpKPIService {
 		list.add(0);
 		list.add(1);
 		list.add(0);
-	//	System.out.println(list);
 		return list;
 	}
 
-	public static void hello(String[] args) {
+	public static void main(String[] args) {
 
-		Random random = new Random();
-		long time = new Date().getTime() + 10000;
-		Connection conn = null;
-		try {
-			conn = DbConnection.getDbConnection();
-			PreparedStatement pstmt = conn.prepareStatement(
-					"insert into calculated_kpi(AssetId,Flow,TDH,Efficiency,Timestamp) values(?,?,?,?,?)");
-
-			// Set auto-commit to false
-			conn.setAutoCommit(false);
-
-			for (int i = 0; i < 300; i++) {
-				// Set the variables
-				pstmt.setString(1, "pump1");
-				pstmt.setDouble(2, random.nextInt(30));
-				pstmt.setDouble(3, random.nextInt(30));
-				pstmt.setDouble(4, random.nextInt(30));
-				pstmt.setLong(5, time + i);
-				pstmt.addBatch();
-			}
-			System.out.println("Insert into database");
-			int[] count = pstmt.executeBatch();
-			System.out.println("Row inserted "+count.length);
-			// Explicitly commit statements to apply changes
-			conn.commit();
-			pstmt.close();
-
-		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		finally {
-			if(conn != null)
-				DbConnection.releaseResources(conn);
-		}
-
-	}
-	public static void main(String[] args)  {
-
-		
-		
-		
-		Connection conn = null;
-		try {
-			conn = DbConnection.getDbConnection();
-			PreparedStatement pstmt = conn.prepareStatement(
-					"insert into calculated_kpi(AssetId,Flow,TDH,Efficiency,Timestamp) values(?,?,?,?,?)");
-			/*PreparedStatement pstmtRef = conn.prepareStatement(
-					"insert into refrence_kpi(AssetId,RefFlow,RefTDH,RefEfficiency,Timestamp) values(?,?,?,?,?)");
-*/
-			// Set auto-commit to false
-			conn.setAutoCommit(false);
-
-		//	long counter =beginTimestamp;
-			double tdh = 3;
-			double flow = 0;
+		for (int i = 20; i < 300; i++) {
 			long time = new Date().getTime();
-			for (int i = 0; i < 300; i++) {
-				
-				// Set the variables
-				pstmt.setString(1, "pump1");
-				pstmt.setDouble(2, flow);
-				pstmt.setDouble(3, tdh);
-				pstmt.setDouble(4, tdh);
-				pstmt.setLong(5, time + i);
-				pstmt.addBatch();
-				System.out.println(flow+" , "+tdh+" , "+tdh+" , "+time);
-				flow = flow+2;
-				tdh = tdh+3;
-				// Set the variables
-				/*pstmtRef.setString(1, assetId);
-				pstmtRef.setDouble(2, tdh+5);
-				pstmtRef.setDouble(3, tdh+5);
-				pstmtRef.setDouble(4, tdh+5);
-				pstmtRef.setLong(5, counter);
-				pstmtRef.addBatch();
-				counter=counter+1;
-				tdh=tdh+2;*/
-			}
-			System.out.println("Insert into database");
-			int[] count = pstmt.executeBatch();
-			System.out.println("Row inserted "+count.length);
+			TableRow row = new TableRow("calculated_kpi");
+			row.add("AssetId", "pump1");
+			row.add("Flow", i);
+			row.add("TDH", i);
+			row.add("Efficiency", i);
+			row.add("Timestamp", time);
+			TableRow rrow = new TableRow("refrence_kpi");
+			rrow.add("AssetId", "pump1");
+			rrow.add("Flow", i);
+			rrow.add("TDH", i + 0.3);
+			rrow.add("Efficiency", i + 0.3);
+			rrow.add("Timestamp", time);
 			
-			System.out.println("Insert into database");
-		/*	int[] countRef = pstmtRef.executeBatch();
-			System.out.println("Row inserted "+countRef.length);*/
-			
-			// Explicitly commit statements to apply changes
-			conn.commit();
-			pstmt.close();
-
-		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			DBUtil.insert(row);
+			DBUtil.insert(rrow);
+			System.out.println(i - 19 + " row calculate kpi inserted");
+			System.out.println(i - 19 + " row ref kpi inserted");
 		}
-		finally {
-			if(conn != null)
-				DbConnection.releaseResources(conn);
-		}
-
 	}
-	
-public static double getMaxFlow() {
-
-		
-		Connection conn = null;
-		try {
-			conn = DbConnection.getDbConnection();
-			Statement stmt=conn.createStatement();  
-			ResultSet rs=stmt.executeQuery("select max(flow) Flow from calculated_kpi;");  
-			if(rs.next()) {
-				return rs.getDouble("Flow");
-			}
-			else {
-				return 2;
-			} 
-			
-
-		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		finally {
-			if(conn != null)
-				
-				DbConnection.releaseResources(conn);
-		}
-		return 2;
-
-	}
-	
-	
-	
 }

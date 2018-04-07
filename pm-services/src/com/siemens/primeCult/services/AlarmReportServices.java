@@ -39,12 +39,6 @@ public class AlarmReportServices {
 	
 	public static void main(String[] args) {
 		
-		long d = new Date().getTime();
-		//1523008536974
-		//Begin 1523008500000 End 1523008800000
-		//Begin 1523008500000 End 1523008740000
-		System.out.println(d+ " date "+new Date());
-		
 		for(int i = 20; i<300;i++) {
 			TableRow row = new TableRow("alarms");
 			row.add("asset_id", "pump1");
