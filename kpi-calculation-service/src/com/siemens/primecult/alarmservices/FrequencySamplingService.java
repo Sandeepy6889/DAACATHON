@@ -13,7 +13,7 @@ public class FrequencySamplingService {
 		float sampleRate = samplingFrequency/amplitudes.length;
 		for(float amp : amplitudes)
 		{
-			freqAmpMap.put(freq/60, amp);
+			freqAmpMap.put(freq/60, Math.abs(amp));
 			freq = freq +sampleRate;
 		}		
 		return freqAmpMap;		
