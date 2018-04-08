@@ -35,7 +35,7 @@ assetsManagementApp.factory("assetService", function ($http,$rootScope, Asset, $
         },
         getEngineeredAssets: function () {
             var deferred = $q.defer();
-            var promise = $http.get($rootScope.enggAssets + "/get");
+            var promise = $http.get($rootScope.appUrls.enggAssets + "/get");
             promise.then(function (response) {
                 var result = response.data.map(function (assetParams) { return new Asset(assetParams); });
                 deferred.resolve(result);
@@ -52,7 +52,7 @@ assetsManagementApp.factory("assetService", function ($http,$rootScope, Asset, $
         },
         notifyOpcForSubscription: function (assetId) {
             var deferred = $q.defer();
-            var promise = $http.get($rootScope.opcAssetSubUrl + "/" + assetId);
+            var promise = $http.get($rootScope.appUrls.assetCreated + "/" + assetId);
             promise.then(function (response) {
                 deferred.resolve(response.data);
             });

@@ -63,7 +63,7 @@ trainingModelApp.factory("trainingDataService", function ($http, TraningRecord, 
         },
         trainigModel: function (assetId) {
             var deferred = $q.defer();
-            var promise = $http.get($rootScope.modelURI + "/train?asset_id=" + assetId);
+            var promise = $http.get($rootScope.appUrls.teachModel + "?asset_id=" + assetId);
             promise.then(function (response) {
                 deferred.resolve(response.data);
             });
@@ -71,7 +71,7 @@ trainingModelApp.factory("trainingDataService", function ($http, TraningRecord, 
         },
         notifyModelStatus: function (assetId) {
             var deferred = $q.defer();
-            var promise = $http.get($rootScope.notifyTrainingStatusUrl + "/" + assetId);
+            var promise = $http.get($rootScope.appUrls.assetTrained + "/" + assetId);
             promise.then(function (response) {
                 deferred.resolve(response.data);
             });

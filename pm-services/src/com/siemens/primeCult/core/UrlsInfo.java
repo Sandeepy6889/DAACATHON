@@ -13,7 +13,14 @@ public class UrlsInfo implements DbRowToObject{
 	private String alarmsStatus;
 	private String teachModel;
 	private String assetCreatedPClient;
+	private String enggAssets;
 	
+	public String getEnggAssets() {
+		return enggAssets;
+	}
+	public void setEnggAssets(String enggAssets) {
+		this.enggAssets = enggAssets;
+	}
 	public String getAssetCreatedPClient() {
 		return assetCreatedPClient;
 	}
@@ -68,6 +75,7 @@ public class UrlsInfo implements DbRowToObject{
 		info.setAlarmsStatus(rs.getString("alarms_status"));
 		info.setTeachModel(rs.getString("teach_model"));
 		info.setAssetCreatedPClient(rs.getString("asset_created_p_client"));
+		info.setEnggAssets(rs.getString("engg_assets"));
 		records.add(info);
 	}
 	@Override

@@ -32,11 +32,12 @@ public class UpdateAppUrlsService {
 	public String update(UrlsInfo urlsInfo) {
 
 		TableRow row = new TableRow("urls_info");
-		row.update("asset_created", urlsInfo.getAssetCreated());
-		row.update("asset_trained", urlsInfo.getAssetTrained());
-		row.update("alarms_status", urlsInfo.getAlarmsStatus());
-		row.update("teach_model", urlsInfo.getTeachModel());
-		row.update("asset_created_p_client", urlsInfo.getAssetCreatedPClient());
+		row.update("asset_created", urlsInfo.getAssetCreated().trim());
+		row.update("asset_trained", urlsInfo.getAssetTrained().trim());
+		row.update("alarms_status", urlsInfo.getAlarmsStatus().trim());
+		row.update("teach_model", urlsInfo.getTeachModel().trim());
+		row.update("asset_created_p_client", urlsInfo.getAssetCreatedPClient().trim());
+		row.update("engg_assets", urlsInfo.getEnggAssets().trim());
 		row.where("id", 1);
 		boolean update = DBUtil.update(row);
 		return update ? "updated successfully" : "failure! could not update";

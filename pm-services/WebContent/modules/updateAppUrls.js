@@ -13,6 +13,7 @@ var assetsManagementApp = angular.module("urlsManagementApp", [])
         this.assetTrained = defaults.assetTrained;
         this.alarmsStatus = defaults.alarmsStatus;
         this.teachModel = defaults.teachModel;
+        this.enggAssets = defaults.enggAssets;
     }
     return URLsInfo;
 };
