@@ -17,22 +17,6 @@ import com.siemens.storage.TableRow;
 public class ParameterizedDataService {
 
 	@GET
-	@Path("/{paramID}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public ParameterizedData getData() {
-		ParameterizedData pData = new ParameterizedData();
-		pData.setAssetID("pump1");
-		pData.setAssetName("CentrifugalPump");
-		pData.setMinRatedFlowOfPump(10);
-		pData.setMotorEfficiency(96);
-		pData.setMotorRatedSpeed(20);
-		pData.setRatedPower(10);
-		pData.setThreadholdLT(10);
-		pData.setWaterDensity(1);
-		return pData;
-	}
-
-	@GET
 	@Path("/getAll")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Object> getAll() {
@@ -66,7 +50,5 @@ public class ParameterizedDataService {
 			return pumpData;
 		else
 			return null;
-		
 	}
-
 }

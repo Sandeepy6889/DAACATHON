@@ -1,7 +1,6 @@
 package com.siemens.primeCult.servlet;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
@@ -31,9 +30,13 @@ public class ReportServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+
+		String assetId = request.getParameter("assetId");
+		long start = Long.valueOf(request.getParameter("from"));
+		long end = Long.valueOf(request.getParameter("to"));
+
 		response.setContentType("application/pdf");
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		// set input and output stream
 		ServletOutputStream servletOutputStream = response.getOutputStream();
 		ClassLoader classLoader = getClass().getClassLoader();
 		InputStream inputStream = classLoader.getResourceAsStream("alarms-report.jrxml");
@@ -44,7 +47,7 @@ public class ReportServlet extends HttpServlet {
 			JasperReport alarmReport = JasperCompileManager.compileReport(inputStream);
 			dbConnection = DbConnection.getDbConnection();
 			stmt = dbConnection.createStatement();
-			String queryString = "select * from alarms where timestamp > 3234567801 and timestamp < 3234567811";
+			String queryString = "select * from alarms where asset_id='"+assetId+"' timestamp > " + start + " and timestamp < " + end;
 			rset = stmt.executeQuery(queryString);
 			JRResultSetDataSource jasperReports = new JRResultSetDataSource(rset);
 			JasperPrint print = JasperFillManager.fillReport(alarmReport, null, jasperReports);
@@ -64,21 +67,18 @@ public class ReportServlet extends HttpServlet {
 				try {
 					stmt.close();
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			if (rset != null)
 				try {
 					rset.close();
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			servletOutputStream.flush();
-            servletOutputStream.close();
+			servletOutputStream.close();
 			baos.close();
 		}
 
 	}
-
 }

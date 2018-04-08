@@ -11,11 +11,7 @@ function getTraningRecordClass() {
         this.xFlow = defaults.xFlow;
         this.yHeight = defaults.yHeight;
         this.yEta = defaults.yEta;
-
     }
-    TraningRecord.prototype.toggle = function () {
-
-    };
     return TraningRecord;
 };
 
@@ -216,7 +212,6 @@ trainingModelApp.directive("assetTrainingModel", function () {
             }
         },
         link: function (scope, $element, $attr) {
-            console.log('link function called');
         }
     };
 });

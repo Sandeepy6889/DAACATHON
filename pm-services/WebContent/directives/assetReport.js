@@ -64,28 +64,27 @@ assetReportApp.directive("assetReport", function() {
 			$scope.alarmTableUrl = '';
 			$scope.from='';
 			$scope.to='';
+			$scope.beginTimeStamp = 0;
+			$scope.endTimeStamp = 0;
 			alarmService.getAssetsIDS().then(function(result) {
 				$scope.assetsIds = result;
 			});
-			$scope.getAlarms = function() {
+			
+			$scope.clearAlarms = function(){
 				$scope.alarmTableUrl = '';
-				if ($scope.assetId === null) {
-					$scope.alarms = [];
-					return;
-				}
-				alarmService.getAlarms($scope.assetId).then(function (result) {
-					$scope.alarmTableUrl = 'alarm-table.html';
-	                 console.log("all data ", result);
-	                 $scope.alarms = result;
-	             });
+				$scope.alarms = [];
+				$scope.from='';
+				$scope.to='';
 			}
+			
 			$scope.getAlarmsForDuration = function(){
+				$scope.fromDate = new Date($scope.from).getTime();
+				$scope.toDate = new Date($scope.to).getTime();
 				$scope.alarmTableUrl = '';
-				var beginTimeStamp = new Date($scope.from).getTime();
-				var endTimeStamp = new Date($scope.to).getTime();
-				alarmService.getAlarmsForDuration($scope.assetId,beginTimeStamp,endTimeStamp).then(function (result) {
+				$scope.beginTimeStamp = new Date($scope.from).getTime();
+				$scope.endTimeStamp = new Date($scope.to).getTime();
+				alarmService.getAlarmsForDuration($scope.assetId,$scope.beginTimeStamp,$scope.endTimeStamp).then(function (result) {
 					$scope.alarmTableUrl = 'alarm-table.html';
-	                 console.log("all data ", result);
 	                 $scope.alarms = result;
 	             });
 			}

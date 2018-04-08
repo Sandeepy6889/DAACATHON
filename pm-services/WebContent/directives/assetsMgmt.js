@@ -73,7 +73,7 @@ assetsManagementApp.directive("assetsManagement", function () {
             $scope.newAsset = {};
             $scope.message = '';
             $scope.title = '';
-            $scope.asset = '';
+            $scope.assetValue = '';
             $scope.isAlertEnable = false;
             
             filterNonConfiguredAssets = function() {
@@ -112,18 +112,18 @@ assetsManagementApp.directive("assetsManagement", function () {
                 	 if(result !== ""){
                 		 var asset = new Asset(result);
                 		 $scope.confAssets.push(asset);
-                		 assetService.notifyOpcForSubscription($scope.assetID).then(function (result) {
+                		 assetService.notifyOpcForSubscription(asset.assetID).then(function (result) {
                 			 if(result === 'success'){
                 				 $scope.isAlertEnable = true;
                 				 $scope.title = 'Success!';
-                                 $scope.message = ' Asset '+$scope.newAsset.assetID+' configured successfully';
+                                 $scope.message = ' Asset '+asset.assetID+' configured successfully';
                                  $element.find('#modelMessage').addClass('alert-success');
                 			 }
                 			 else
                 			 {
                 				 $scope.isAlertEnable = true;
                 				 $scope.title = 'Warning!';
-                                 $scope.message = ' Asset '+$scope.newAsset.assetID+' configured successfully but opc subscription failed';
+                                 $scope.message = ' Asset '+asset.assetID+' configured successfully but opc subscription failed';
                                  $element.find('#modelMessage').addClass('alert-warning');
                 			 }
                 		 });

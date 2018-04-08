@@ -12,8 +12,8 @@
 		<div class="col-lg-12">
 			<form class="form-inline" novalidate>
 				<div class="form-group ">
-					<select class="form-control" ng-model="assetId"
-						ng-options="id for id in assetsIds" ng-change="getAlarms()">
+					<select ng-change="clearAlarms()"  class="form-control" ng-model="assetId"
+						ng-options="id for id in assetsIds">
 						<option value="">-- Select Asset ID --</option>
 					</select>
 				</div>
@@ -21,29 +21,33 @@
 		</div>
 	</div>
 
-	<div class="row v-gap">
+	<div class="row v-gap" ng-show="assetId.length > 0">
 		<div class="col-lg-12">
-			<form class="form-inline" novalidate>
+			<form class="form-inline" name="alarmsForm" novalidate>
 				<div class="form-group">
-					<label for="email">From</label> <input id="date"
+					<label for="email">From</label> 
+					<span class="error"	ng-show="alarmsForm.from.$error.required">Required!</span>
+					<input ng-required="true" id="from" name="from"
 						type="datetime-local" ng-model="from" class="form-control">
-					<label for="email">To</label> <input id="date"
+					<label for="email">To</label> 
+					<span class="error"	ng-show="alarmsForm.to.$error.required">Required!</span>
+					<input ng-required="true" id="to" name="to" 
 						type="datetime-local" ng-model="to" class="form-control">
 				</div>
 			</form>
 		</div>
 	</div>
-	<div class="row">
+	<div class="row" ng-show="assetId.length > 0">
 		<div class="col-lg-12">
 			<div class="form-group">
-				<button type="button" class="btn btn-primary"
-					ng-click="getAlarmsForDuration()">By Duration</button>
-				<button type="button" class="btn btn-primary">Download</button>
+				<button type="button" class="btn btn-primary" ng-disabled="alarmsForm.$invalid"
+					ng-click="getAlarmsForDuration()">Show</button>
+				 <a ng-show="alarms.length > 0" target="_self" href="report/download?assetId={{assetId}}&from={{beginTimeStamp}}&to={{endTimeStamp}}" download="alarm-reports.pdf"><button ng-disabled="alarmsForm.$invalid" type="button" class="btn btn-primary">Download</button></a>
 			</div>
 		</div>
 	</div>
 
-	<!-- <a target="_self" href="report/download" download="alarm-reports.pdf">Download</a> -->
+	
 
 
 	<div id="rightContent" ng-include="alarmTableUrl"></div>
