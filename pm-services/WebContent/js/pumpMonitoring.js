@@ -29,7 +29,6 @@ assetsMgmtAppApplication.controller("assetsController", function ($scope, $rootS
 	appUrlsService.getAllUrls().then(function(result){
 		$rootScope.appUrls = result;
     	window.scope = $scope;
-    	console.log('config urls ', $rootScope.appUrls);
     });
 	
     $scope.showTraingForm = function (name) {

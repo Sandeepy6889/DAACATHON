@@ -55,6 +55,22 @@ assetsManagementApp.factory("assetService", function ($http,$rootScope, Asset, $
             var promise = $http.get($rootScope.appUrls.assetCreated + "/" + assetId);
             promise.then(function (response) {
                 deferred.resolve(response.data);
+            }).catch(function(error) {
+          	  console.log(JSON.stringify(error));
+        	  deferred.resolve(error);
+            });
+            return deferred.promise;
+        },
+        notifyPumpDataClient: function (assetId) {
+            var deferred = $q.defer();
+            var promise = $http.get($rootScope.appUrls.assetCreatedPClient + "/" + assetId);
+            promise.then(function (response) {
+            	var resp = response;
+            	console.log('response from pump data client ',resp);
+                deferred.resolve(response.data);
+            }).catch(function(error) {
+            	  console.log(JSON.stringify(error));
+            	  deferred.resolve(error);
             });
             return deferred.promise;
         }
@@ -71,8 +87,8 @@ assetsManagementApp.directive("assetsManagement", function () {
             $scope.confAssets = [];
             $scope.nonConfAssets = [];
             $scope.newAsset = {};
-            $scope.message = '';
-            $scope.title = '';
+            $scope.message = ['','',''];
+            $scope.title = ['','',''];
             $scope.assetValue = '';
             $scope.isAlertEnable = false;
             
@@ -107,35 +123,50 @@ assetsManagementApp.directive("assetsManagement", function () {
             	$scope.isAlertEnable = false;
                  assetService.addAsset($scope.newAsset).then(function (result) {
                 	 $element.find('#modelMessage').removeClass('alert-danger');
-                     $element.find('#modelMessage').removeClass('alert-warning');
                      $element.find('#modelMessage').addClass('alert-success');
                 	 if(result !== ""){
                 		 var asset = new Asset(result);
                 		 $scope.confAssets.push(asset);
+                		 
+                		 $scope.title[0] = 'Success!';
+                		 $scope.message[0] = ' Asset '+asset.assetID+' configured successfully';
+                		 
                 		 assetService.notifyOpcForSubscription(asset.assetID).then(function (result) {
                 			 if(result === 'success'){
-                				 $scope.isAlertEnable = true;
-                				 $scope.title = 'Success!';
-                                 $scope.message = ' Asset '+asset.assetID+' configured successfully';
-                                 $element.find('#modelMessage').addClass('alert-success');
+                				 $scope.title[1] = 'Success!';
+                        		 $scope.message[1] = ' For Asset ID '+asset.assetID+', notification sent to KPI Calculation app';
                 			 }
                 			 else
                 			 {
-                				 $scope.isAlertEnable = true;
-                				 $scope.title = 'Warning!';
-                                 $scope.message = ' Asset '+asset.assetID+' configured successfully but opc subscription failed';
-                                 $element.find('#modelMessage').addClass('alert-warning');
+                				 $scope.title[1] = 'Faliure!';
+                        		 $scope.message[1] = ' For Asset ID '+asset.assetID+', notification failure for KPI Calculation app';
                 			 }
                 		 });
+                		 
+                		 assetService.notifyPumpDataClient(asset.assetID).then(function (result) {
+                			 if(result === 'success'){
+                				 $scope.title[2] = 'Success!';
+                        		 $scope.message[2] = ' For Asset ID '+asset.assetID+', notification send to Pump data client app';
+                			 }
+                			 else
+                			 {
+                				 $scope.title[2] = 'Faliure!';
+                        		 $scope.message[2] = ' For Asset ID '+asset.assetID+', notification failure for Pump data client app';
+                			 }
+                		 });
+                		 
+                		 
                 		 for(var i = 0;i < $scope.nonConfAssets.length;i++){
                      		if($scope.nonConfAssets[i].assetID === $scope.newAsset.assetID){
                      			$scope.nonConfAssets.splice(i,1);
                      			break;
                      		}
                      	}
-                	 }else{
                 		 $scope.isAlertEnable = true;
-        				 $scope.message = 'Failure! Asset '+$scope.newAsset.assetID+' cannot be configured'; 
+                		 $element.find('#modelMessage').addClass('alert-success');
+                	 }else{
+                		 $scope.title[0] = 'Failure!';
+        				 $scope.message[0] = ' Asset '+$scope.newAsset.assetID+' cannot be configured'; 
         				 $element.find('#modelMessage').addClass('alert-danger');
                 	 }
                       $("#exampleModalLong").modal("hide");

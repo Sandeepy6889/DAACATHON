@@ -66,6 +66,9 @@ trainingModelApp.factory("trainingDataService", function ($http, TraningRecord, 
             var promise = $http.get($rootScope.appUrls.teachModel + "?asset_id=" + assetId);
             promise.then(function (response) {
                 deferred.resolve(response.data);
+            }).catch(function(error) {
+            	  console.log(JSON.stringify(error));
+            	  deferred.resolve(error);
             });
             return deferred.promise;
         },
@@ -74,6 +77,9 @@ trainingModelApp.factory("trainingDataService", function ($http, TraningRecord, 
             var promise = $http.get($rootScope.appUrls.assetTrained + "/" + assetId);
             promise.then(function (response) {
                 deferred.resolve(response.data);
+            }).catch(function(error) {
+            	  console.log(JSON.stringify(error));
+            	  deferred.resolve(error);
             });
             return deferred.promise;
         }
@@ -176,12 +182,12 @@ trainingModelApp.directive("assetTrainingModel", function () {
                         	trainingDataService.notifyModelStatus(assetId).then(function (notifyResult) {
                             	if (notifyResult === "success") {
                             		$scope.title = 'Success!';
-                            		$scope.message = 'Model trained successfully and notification sent';
+                            		$scope.message = 'Model trained successfully and notification sent to KPI-Calculation app';
                             		$element.find('#modelMessage').addClass('alert-success');
                             	}
                             	else {
                             		$scope.title = 'Failure!';
-                            		$scope.message = 'Model trained successfully and but notification failed';
+                            		$scope.message = 'Model trained successfully and but notification failure for KPI-Calculation app';
                             		$element.find('#modelMessage').addClass('alert-danger');
                             	}
                             	$scope.isTeachingModel = false;
@@ -189,6 +195,7 @@ trainingModelApp.directive("assetTrainingModel", function () {
                         	}
                         else{
                         	$scope.title = 'Failure!';
+                        	$scope.message = 'Model training failed';
                     		$element.find('#modelMessage').addClass('alert-danger');
                     		$scope.isTeachingModel = false;
                         }
