@@ -47,7 +47,7 @@ public class ReportServlet extends HttpServlet {
 			JasperReport alarmReport = JasperCompileManager.compileReport(inputStream);
 			dbConnection = DbConnection.getDbConnection();
 			stmt = dbConnection.createStatement();
-			String queryString = "select * from alarms where asset_id='"+assetId+"' timestamp > " + start + " and timestamp < " + end;
+			String queryString = "select * from alarms where asset_id='"+assetId+"' and timestamp >= " + start + " and timestamp <= " + end;
 			rset = stmt.executeQuery(queryString);
 			JRResultSetDataSource jasperReports = new JRResultSetDataSource(rset);
 			JasperPrint print = JasperFillManager.fillReport(alarmReport, null, jasperReports);

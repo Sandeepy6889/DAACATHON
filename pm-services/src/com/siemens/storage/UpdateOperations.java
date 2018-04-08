@@ -35,8 +35,6 @@ public class UpdateOperations {
 				query.append(" AND ");
 		}
 
-		System.out.println("query = " + query.toString());
-
 		PreparedStatement pstmt = null;
 		try {
 			pstmt = connection.prepareStatement(query.toString());

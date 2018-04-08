@@ -29,9 +29,7 @@ public class AlarmReportServices {
 	@Path("/getAlarms/{assetId}/{beginTimestamp}/{endTimestamp}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Object> getAlarmsForDuration(@PathParam("assetId") String assetId,@PathParam("beginTimestamp") String beginTimestamp,@PathParam("endTimestamp") String endTimestamp) {
-		
-		System.out.println("Begin "+beginTimestamp+" End "+endTimestamp);
-		String qString = "select * from alarms where Asset_id='" + assetId + "'and timestamp > "+Long.valueOf(beginTimestamp)+" and timestamp < "+Long.valueOf(endTimestamp) ;
+		String qString = "select * from alarms where Asset_id='" + assetId + "' and timestamp >= "+Long.valueOf(beginTimestamp)+" and timestamp <= "+Long.valueOf(endTimestamp) ;
 		List<Object> records = DBUtil.get(qString, new Alarm());
 		return records;
 	}
@@ -39,7 +37,7 @@ public class AlarmReportServices {
 	
 	public static void main(String[] args) {
 		
-		for(int i = 20; i<300;i++) {
+		for(int i = 20; ;i++) {
 			TableRow row = new TableRow("alarms");
 			row.add("asset_id", "pump1");
 			row.add("fluid_flow", i);
@@ -48,9 +46,10 @@ public class AlarmReportServices {
 			row.add("motor_power_input", i);
 			row.add("alarm_type", "TDH");
 			row.add("alarm_status", i%2 == 0 ? 0 :1);
-			row.add("timestamp", new Date().getTime());
+			Date time = new Date();
+			row.add("timestamp", time.getTime());
 			DBUtil.insert(row);
-			System.out.println(i-19+" row inserted");
+			System.out.println(i-19+" row inserted "+time);
 		}
 	}
 	

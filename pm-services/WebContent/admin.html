@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>URL Management</title>
+
+<link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<!-- Custom CSS -->
+<link href="dist/css/sb-admin-2.css" rel="stylesheet">
+
+<!-- Custom Fonts -->
+<link href="vendor/font-awesome/css/font-awesome.min.css"
+	rel="stylesheet" type="text/css">
+
+<!-- Metis Menu Plugin JavaScript -->
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/jquery/jquery.js"></script>
+<script src="vendor/metisMenu/metisMenu.min.js"></script>
+
+<script src="js/angular.js"></script>
+<!-- Bootstrap Core JavaScript -->
+<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+<!-- Custom Theme JavaScript -->
+<script src="dist/js/sb-admin-2.js"></script>
+
+<script src="dist/js/sb-admin-2.js"></script>
+<script src="modules/updateAppUrls.js"></script>
+
+
+</head>
+<body ng-app="urlsManagementApp">
+	<div id="page-wrapper" ng-controller="appUrlsController">
+		<div class="row">
+			<div class="col-lg-12">
+				<h1 class="page-header">Register or update URLs of other
+					applications</h1>
+			</div>
+			<!-- /.col-lg-12 -->
+		</div>
+
+		<div class="row">
+			<form role="form" name="trainingData" novalidate>
+				<div class="form-group">
+					<div class="input-group">
+						<div class="input-group-addon">Asset
+							Created(KPI-Calculation)</div>
+						<input name="assetCreated" ng-required="true"
+							ng-model="urlsInfo.assetCreated" type="text" class="form-control">
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="input-group">
+						<div class="input-group-addon">Asset Created(Pump data
+							client)</div>
+						<input name="assetCreated" ng-required="true"
+							ng-model="urlsInfo.assetCreatedPClient" type="text"
+							class="form-control">
+					</div>
+				</div>
+				<div class="form-group">
+
+					<div class="input-group">
+						<div class="input-group-addon">Asset
+							Trained(KPI-Calculation)</div>
+						<input name="assetTrained" ng-required="true"
+							ng-model="urlsInfo.assetTrained" type="text" class="form-control">
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="input-group">
+						<div class="input-group-addon">Alarm Status(KPI-Calculation)</div>
+						<input name="alarmsStatus" ng-model="urlsInfo.alarmsStatus"
+							type="text" class="form-control">
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="input-group">
+						<div class="input-group-addon">Teach Model</div>
+						<input name="teachModel" ng-model="urlsInfo.teachModel"
+							type="text" class="form-control">
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="input-group">
+						<button type="button" class="btn btn-primary gap"
+							ng-click="update()">Update</button>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="input-group">
+						<div class="alert fade in" id="modelMessage">
+							<strong>{{message}}</strong> 
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+</body>
+</html>
