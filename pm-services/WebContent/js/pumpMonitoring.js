@@ -10,6 +10,7 @@ assetsMgmtAppApplication.run(function ($rootScope) {
     $rootScope.modelURI =  "http://kpipredictionohio-dev.us-east-2.elasticbeanstalk.com";
     $rootScope.opcAssetSubUrl =  "http://kpicalc-env.us-east-2.elasticbeanstalk.com/kpi-services/KPI-Calculation/assetcreated";
     $rootScope.notifyTrainingStatusUrl = 'http://kpicalc-env.us-east-2.elasticbeanstalk.com/kpi-services/KPI-Calculation/assetTrainStatus';
+    $rootScope.enggAssets = 'http://assetsengg.us-east-2.elasticbeanstalk.com/services/assetsEngineering';
     console.log('assetsMgmtAppApplication bugs modiefied called');
 });
 assetsMgmtAppApplication.controller("assetsController", function ($scope) {

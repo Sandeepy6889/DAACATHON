@@ -5,12 +5,27 @@
 		</div>
 		<!-- /.col-lg-12 -->
 	</div>
+	<div class="row">
+		<div class="col-lg-12">
+			<form class="form-inline">
+				<div class="form-group">
+					<select ng-change="initAssetForm()" class="form-control"
+						ng-model="assetValue">
+						<option value="">-- Select Asset ID --</option>
+						<option ng-repeat="asset in nonConfAssets" value="{{asset}}">{{asset.assetID}} [{{asset.assetName}}]</option>
+					</select>
+				</div>
+				<div class="form-group">
+					<button ng-show="assetValue.length > 0" type="button"
+						class="btn btn-primary" data-toggle="modal"
+						data-target="#exampleModalLong">Configure Asset</button>
+				</div>
+			</form>
+		</div>
+	</div>
 	<!-- /.row -->
 	<div class="row" style="margin-bottom: 10px">
-		<div class="col-lg-12">
-			<button type="button" class="btn btn-primary" data-toggle="modal"
-				data-target="#exampleModalLong">Create Asset</button>
-		</div>
+		<div class="col-lg-12"></div>
 
 		<!-- Modal -->
 		<div class="modal fade" data-keyboard="false" data-backdrop="static"
@@ -26,84 +41,94 @@
 						<form role="form" name="assetInfo">
 							<div class="form-group error">All fields are required</div>
 							<div class="form-group">
-								<span class="error" ng-show="assetInfo.assetID.$error.pattern">Not
-									a valid asset ID</span> <input ng-pattern="/^[a-zA-Z0-9]+$/"
-									class="form-control form-control-sm" ng-model="assetID"
-									name="assetID" placeholder="Asset ID" ng-required="true">
+								{{assetID}} <span class="error"
+									ng-show="assetInfo.assetID.$error.pattern">Not a valid
+									asset ID</span> <input ng-pattern="/^[a-zA-Z0-9]+$/"
+									class="form-control form-control-sm"
+									ng-model="newAsset.assetID" name="assetID"
+									placeholder="Asset ID" ng-required="true">
 							</div>
 							<div class="form-group">
 								<span class="error" ng-show="assetInfo.assetName.$error.pattern">Not
 									a valid asset name</span> <input class="form-control"
 									ng-required="true" ng-pattern="/^[a-zA-Z0-9]+$/"
-									ng-model="assetName" name="assetName" placeholder="Asset Name">
+									ng-model="newAsset.assetName" name="assetName"
+									placeholder="Asset Name">
 							</div>
 							<div class="form-group">
 								<span class="error"
-									ng-show="assetInfo.ratedPower.$error.pattern">Not a valid 
-									number</span> <input name="ratedPower" ng-required="true"
+									ng-show="assetInfo.ratedPower.$error.pattern">Not a
+									valid number</span> <input name="ratedPower" ng-required="true"
 									ng-pattern="/^\s*(?=.*[1-9])\d*(?:\.\d{1,3})?\s*$/" step="0.01"
-									class="form-control" ng-model="ratedPower"
+									class="form-control" ng-model="newAsset.ratedPower"
 									placeholder="Rated Power (KW)">
 							</div>
 							<div class="form-group">
 								<span class="error"
-									ng-show="assetInfo.motorEfficiency.$error.pattern">Not
-									a valid number</span> <input name="motorEfficiency" ng-required="true"
-									ng-pattern="/^\s*(?=.*[1-9])\d*(?:\.\d{1,3})?\s*$/" class="form-control"
-									ng-model="motorEfficiency"
+									ng-show="assetInfo.motorEfficiency.$error.pattern">Not a
+									valid number</span> <input name="motorEfficiency" ng-required="true"
+									ng-pattern="/^\s*(?=.*[1-9])\d*(?:\.\d{1,3})?\s*$/"
+									class="form-control" ng-model="newAsset.motorEfficiency"
 									placeholder="Efficiency of motor (%)">
 							</div>
 							<div class="form-group">
 								<span class="error"
-									ng-show="assetInfo.motorRatedSpeed.$error.pattern">Not a valid
-									number</span> <input name="motorRatedSpeed" ng-required="true"
-									ng-pattern="/^\s*(?=.*[1-9])\d*(?:\.\d{1,3})?\s*$/" class="form-control"
-									ng-model="motorRatedSpeed"
+									ng-show="assetInfo.motorRatedSpeed.$error.pattern">Not a
+									valid number</span> <input name="motorRatedSpeed" ng-required="true"
+									ng-pattern="/^\s*(?=.*[1-9])\d*(?:\.\d{1,3})?\s*$/"
+									class="form-control" ng-model="newAsset.motorRatedSpeed"
 									placeholder="Rated speed of the motor">
 							</div>
 							<div class="form-group">
 								<span class="error"
 									ng-show="assetInfo.minRatedFlowOfPump.$error.pattern">Not
-									a valid number</span> <input name="minRatedFlowOfPump" ng-required="true"
-									ng-pattern="/^\s*(?=.*[1-9])\d*(?:\.\d{1,3})?\s*$/" class="form-control"
-									ng-model="minRatedFlowOfPump"
+									a valid number</span> <input name="minRatedFlowOfPump"
+									ng-required="true"
+									ng-pattern="/^\s*(?=.*[1-9])\d*(?:\.\d{1,3})?\s*$/"
+									class="form-control" ng-model="newAsset.minRatedFlowOfPump"
 									placeholder="Minimum rated flow of the pump">
 							</div>
 							<div class="form-group">
 								<span class="error"
-									ng-show="assetInfo.waterDensity.$error.pattern">Not a valid 
-									number</span> <input name="waterDensity" ng-required="true"
-									ng-pattern="/^\s*(?=.*[1-9])\d*(?:\.\d{1,3})?\s*$/" class="form-control"
-									ng-model="waterDensity" placeholder="Fluid density">
+									ng-show="assetInfo.waterDensity.$error.pattern">Not a
+									valid number</span> <input name="waterDensity" ng-required="true"
+									ng-pattern="/^\s*(?=.*[1-9])\d*(?:\.\d{1,3})?\s*$/"
+									class="form-control" ng-model="newAsset.waterDensity"
+									placeholder="Fluid density">
 							</div>
 							<div class="form-group">
 								<span class="error"
-									ng-show="assetInfo.threadholdLT.$error.pattern">Not a valid
-									number</span> <input name="threadholdLT" ng-required="true"
-									ng-pattern="/^\s*(?=.*[1-9])\d*(?:\.\d{1,3})?\s*$/" class="form-control"
-									ng-model="threadholdLT" placeholder="Threadhold limit">
+									ng-show="assetInfo.threadholdLT.$error.pattern">Not a
+									valid number</span> <input name="threadholdLT" ng-required="true"
+									ng-pattern="/^\s*(?=.*[1-9])\d*(?:\.\d{1,3})?\s*$/"
+									class="form-control" ng-model="newAsset.threadholdLT"
+									placeholder="Threadhold limit">
 							</div>
 							<div class="form-group">
 								<span class="error"
-									ng-show="assetInfo.suctionDiameter.$error.pattern">Not a valid
-									number</span> <input name="suctionDiameter" ng-required="true"
-									ng-pattern="/^\s*(?=.*[1-9])\d*(?:\.\d{1,3})?\s*$/" class="form-control"
-									ng-model="suctionDiameter" placeholder="Suction Diameter">
+									ng-show="assetInfo.suctionDiameter.$error.pattern">Not a
+									valid number</span> <input name="suctionDiameter" ng-required="true"
+									ng-pattern="/^\s*(?=.*[1-9])\d*(?:\.\d{1,3})?\s*$/"
+									class="form-control" ng-model="newAsset.suctionDiameter"
+									placeholder="Suction Diameter">
 							</div>
 
 							<div class="form-group">
 								<span class="error"
 									ng-show="assetInfo.dischargeDiameter.$error.pattern">Not
-									a valid number</span> <input name="dischargeDiameter" ng-required="true"
-									ng-pattern="/^\s*(?=.*[1-9])\d*(?:\.\d{1,3})?\s*$/" class="form-control"
-									ng-model="dischargeDiameter" placeholder="Discharge Diameter">
+									a valid number</span> <input name="dischargeDiameter"
+									ng-required="true"
+									ng-pattern="/^\s*(?=.*[1-9])\d*(?:\.\d{1,3})?\s*$/"
+									class="form-control" ng-model="newAsset.dischargeDiameter"
+									placeholder="Discharge Diameter">
 							</div>
 							<div class="form-group">
 								<span class="error"
-									ng-show="assetInfo.eleveationDiff.$error.pattern">Not a 
+									ng-show="assetInfo.eleveationDiff.$error.pattern">Not a
 									valid number</span> <input name="eleveationDiff" ng-required="true"
-									ng-pattern="/^\s*(?=.*[1-9])\d*(?:\.\d{1,3})?\s*$/" class="form-control"
-									ng-model="eleveationDiff" placeholder="Elevation Difference">
+									ng-pattern="/^\s*(?=.*[1-9])\d*(?:\.\d{1,3})?\s*$/"
+									class="form-control" ng-model="newAsset.eleveationDiff"
+									placeholder="Elevation Difference">
 							</div>
 						</form>
 					</div>
@@ -118,17 +143,16 @@
 			</div>
 		</div>
 	</div>
-	
-	<div class="row" ng-show="isAlertEnable">
-        <div class="col-lg-12">
-            <div class="alert fade in" id="modelMessage">
-                <strong>{{title}}</strong>
-                {{message}}
 
-            </div>
-        </div>
-    </div>
-    
+	<div class="row" ng-show="isAlertEnable">
+		<div class="col-lg-12">
+			<div class="alert fade in" id="modelMessage">
+				<strong>{{title}}</strong> {{message}}
+
+			</div>
+		</div>
+	</div>
+
 	<div class="row">
 		<div class="col-lg-12">
 			<div class="panel panel-default">
@@ -147,7 +171,7 @@
 						</thead>
 						<tbody>
 
-							<tr class="odd gradeX" ng-repeat="asset in assets">
+							<tr class="odd gradeX" ng-repeat="asset in confAssets">
 								<td>{{asset.assetID}}</td>
 								<td>{{asset.assetName}}</td>
 								<td><a href="#" class="fa fa-list"

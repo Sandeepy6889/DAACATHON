@@ -24,9 +24,18 @@ assetsManagementApp.value("baseUri", "services");
 assetsManagementApp.factory("Asset", getAssetClass);
 assetsManagementApp.factory("assetService", function ($http,$rootScope, Asset, $q, baseUri) {
     return {
-        getAll: function () {
+    	getConfiguredAssets: function () {
             var deferred = $q.defer();
             var promise = $http.get(baseUri + "/assetPrmtz/getAll");
+            promise.then(function (response) {
+                var result = response.data.map(function (assetParams) { return new Asset(assetParams); });
+                deferred.resolve(result);
+            });
+            return deferred.promise;
+        },
+        getEngineeredAssets: function () {
+            var deferred = $q.defer();
+            var promise = $http.get($rootScope.enggAssets + "/get");
             promise.then(function (response) {
                 var result = response.data.map(function (assetParams) { return new Asset(assetParams); });
                 deferred.resolve(result);
@@ -59,67 +68,84 @@ assetsManagementApp.directive("assetsManagement", function () {
         },
         templateUrl: 'assets-info.html',
         controller: function ($scope, $element, Asset, assetService) {
-            $scope.assets = [];
+            $scope.confAssets = [];
+            $scope.nonConfAssets = [];
+            $scope.newAsset = {};
             $scope.message = '';
             $scope.title = '';
+            $scope.asset = '';
             $scope.isAlertEnable = false;
             
-             assetService.getAll().then(function (result) {
-                 console.log("all data ", result);
-                 $scope.assets = result;
-             });
+            filterNonConfiguredAssets = function() {
+            	assetService.getEngineeredAssets().then(function (enggAssets) {
+            		console.log('All enggAssets ', enggAssets);
+            		assetService.getConfiguredAssets().then(function (confAssets) {
+            			for(var i = 0;i < enggAssets.length;i++){
+            				for(var j = 0;j < confAssets.length;j++){
+            					if(enggAssets[i].assetID === confAssets[j].assetID){
+            						enggAssets.splice(i,1);
+            					}
+            				}
+                    	}
+            			$scope.nonConfAssets = enggAssets;
+            			$scope.confAssets = confAssets;
+            			console.log('nonConfAssets ', $scope.nonConfAssets);
+            			console.log('confAssets ', $scope.confAssets);
+                    });
+                });
+            }();
+             
+            $scope.initAssetForm = function(){
+            	if($scope.assetValue === ''){
+            		$scope.newAsset = {};
+            		return;
+            	}
+            	$scope.newAsset = JSON.parse($scope.assetValue);
+            }
+            
             $scope.addNewAsset = function () {
             	$scope.isAlertEnable = false;
-                var asset = new Asset({
-                    assetID: $scope.assetID,
-                    assetName: $scope.assetName,
-                    ratedPower: $scope.ratedPower,
-                    motorEfficiency: $scope.motorEfficiency,
-                    motorRatedSpeed: $scope.motorRatedSpeed,
-                    minRatedFlowOfPump: $scope.minRatedFlowOfPump,
-                    waterDensity: $scope.waterDensity,
-                    threadholdLT: $scope.threadholdLT,
-                    suctionDiameter: $scope.suctionDiameter,
-                    dischargeDiameter: $scope.dischargeDiameter,
-                    eleveationDiff: $scope.eleveationDiff
-                });
-                 assetService.addAsset(asset).then(function (result) {
+                 assetService.addAsset($scope.newAsset).then(function (result) {
                 	 $element.find('#modelMessage').removeClass('alert-danger');
                      $element.find('#modelMessage').removeClass('alert-warning');
                      $element.find('#modelMessage').addClass('alert-success');
                 	 if(result !== ""){
                 		 var asset = new Asset(result);
-                		 $scope.assets.push(asset);
+                		 $scope.confAssets.push(asset);
                 		 assetService.notifyOpcForSubscription($scope.assetID).then(function (result) {
                 			 if(result === 'success'){
                 				 $scope.isAlertEnable = true;
                 				 $scope.title = 'Success!';
-                                 $scope.message = ' Asset '+$scope.assetID+' configured successfully';
+                                 $scope.message = ' Asset '+$scope.newAsset.assetID+' configured successfully';
                                  $element.find('#modelMessage').addClass('alert-success');
                 			 }
                 			 else
                 			 {
                 				 $scope.isAlertEnable = true;
                 				 $scope.title = 'Warning!';
-                                 $scope.message = ' Asset '+$scope.assetID+' configured successfully but opc subscription failed';
+                                 $scope.message = ' Asset '+$scope.newAsset.assetID+' configured successfully but opc subscription failed';
                                  $element.find('#modelMessage').addClass('alert-warning');
                 			 }
                 		 });
+                		 for(var i = 0;i < $scope.nonConfAssets.length;i++){
+                     		if($scope.nonConfAssets[i].assetID === $scope.newAsset.assetID){
+                     			$scope.nonConfAssets.splice(i,1);
+                     			break;
+                     		}
+                     	}
                 	 }else{
                 		 $scope.isAlertEnable = true;
-        				 $scope.message = 'Failure! Asset '+$scope.assetID+' cannot be configured'; 
+        				 $scope.message = 'Failure! Asset '+$scope.newAsset.assetID+' cannot be configured'; 
         				 $element.find('#modelMessage').addClass('alert-danger');
                 	 }
                       $("#exampleModalLong").modal("hide");
                   });
             }
-            $scope.updateAsset = function () {
-
-            }
+           
             $scope.removeAsset = function (rmAsset) {
-            	for(var i = 0;i < $scope.assets.length;i++){
-            		if($scope.assets[i].assetID === rmAsset.assetID){
-            			$scope.assets.splice(i,1);
+            	for(var i = 0;i < $scope.confAssets.length;i++){
+            		if($scope.confAssets[i].assetID === rmAsset.assetID){
+            			$scope.confAssets.splice(i,1);
             			break;
             		}
             	}
