@@ -39,6 +39,8 @@ assetsManagementApp.factory("assetService", function ($http,$rootScope, Asset, $
             promise.then(function (response) {
                 var result = response.data.map(function (assetParams) { return new Asset(assetParams); });
                 deferred.resolve(result);
+            }).catch(function(error) {
+            	  console.log(JSON.stringify(error));
             });
             return deferred.promise;
         },
@@ -95,15 +97,21 @@ assetsManagementApp.directive("assetsManagement", function () {
             filterNonConfiguredAssets = function() {
             	assetService.getEngineeredAssets().then(function (enggAssets) {
             		console.log('All enggAssets ', enggAssets);
+            		var assets = [];
             		assetService.getConfiguredAssets().then(function (confAssets) {
+            			var isConfigured = false;
             			for(var i = 0;i < enggAssets.length;i++){
+            				isConfigured = false;
             				for(var j = 0;j < confAssets.length;j++){
             					if(enggAssets[i].assetID === confAssets[j].assetID){
-            						enggAssets.splice(i,1);
+            						isConfigured = true;
+            						break;
             					}
             				}
+            				if(!isConfigured)
+            					assets.push(enggAssets[i]);
                     	}
-            			$scope.nonConfAssets = enggAssets;
+            			$scope.nonConfAssets = assets;
             			$scope.confAssets = confAssets;
             			console.log('nonConfAssets ', $scope.nonConfAssets);
             			console.log('confAssets ', $scope.confAssets);

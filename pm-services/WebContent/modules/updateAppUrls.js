@@ -27,6 +27,8 @@ assetsManagementApp.factory("appUrlsService", function ($http, URLsInfo, $q, bas
             promise.then(function (response) {
                 var result = response.data;
                 deferred.resolve(result);
+            }).catch(function(error) {
+        	  console.log(JSON.stringify(error));
             });
             return deferred.promise;
         },
@@ -35,6 +37,8 @@ assetsManagementApp.factory("appUrlsService", function ($http, URLsInfo, $q, bas
             var promise = $http.post(baseUri + "/appUrls/update", urlsInfo);
             promise.then(function (response) {
                 deferred.resolve(response.data);
+            }).catch(function(error) {
+        	  console.log(JSON.stringify(error));
             });
             return deferred.promise;
         },
