@@ -13,7 +13,7 @@ public class ValueRt {
 
 	private float[] vibrationAmplitudes;
 	
-	private float samplingFrequency;
+	private float samplingFrequency = 25560.0f;
 
 	public ValueRt() {
 	}

@@ -25,7 +25,7 @@ public class OPCServerCommunicator {
 	private static final int INITIAL_DELAY = 100;
 
 	public static String startFetchingData(String assetID) {
-		if(timerMapping.containsKey(assetID))
+		if (timerMapping.containsKey(assetID))
 			return "asset Id  already subscribed";
 		NodeId[] nodeIds = getNodeIds(assetID);
 		Timer timer = new Timer();
@@ -44,21 +44,21 @@ public class OPCServerCommunicator {
 	}
 
 	public static String stopFetchingData(String assetID) {
-		if(!timerMapping.containsKey(assetID))
+		if (!timerMapping.containsKey(assetID))
 			return "No asset with this ID was subscribed";
 		timerMapping.get(assetID).cancel();
 		timerMapping.remove(assetID);
 		return "successfully unsubscribed";
-		
+
 	}
 
 	private static NodeId[] getNodeIds(String assetID) {
 
-		// NodeId ffNode = new NodeId(2, assetID + "FF||OUT");
-		// NodeId psNode = new NodeId(2, assetID + "Ps|1|OUT");
-		// NodeId pdNode = new NodeId(2, assetID + "Pd|1|OUT");
-		// NodeId epmNode = new NodeId(2, assetID + "PWR|1|OUT");
-		// return new NodeId[] { ffNode, psNode, pdNode, epmNode };
+		// NodeId ffNode = new NodeId(2, assetID + "_FF");
+		// NodeId psNode = new NodeId(2, assetID + "_Ps");
+		// NodeId pdNode = new NodeId(2, assetID + "_Pd");
+		// NodeId motorCurrent = new NodeId(2, assetID + "_AMP");
+		// return new NodeId[] { ffNode, psNode, pdNode, motorCurrent };
 
 		NodeId nodeId1 = new NodeId(5, "Counter1_1");
 		NodeId nodeId2 = new NodeId(5, "Counter2_1");

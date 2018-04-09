@@ -17,7 +17,7 @@ public class FrequencySamplingService {
 		Map<Float,BigDecimal> freqAmpMap = new HashMap<>();
 		float [] amplitudes = rawValues.getVibrationAmplitudes();
 		float freq = 0;
-		float sampleRate = rawValues.getSamplingFrequency()/amplitudes.length;
+		float sampleRate = rawValues.getSamplingFrequency()/(amplitudes.length-1);
 		List<List<Float>> freqAmpListForFFT = new ArrayList<>();
 		for(float amp : amplitudes)
 		{
@@ -33,8 +33,7 @@ public class FrequencySamplingService {
 		return freqAmpMap;		
 	}
 	
-	public static List<List<Float>> getFFTData(String assetId){
-		
+	public static List<List<Float>> getFrequencyAmplitudeData(String assetId){
 		return assetVibrationData.get(assetId);
 	}
 }

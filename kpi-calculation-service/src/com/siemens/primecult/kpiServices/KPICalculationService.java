@@ -1,5 +1,10 @@
 package com.siemens.primecult.kpiServices;
 
+import static com.siemens.primecult.alarmservices.AlarmManagement.makeEntryToManageAlarmsForAsset;
+import static com.siemens.primecult.core.KPICalculator.makeEntryToManageAssetTrainingStatus;
+
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -14,6 +19,8 @@ import com.siemens.primecult.alarmservices.AlarmManagement;
 import com.siemens.primecult.alarmservices.FrequencySamplingService;
 import com.siemens.primecult.core.KPICalculator;
 import com.siemens.primecult.models.ValueRt;
+import com.siemens.storage.DbConnection;
+import com.siemens.storage.SelectOperations;
 
 @Path("/KPI-Calculation")
 public class KPICalculationService {
@@ -23,11 +30,35 @@ public class KPICalculationService {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public ValueRt post(ValueRt requestData) {
-		KPICalculator kpiCalculator = new KPICalculator();
-		kpiCalculator.calculateKPI(requestData);
+		Connection connection = null;
+		try {
+			connection = DbConnection.getDbConnection();
+			connection.setAutoCommit(false);
+		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+
+		if (connection == null)
+			return null;
+
+		KPICalculator kpiCalculator = new KPICalculator(connection);
+		try {
+			kpiCalculator.calculateKPI(requestData);
+			connection.commit();
+		} catch (SQLException e) {
+			try {
+				connection.rollback();
+			} catch (SQLException e1) {
+			}
+			e.printStackTrace();
+		} finally {
+			DbConnection.releaseResources(connection);
+		}
+
 		return requestData;
+
 	}
-	
+
 	@GET
 	@Path("/assetTrainStatus/{assetId}")
 	@Produces(MediaType.TEXT_PLAIN)
@@ -35,7 +66,7 @@ public class KPICalculationService {
 	public String changeTrainingStatus(@PathParam("assetId") String assetId) {
 		return KPICalculator.changeTrainingStatus(assetId);
 	}
-	
+
 	@GET
 	@Path("/alarmStatus/{assetId}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -43,22 +74,21 @@ public class KPICalculationService {
 	public List<Integer> getAlarmStatus(@PathParam("assetId") String assetId) {
 		return AlarmManagement.getCurrentAlarmStatus(assetId);
 	}
-	
+
 	@GET
 	@Path("/assetcreated/{assetId}")
 	@Produces(MediaType.TEXT_PLAIN)
 	@Consumes(MediaType.TEXT_PLAIN)
 	public String createCache(@PathParam("assetId") String assetId) {
-	    AlarmManagement.makeEntryToManageAlarmsForAsset(assetId);
-	    KPICalculator.makeEntryToManageAssetTrainingStatus(assetId);
-	    return "success";
+		makeEntryToManageAlarmsForAsset(assetId);
+		return makeEntryToManageAssetTrainingStatus(assetId);
 	}
-	
+
 	@GET
 	@Path("/fftdata/{assetId}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.TEXT_PLAIN)
 	public List<List<Float>> getFFTData(@PathParam("assetId") String assetId) {
-		return FrequencySamplingService.getFFTData(assetId);
+		return FrequencySamplingService.getFrequencyAmplitudeData(assetId);
 	}
 }

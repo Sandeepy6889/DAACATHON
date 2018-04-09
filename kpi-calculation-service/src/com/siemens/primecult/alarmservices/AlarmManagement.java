@@ -17,6 +17,8 @@ import static com.siemens.primecult.constants.PumpMonitorConstant.FLUID_FLOW_RAT
 import static com.siemens.primecult.constants.PumpMonitorConstant.MOTOR_POWER_INPUT;
 import static com.siemens.primecult.constants.PumpMonitorConstant.SUCT_PRESSURE;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -26,6 +28,7 @@ import com.siemens.primecult.constants.AlarmTypes;
 import com.siemens.primecult.models.KPIData;
 import com.siemens.primecult.models.ValueRt;
 import com.siemens.storage.DBUtil;
+import com.siemens.storage.InsertOperations;
 import com.siemens.storage.Pair;
 import com.siemens.storage.TableRow;
 
@@ -33,15 +36,24 @@ public class AlarmManagement {
 
 	private static Map<String, List<Integer>> currentAlarmsStatus = new HashMap<>();
 
+	private Connection connection;
+	InsertOperations inOperation = new InsertOperations();
+	public AlarmManagement(Connection connection) {
+		this.connection = connection;
+	}
+
 	public static List<Integer> getCurrentAlarmStatus(String assetId) {
 		return currentAlarmsStatus.get(assetId);
 	}
 
-	public static void makeEntryToManageAlarmsForAsset(String assetId) {
+	public static String makeEntryToManageAlarmsForAsset(String assetId) {
+		if (currentAlarmsStatus.get(assetId) != null)
+			return "asset already present";
 		currentAlarmsStatus.put(assetId, Arrays.asList(GONE, GONE, GONE, GONE, GONE));
+		return "success";
 	}
 
-	public void setAlarmsState(KPIData calculatedKPI, KPIData refrencedKPI, ValueRt rawValue, boolean isAssetTrained) {
+	public void setAlarmsState(KPIData calculatedKPI, KPIData refrencedKPI, ValueRt rawValue, boolean isAssetTrained) throws SQLException {
 		// get threshold from db
 		float threshold = fetchThresholdFromDb(rawValue.getAssetID());
 		// check for TDH alarm
@@ -77,7 +89,7 @@ public class AlarmManagement {
 		return values.size() == 0 ? 0 : (Float) ((Pair) values.get(0)).getValue();
 	}
 
-	private void changeStateInCacheAndDb(AlarmTypes alarmType, ValueRt rawValues) {
+	private void changeStateInCacheAndDb(AlarmTypes alarmType, ValueRt rawValues) throws SQLException {
 		String assetId = rawValues.getAssetID();
 		int stateInCache = currentAlarmsStatus.get(assetId).get(alarmType.getIndex());
 		switch (stateInCache) {
@@ -101,10 +113,7 @@ public class AlarmManagement {
 		row.set("alarm_type", alarmType.getValue());
 		row.set("alarm_status", currentAlarmsStatus.get(assetId).get(alarmType.getIndex()));
 		row.set("timestamp", rawValues.getTimeStamp());
-		if (DBUtil.insert(row)) {
-			System.out.println("Inserted successfully");
-		} else
-			System.out.println("Insertion Unsuccesssfull");
+		inOperation.insert(connection, row);
 	}
 
 }
