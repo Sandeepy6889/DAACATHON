@@ -17,7 +17,6 @@
 							ng-options="id for id in assetsIds">
 							<option value="">-- Select Asset ID --</option>
 						</select>
-
 					</div>
 				</form>
 			</div>
@@ -38,26 +37,37 @@
 
 								<tbody>
 									<tr>
-										<td><div id="circle" class="offline blockage"
-												onClick='blockage()'></div></td>
-										<td><h4>Blockage</h4></td>
+							<br>
+							</tr>
+								<tr>
+									<td><div id="circle" class="offline blockage"
+											onClick='blockage()'></div></td>
+									<td><h4>Blockage</h4></td>
+								</tr>
+								<tr>
+									<td><div id="circle" class="offline dryRunning"
+											onClick='dryRunning()'></div></td>
+									<td><h4>Dry Running</h4></td>
 
-										<td><div id="circle" class="offline dryRunning"
-												onClick='dryRunning()'></div></td>
-										<td><h4>Dry Running</h4></td>
 
+								</tr>
+								<tr>
+									<td><div id="circle" class="offline lowPumpEfficiency"
+											onClick='lowPumpEfficiency()'></div></td>
+									<td><h4>Low Pump Efficiency</h4></td>
+								</tr>
+								<tr>
+									<td><div id="circle" class="offline deviatedTDH"
+											onClick='deviatedTDH()'></div></td>
+									<td><h4>Deviated TDH</h4></td>
 
-									</tr>
-									<tr>
-										<td><div id="circle" class="offline lowPumpEfficiency"
-												onClick='lowPumpEfficiency()'></div></td>
-										<td><h4>Low Pump Efficiency</h4></td>
-
-										<td><div id="circle" class="offline deviatedTDH"
-												onClick='deviatedTDH()'></div></td>
-										<td><h4>Deviated TDH</h4></td>
-
-									</tr>
+								</tr>
+								<tr>
+								<td>
+								<div id="circle" class="offline implerWearing"
+											onClick='implerWearing()'></div></td>
+									<td><h4>Impeler wearing</h4></td>
+								</tr>
 								</tbody>
 							</table>
 
@@ -66,7 +76,22 @@
 					</div>
 					<!-- /.panel -->
 				</div>
-
+				
+			<!-- /.col-lg-6 -->
+			<div class="col-lg-6">
+				<div class="panel panel-default">
+					<div class="panel-heading">Amp vs. Flow</div>
+					<!-- /.panel-heading -->
+					<div class="panel-body">
+						<div class="flot-chart">
+							<div class="flot-chart-content" id="flot-line-chart3"></div>
+						</div>
+					</div>
+					<!-- /.panel-body -->
+				</div>
+			</div>
+			
+			
 				<!-- /.col-lg-6 -->
 				<div class="col-lg-6">
 					<div class="panel panel-default">
