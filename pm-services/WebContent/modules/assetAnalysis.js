@@ -125,6 +125,45 @@ assetsAnalysisApp.directive("assetsAnalysis", function () {
                     kpiService.getCalculatedAllKPI(new Date().getTime(), $scope.assetId).then(function (result) {
                     	if(newSubscriptionId === $scope.assetId)
                         	plotCharts(result);
+    					kpiService.getAlarmStatus().then(function(result) {
+    						//console.log("getAlarmStatus", result);
+    						var x = result;
+    						//blockage
+    						if(x[0]!==null && x[0]==1){
+    							blockage();
+    						}
+    						else{
+    							suppressBlockage();
+    						}
+    						//lowPumpEfficiency
+    						if(x[1]!==null && x[1]==1){
+    							lowPumpEfficiency();
+    						}
+    						else{
+    							suppressLowPumpEfficiency();
+    						}
+    						//dryRunning
+    						if(x[2]!==null && x[2]==1){
+    							dryRunning();
+    						}
+    						else{
+    							suppressDryRunning();
+    						}
+    						//deviatedTDH
+    						if(x[3]!==null && x[3]==1){
+    							deviatedTDH();
+    						}
+    						else{
+    							suppressDeviatedTDH();
+    						}
+    						//implerWearing
+    						if(x[4]!==null && x[4]==1){
+    							implerWearing();
+    						}
+    						else{
+    							suppressImplerWearing();
+    						}
+    					});
                     });
                 },1000);
             }
@@ -173,6 +212,16 @@ function suppressDeviatedTDH() {
     $('.deviatedTDH').removeClass("online");
     $('.deviatedTDH').addClass("offline");
 }
+function implerWearing() {
+	debugger;
+	$('.implerWearing').removeClass("offline");
+	$('.implerWearing').addClass("online");
+}
+function suppressImplerWearing() {
+	debugger;
+	$('.implerWearing').removeClass("online");
+	$('.implerWearing').addClass("offline");
+}
 
 
 
@@ -215,7 +264,25 @@ function plotCharts(result) {
         }
     };
     plot(actualEffData, refEffData, optionsEff, effChartName);
-
+    
+    
+    vibChartName="#flot-line-chart3";
+	var actualVibData=result[2];
+	var refVibData=result[3];
+	var optionsVib = {
+			series : {
+				lines : {
+					show : true
+				},
+				points : {
+					show : true
+				}
+			},
+			grid : {
+				hoverable : true
+			}
+		};
+	plot(actualVibData,refVibData,optionsVib,vibChartName);
 
 }
 
