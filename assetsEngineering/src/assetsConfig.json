@@ -1,28 +1,40 @@
-[  
-    {  
-        "assetID":"pump1",
-        "assetName":"Centrifugalpump",
-        "ratedPower":"20.0",
-        "motorEfficiency":"23.4",
-        "motorRatedSpeed":"32",
-        "minRatedFlowOfPump":"98",
-        "waterDensity":"0.5",
-        "threadholdLT":"10",
-        "suctionDiameter":"1.5",
-        "dischargeDiameter":"1.5",
-        "eleveationDiff":"7"
-    },
-    {  
-       "assetID":"pump2",
-        "assetName":"Centrifugalpump",
-        "ratedPower":"30.0",
-        "motorEfficiency":"53.4",
-        "motorRatedSpeed":"312",
-        "minRatedFlowOfPump":"80",
-        "waterDensity":"0.5",
-        "threadholdLT":"10",
-        "suctionDiameter":"1.5",
-        "dischargeDiameter":"1.5",
-        "eleveationDiff":"9"
-    }
+[{
+		"assetID": "PUMP01",
+		"assetName": "Centrifugalpump1",
+		"ratedPower": "5.0",
+		"motorEfficiency": "96",
+		"motorRatedSpeed": "1495",
+		"minRatedFlowOfPump": "132",
+		"waterDensity": "1.0",
+		"threadholdLT": "10",
+		"suctionDiameter": "1.5",
+		"dischargeDiameter": "1",
+		"eleveationDiff": "5"
+	},
+	{
+		"assetID": "PUMP02",
+		"assetName": "Centrifugalpump2",
+		"ratedPower": "5.0",
+		"motorEfficiency": "96",
+		"motorRatedSpeed": "1495",
+		"minRatedFlowOfPump": "132",
+		"waterDensity": "1.0",
+		"threadholdLT": "10",
+		"suctionDiameter": "1.5",
+		"dischargeDiameter": "1",
+		"eleveationDiff": "5"
+	},
+	{
+		"assetID": "PUMP03",
+		"assetName": "Centrifugalpump3",
+		"ratedPower": "5.0",
+		"motorEfficiency": "96",
+		"motorRatedSpeed": "1495",
+		"minRatedFlowOfPump": "132",
+		"waterDensity": "1.0",
+		"threadholdLT": "10",
+		"suctionDiameter": "1.5",
+		"dischargeDiameter": "1",
+		"eleveationDiff": "5"
+	}
 ]
