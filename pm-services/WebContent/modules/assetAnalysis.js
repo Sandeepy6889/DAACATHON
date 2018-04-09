@@ -103,7 +103,8 @@ assetsAnalysisApp.directive("assetsAnalysis", function () {
                 } 
             });
             $scope.getKpi = function () {
-            	$scope.stop = false;
+            	
+            	var newSubscriptionId = $scope.assetId;
             	if (angular.isDefined($scope.Timer)) {
             		$scope.stop = $interval.cancel($scope.Timer);
                 } 
@@ -114,16 +115,16 @@ assetsAnalysisApp.directive("assetsAnalysis", function () {
                     return;
                 }
                 
+                $element.find("#flot-line-chart2").empty();
+                $element.find("#flot-line-chart1").empty();
                 var x = document.getElementById("kpiDisplay");
-                if(!$scope.stop){
+                if(x.style.display === "none")
                 	x.style.display = "block";
-            	}
                 
                 $scope.Timer = $interval(function (){
                     kpiService.getCalculatedAllKPI(new Date().getTime(), $scope.assetId).then(function (result) {
-                        if(!$scope.stop){
+                    	if(newSubscriptionId === $scope.assetId)
                         	plotCharts(result);
-                        }
                     });
                 },1000);
             }

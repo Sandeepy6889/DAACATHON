@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -98,24 +99,25 @@ public class PumpKPIService {
 
 	public static void main(String[] args) {
 
+		Random randon = new Random();
 		for (int i = 20; i < 300; i++) {
 			long time = new Date().getTime();
 			TableRow row = new TableRow("calculated_kpi");
-			row.add("AssetId", "pump1");
+			row.add("AssetId", "pump2");
 			row.add("Flow", i);
-			row.add("TDH", i);
-			row.add("Efficiency", i);
+			row.add("TDH", randon.nextInt(40));
+			row.add("Efficiency", randon.nextInt(40));
 			row.add("Timestamp", time);
 			TableRow rrow = new TableRow("refrence_kpi");
-			rrow.add("AssetId", "pump1");
+			rrow.add("AssetId", "pump2");
 			rrow.add("Flow", i);
-			rrow.add("TDH", i + 0.3);
-			rrow.add("Efficiency", i + 0.3);
+			rrow.add("TDH", randon.nextInt(40));
+			rrow.add("Efficiency", randon.nextInt(40));
 			rrow.add("Timestamp", time);
 			
 			DBUtil.insert(row);
 			DBUtil.insert(rrow);
-			System.out.println(i - 19 + " row calculate kpi inserted");
+			System.out.println(i - 19 + " row calculate kpi inserted pump2");
 			System.out.println(i - 19 + " row ref kpi inserted");
 		}
 	}
