@@ -104,10 +104,44 @@ trainingModelApp.directive("assetTrainingModel", function () {
             $scope.operation = '';
             $scope.oprTitle = '';
             $scope.id = '';
-
+            $scope.errorFileMsg  = 'Please select a file';
+            $scope.progress = '';
+            
             trainingDataService.getAssetsIDS().then(function (result) {
                 $scope.assetsIds = result;
             });
+            
+            $scope.uploadXmlFile = function(){
+          	  var file = document.getElementById('importFile').files[0];
+          	  if(file === undefined)
+          		  $scope.errorFileMsg  = 'Please select a file';
+          	  else
+          		  $scope.errorFileMsg  = '';
+          	  reader = new FileReader();
+          	  reader.onloadend = function(e){
+          	      $scope.data = e.target.result;
+          	      var x2js = new X2JS();
+          	      var records = x2js.xml_str2json($scope.data);
+          	      var trainingRecords = records.TraningRecords.TraningRecord;
+          	      console.log('trainingRecords ',trainingRecords);
+          	      
+          	      var count = 1;
+          	      for(var i=0;i< trainingRecords.length;i++){
+          	    	  trainingRecords[i].assetId = $scope.assetId;
+          	      trainingDataService.addTraningRecord(trainingRecords[i]).then(function (result) {
+	                    $scope.trainingRecords.push(result);
+	                    var percentage = (count/trainingRecords.length)*100;
+	                    $scope.progress = percentage +'%';
+	                    if(count++ === trainingRecords.length){
+	                    	$("#uploadTrainingData").modal("hide");
+	                    	 $scope.progress = "";
+	                    }
+          	      	});
+          	      }
+          	  };
+          	  	if(file !== undefined)
+				  reader.readAsBinaryString(file);
+          };
             
             $scope.setOperation = function(opr, title, record){
             	$scope.oprTitle = title;
@@ -222,3 +256,4 @@ trainingModelApp.directive("assetTrainingModel", function () {
         }
     };
 });
+

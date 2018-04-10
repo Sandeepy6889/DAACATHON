@@ -1,187 +1,248 @@
 <head>
-    <style>
-        /* Absolute Center Spinner */
+<style>
+/* Absolute Center Spinner */
+img {
+	width: 300px;
+	height: 300px;
+	position: fixed;
+	left: 50%;
+	top: 50%;
+	margin-left: -150px;
+	margin-top: -150px;
+}
 
-        img {
-            width: 300px;
-            height: 300px;
-            position: fixed;
-            left: 50%;
-            top: 50%;
-            margin-left: -150px;
-            margin-top: -150px;
-        }
-
-        #loadingDiv {
-            position: absolute;
-            top: 0px;
-            right: 0px;
-            width: 100%;
-            height: 100%;
-            background-color: #ffffff;
-            background-image: url('images/model.gif');
-            background-repeat: no-repeat;
-            background-position: center;
-            z-index: 10000000;
-            opacity: 0.4;
-            filter: alpha(opacity=40);
-            /* For IE8 and earlier */
-        }
-    </style>
+#loadingDiv {
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	width: 100%;
+	height: 100%;
+	background-color: #ffffff;
+	background-image: url('images/model.gif');
+	background-repeat: no-repeat;
+	background-position: center;
+	z-index: 10000000;
+	opacity: 0.4;
+	filter: alpha(opacity = 40);
+	/* For IE8 and earlier */
+}
+</style>
 </head>
 
 <div id="page-wrapper">
-    <div id="loadingDiv" ng-show="isTeachingModel"></div>
-    <div class="row">
-        <div class="col-lg-12">
-            <h1 class="page-header">Train Models</h1>
-        </div>
-        <!-- /.col-lg-12 -->
-    </div>
-    <!-- /.row -->
+	<div id="loadingDiv" ng-show="isTeachingModel"></div>
+	<div class="row">
+		<div class="col-lg-12">
+			<h1 class="page-header">Train Models</h1>
+		</div>
+		<!-- /.col-lg-12 -->
+	</div>
+	<!-- /.row -->
 
-    <!-- /.container-fluid -->
+	<!-- /.container-fluid -->
 
-    <div class="row">
-        <div class="col-lg-12">
-            <form class="form-inline" >
-                <div class="form-group">
-                    <select ng-change="getAssetTrainingData()" class="form-control" ng-model="assetId">
-                        <option value="">-- Select Asset ID --</option>
-                        <option ng-repeat="id in assetsIds" value="{{id}}">{{id}}</option>
-                    </select>
+	<div class="row">
+		<div class="col-lg-12">
+			<form class="form-inline">
+				<div class="form-group">
+					<select ng-change="getAssetTrainingData()" class="form-control"
+						ng-model="assetId">
+						<option value="">-- Select Asset ID --</option>
+						<option ng-repeat="id in assetsIds" value="{{id}}">{{id}}</option>
+					</select>
 
-                </div>
-            </form>
-        </div>
-    </div>
-    <div class="row v-gap">
+				</div>
+			</form>
+		</div>
+	</div>
+	<div class="row v-gap">
 
-        <div class="col-lg-12">
-            <button type="button" ng-show="assetId.length > 0" class="btn btn-primary gap" ng-click="setOperation('ADD','New Record')"  data-toggle="modal" data-target="#trainingModalDialog">Add</button>
-            <button type="button" ng-show="assetId.length > 0" class="btn btn-primary gap" ng-click="trainingModel()">Teach</button>
-        </div>
-    </div>
+		<div class="col-lg-12">
+			<button type="button" ng-show="assetId.length > 0"
+				class="btn btn-primary gap"
+				ng-click="setOperation('ADD','New Record')" data-toggle="modal"
+				data-target="#trainingModalDialog">Add</button>
+			<button type="button" ng-show="assetId.length > 0"
+				class="btn btn-primary gap" ng-click="" data-toggle="modal"
+				data-target="#uploadTrainingData">Upload Training Data</button>
+			<button type="button" ng-show="trainingRecords.length > 0"
+				class="btn btn-primary gap" ng-click="trainingModel()">Teach</button>
+		</div>
+	</div>
 
-    <div class="row" ng-show="isAlertEnable">
-        <div class="col-lg-12">
-            <div class="alert fade in" id="modelMessage">
-                <strong>{{title}}</strong>
-                {{message}}
+	<div class="row" ng-show="isAlertEnable">
+		<div class="col-lg-12">
+			<div class="alert fade in" id="modelMessage">
+				<strong>{{title}}</strong> {{message}}
 
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <i>
-                        <b>Interpolations points of characteristics</b>
-                    </i>
-                </div>
-                <div class="panel-body">
-                    <form class="form-inline" action="/action">
-                        <div class="table-responsive ">
-                            <table class="table table-striped table-bordered table-hover">
-                                <thead>
-                                    <tr>
-                                    	<th></th>
-                                        <th>Flow[m3/h]</th>
-                                        <th>TDH[m]</th>
-                                        <th>Efficiency[%]</th>
-                                    </tr>
-                                    <tr class="odd gradeX" ng-repeat="record in trainingRecords">
-                                    	<td><a href="#" class="fa fa-list" data-toggle="modal" data-target="#trainingModalDialog"
-										ng-click="setOperation('UPDATE', 'Update Record', record)"></a> &nbsp;&nbsp; <a href="#"
-										class="fa fa-times" ng-click="deleteTraningRecord(record.id)"></a></td>
-                                        <td>{{record.xFlow}}</td>
-                                        <td>{{record.yHeight}}</td>
-                                        <td>{{record.yEta}}</td>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-
-    </div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<i> <b>Interpolations points of characteristics</b>
+					</i>
+				</div>
+				<div class="panel-body">
+					<form class="form-inline" action="/action">
+						<div class="table-responsive ">
+							<table class="table table-striped table-bordered table-hover">
+								<thead>
+									<tr>
+										<th></th>
+										<th>Flow[m3/h]</th>
+										<th>TDH[m]</th>
+										<th>Efficiency[%]</th>
+									</tr>
+									<tr class="odd gradeX" ng-repeat="record in trainingRecords">
+										<td><a href="#" class="fa fa-list" data-toggle="modal"
+											data-target="#trainingModalDialog"
+											ng-click="setOperation('UPDATE', 'Update Record', record)"></a>
+											&nbsp;&nbsp; <a href="#" class="fa fa-times"
+											ng-click="deleteTraningRecord(record.id)"></a></td>
+										<td>{{record.xFlow}}</td>
+										<td>{{record.yHeight}}</td>
+										<td>{{record.yEta}}</td>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
 
 
+	</div>
 
-<div class="row">
-    <!-- Modal -->
-    <div class="modal fade" id="trainingModalDialog" tabindex="-1" role="dialog" aria-labelledby="trainingModalDialog" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 class="modal-title" id="exampleModalLongTitle">{{oprTitle}}
-                    </h3>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form role="form" name="trainingData" novalidate>
-                        <div class="form-group error">All fields are required</div>
-                        <div class="form-group">
-                            <span class="error" ng-show="trainingData.xFlow.$error.pattern">Not a valid number</span>
-                            <div class="input-group">
-                                <div class="input-group-addon">Flow[m3/h]</div>
-                                <input name="xFlow" ng-required="true" ng-pattern="/^[0-9]+(\.[0-9]{1,3})?$/" ng-model="xFlow" type="text" class="form-control"
-                                    id="xFlow">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <span class="error" ng-show="trainingData.yHeight.$error.pattern">Not a valid number</span>
-                            <div class="input-group">
-                                <div class="input-group-addon">TDH[m]</div>
-                                <input name="yHeight" ng-required="true" ng-pattern="/^[0-9]+(\.[0-9]{1,3})?$/" ng-model="yHeight" type="text" class="form-control"
-                                    id="yHeight">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <span class="error" ng-show="trainingData.yEta.$error.pattern">Not a valid number</span>
-                            <div class="input-group">
-                                <div class="input-group-addon">Efficiency[%]</div>
-                                <input name="yEta" ng-required="true" ng-pattern="/^[0-9]+(\.[0-9]{1,3})?$/" ng-model="yEta" type="text" class="form-control"
-                                    id="yEta" >
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" ng-disabled="trainingData.$invalid" ng-click="addTraningRecord()">{{operation}}
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
-<div class="row">
-    <!-- Modal -->
-    <div class="modal fade" data-keyboard="false" data-backdrop="static" id="teachModalDialog" tabindex="-1" role="dialog" aria-labelledby="teachModalDialog"
-        aria-hidden="true">
-        <div class="col-lg-3">
-            <div class="modal-dialog vertical-align-center">
-                <div class="modal-content">
-                    <div class="modal-header">
 
-                        <h4 class="modal-title" id="myModalLabel">Model is being trained...
-                        </h4>
+	<div class="row">
+		<!-- Modal -->
+		<div class="modal fade" id="trainingModalDialog" tabindex="-1"
+			role="dialog" aria-labelledby="trainingModalDialog"
+			aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h3 class="modal-title" id="exampleModalLongTitle">{{oprTitle}}
+						</h3>
+					</div>
+					<div class="modal-body">
+						<form role="form" name="trainingData" novalidate>
+							<div class="form-group error">All fields are required</div>
+							<div class="form-group">
+								<span class="error" ng-show="trainingData.xFlow.$error.pattern">Not
+									a valid number</span>
+								<div class="input-group">
+									<div class="input-group-addon">Flow[m3/h]</div>
+									<input name="xFlow" ng-required="true"
+										ng-pattern="/^[0-9]+(\.[0-9]{1,3})?$/" ng-model="xFlow"
+										type="text" class="form-control" id="xFlow">
+								</div>
+							</div>
+							<div class="form-group">
+								<span class="error"
+									ng-show="trainingData.yHeight.$error.pattern">Not a
+									valid number</span>
+								<div class="input-group">
+									<div class="input-group-addon">TDH[m]</div>
+									<input name="yHeight" ng-required="true"
+										ng-pattern="/^[0-9]+(\.[0-9]{1,3})?$/" ng-model="yHeight"
+										type="text" class="form-control" id="yHeight">
+								</div>
+							</div>
+							<div class="form-group">
+								<span class="error" ng-show="trainingData.yEta.$error.pattern">Not
+									a valid number</span>
+								<div class="input-group">
+									<div class="input-group-addon">Efficiency[%]</div>
+									<input name="yEta" ng-required="true"
+										ng-pattern="/^[0-9]+(\.[0-9]{1,3})?$/" ng-model="yEta"
+										type="text" class="form-control" id="yEta">
+								</div>
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary"
+							data-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary"
+							ng-disabled="trainingData.$invalid" ng-click="addTraningRecord()">{{operation}}
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
-                    </div>
-                    <div class="modal-body">
-                        <img class="img-responsive" src="images/model.gif" alt="" srcset="">
-                    </div>
 
-                </div>
-            </div>
-        </div></div>
-    </div>
+	<div class="row">
+		<!-- Modal -->
+		<div class="modal fade"  data-backdrop="static" id="uploadTrainingData" tabindex="-1"
+			role="dialog" aria-labelledby="uploadTrainingData" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h3 class="modal-title" id="exampleModalLongTitle">Upload
+							training data(XML)</h3>
+					</div>
+					<div class="modal-body">
+						<form role="form" name="uploadTrainingData" novalidate>
+							<span class="error">{{errorFileMsg}}</span>
+							<div class="form-group">
+								<span class="error"
+									ng-show="uploadTrainingData.trainingFile.$error.required">Required!</span>
+								<div class="input-group">
+									<input type="file" name="trainingFile" id="importFile" required />
+								</div>
+							</div>
+						</form>
+						<div class="progress">
+							<div class="progress-bar" id="trainingProgress" role="progressbar" aria-valuenow="70"
+								aria-valuemin="0" aria-valuemax="100" style="width: {{progress}}">
+								{{progress}}</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary"
+							data-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary"
+							ng-disabled="uploadTrainingData.$invalid"
+							ng-click="uploadXmlFile()">Upload</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="row">
+		<!-- Modal -->
+		<div class="modal fade" data-keyboard="false" data-backdrop="static"
+			id="teachModalDialog" tabindex="-1" role="dialog"
+			aria-labelledby="teachModalDialog" aria-hidden="true">
+			<div class="col-lg-3">
+				<div class="modal-dialog vertical-align-center">
+					<div class="modal-content">
+						<div class="modal-header">
+
+							<h4 class="modal-title" id="myModalLabel">Model is being
+								trained...</h4>
+
+						</div>
+						<div class="modal-body">
+							<img class="img-responsive" src="images/model.gif" alt=""
+								srcset="">
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
