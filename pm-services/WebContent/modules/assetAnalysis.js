@@ -119,6 +119,11 @@ assetsAnalysisApp.directive("assetsAnalysis", function () {
                 $element.find("#flot-line-chart2").empty();
                 $element.find("#flot-line-chart1").empty();
                 $element.find("#flot-line-chart3").empty();
+                suppressLowPumpEfficiency();
+                suppressBlockage();
+                suppressDryRunning();
+                suppressDeviatedTDH();
+                suppressImplerWearing();
                 var x = document.getElementById("kpiDisplay");
                 if(x.style.display === "none")
                 	x.style.display = "block";
