@@ -14,7 +14,8 @@ public class LambdaFunctionHandler implements RequestHandler<Object, String> {
 	public String handleRequest(Object input, Context context) {
 		context.getLogger().log("Input: " + input);
 		try {
-			URL url = new URL("http://kpicalc-env.us-east-2.elasticbeanstalk.com/kpi-services/KPI-Calculation/calculate");
+			System.out.println("lambda called : "+input);
+			URL url = new URL("http://192.168.43.148:8002/kpi-calculation-service/kpi-services/KPI-Calculation/calculate");
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestMethod("POST");
 			conn.setRequestProperty("Content-Type", "application/json");
