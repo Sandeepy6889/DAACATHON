@@ -20,7 +20,6 @@ import com.siemens.primecult.alarmservices.FrequencySamplingService;
 import com.siemens.primecult.core.KPICalculator;
 import com.siemens.primecult.models.ValueRt;
 import com.siemens.storage.DbConnection;
-import com.siemens.storage.SelectOperations;
 
 @Path("/KPI-Calculation")
 public class KPICalculationService {
@@ -30,6 +29,7 @@ public class KPICalculationService {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public ValueRt post(ValueRt requestData) {
+		System.out.println("Request Data "+ requestData);
 		Connection connection = null;
 		try {
 			connection = DbConnection.getDbConnection();
@@ -54,7 +54,7 @@ public class KPICalculationService {
 		} finally {
 			DbConnection.releaseResources(connection);
 		}
-
+		System.out.println("requestData "+requestData);
 		return requestData;
 
 	}

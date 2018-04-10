@@ -3,7 +3,10 @@ package com.siemens.primecult.core;
 import static com.siemens.primecult.init.MqttClientFactory.getMqttClient;
 import static com.siemens.primecult.init.OPCUaClientFactory.getOPCUaClient;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -17,12 +20,18 @@ import com.prosysopc.ua.ServiceException;
 import com.siemens.primecult.models.ValueRt;
 import com.siemens.primecult.utils.ObjectToJSonMapper;
 
+import oracle.OracleConnection;
+import oracle.OracleDBOperation;
+
 public class OPCServerCommunicator {
 
 	private static final String PUMP_TOPIC = "centrifugalPumpData";
 	private static Map<String, Timer> timerMapping = new HashMap<>();
 	private static final int READ_UPDATE_INTERVAL = 10000;
 	private static final int INITIAL_DELAY = 100;
+	private static Connection connection;
+	private static final int noOfRecords = 10;//16384;
+	private static int currentPointer = 0;
 
 	public static String startFetchingData(String assetID) {
 		if (timerMapping.containsKey(assetID))
@@ -40,7 +49,7 @@ public class OPCServerCommunicator {
 			}
 		}, INITIAL_DELAY, READ_UPDATE_INTERVAL);
 		timerMapping.put(assetID, timer);
-		return "data subscribed";
+		return "success";
 	}
 
 	public static String stopFetchingData(String assetID) {
@@ -48,7 +57,7 @@ public class OPCServerCommunicator {
 			return "No asset with this ID was subscribed";
 		timerMapping.get(assetID).cancel();
 		timerMapping.remove(assetID);
-		return "successfully unsubscribed";
+		return "success";
 
 	}
 
@@ -76,12 +85,41 @@ public class OPCServerCommunicator {
 		} catch (ServiceException e) {
 			e.printStackTrace();
 		}
-		double[] valuesArr = new double[4];
+		float[] valuesArr = new float[4];
 		for (int i = 0; i < 4; i++)
-			valuesArr[i] = values[i].getValue().doubleValue();
-		ValueRt valueRt = new ValueRt(assetID, values[0].getSourceTimestamp().getMilliSeconds(), valuesArr);
+			valuesArr[i] = values[i].getValue().floatValue();
+		float[] vibrationValues = getVibrationData(currentPointer++);
+		ValueRt valueRt = new ValueRt(assetID, values[0].getSourceTimestamp().getTimeInMillis(), valuesArr,
+				vibrationValues);
 		String payload = new ObjectToJSonMapper().mapObjToJSonStr(valueRt);
 		getMqttClient().publish(PUMP_TOPIC, payload);
+		currentPointer %= (noOfRecords - 1);
 		System.out.println(payload);
+	}
+
+	private static float[] getVibrationData(int startOffset) {
+		float[] values = new float[64];
+		try {
+			if (connection == null)
+				connection = OracleConnection.getDbConnection();
+			System.out.println((startOffset * 64 + 1) + " - " + ((startOffset * 64 + 1) + 63));
+			List<Double> list = OracleDBOperation.get(connection, startOffset * 64 + 1, (startOffset * 64 + 1) + 63);
+			System.out.println(list.size());
+			for (int i = 0; i < list.size(); i++)
+				values[i] = list.get(i).floatValue();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return values;
 	}
 }
