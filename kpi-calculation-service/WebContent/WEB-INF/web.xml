@@ -32,4 +32,15 @@
 		<servlet-name>jersey-serlvet</servlet-name>
 		<url-pattern>/kpi-services/*</url-pattern>
 	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>init-servlet</servlet-name>
+		<servlet-class>com.siemens.primecult.servlet.LoadOnStartupServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>init-servlet</servlet-name>
+		<url-pattern>/init/*</url-pattern>
+	</servlet-mapping>
 </web-app>
