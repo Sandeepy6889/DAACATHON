@@ -31,7 +31,7 @@ function getRefKPIClass() {
 assetsAnalysisApp.value("baseUri", "services");
 assetsAnalysisApp.factory("KPI", getKPIClass);
 assetsAnalysisApp.factory("RefKPI", getRefKPIClass);
-assetsAnalysisApp.factory("kpiService", function ($http, KPI, RefKPI, $q, baseUri) {
+assetsAnalysisApp.factory("kpiService", function ($http,$rootScope, KPI, RefKPI, $q, baseUri) {
     return {
         getAll: function () {
             var deferred = $q.defer();
@@ -62,13 +62,13 @@ assetsAnalysisApp.factory("kpiService", function ($http, KPI, RefKPI, $q, baseUr
             });
             return deferred.promise;
         },
-        getAlarmStatus: function () {
+        getAlarmStatus: function (assetId) {
             var deferred = $q.defer();
-            var assetId = $('#selectedAsset').find(":selected").text();
-            var promise = $http.get(baseUri + "/kpi/getAlarmStatus/" + assetId);
+            var promise = $http.get($rootScope.appUrls.alarmsStatus + "/"+assetId);
             promise.then(function (response) {
-                var result = response.data;
-                deferred.resolve(result);
+                deferred.resolve(response.data);
+            }).catch(function(error) {
+            	  console.log(JSON.stringify(error));
             });
             return deferred.promise;
         }
@@ -105,6 +105,7 @@ assetsAnalysisApp.directive("assetsAnalysis", function () {
             $scope.getKpi = function () {
             	
             	var newSubscriptionId = $scope.assetId;
+            	console.log('on change newSubscriptionId ', newSubscriptionId);
             	if (angular.isDefined($scope.Timer)) {
             		$scope.stop = $interval.cancel($scope.Timer);
                 } 
@@ -117,16 +118,17 @@ assetsAnalysisApp.directive("assetsAnalysis", function () {
                 
                 $element.find("#flot-line-chart2").empty();
                 $element.find("#flot-line-chart1").empty();
+                $element.find("#flot-line-chart3").empty();
                 var x = document.getElementById("kpiDisplay");
                 if(x.style.display === "none")
                 	x.style.display = "block";
                 
                 $scope.Timer = $interval(function (){
                     kpiService.getCalculatedAllKPI(new Date().getTime(), $scope.assetId).then(function (result) {
-                    	if(newSubscriptionId === $scope.assetId)
+                    	console.log('newSubscriptionId === $scope.assetId',newSubscriptionId, $scope.assetId)
+                    	if(newSubscriptionId === $scope.assetId) {
                         	plotCharts(result);
-    					kpiService.getAlarmStatus().then(function(result) {
-    						//console.log("getAlarmStatus", result);
+    					kpiService.getAlarmStatus($scope.assetId).then(function(result) {
     						var x = result;
     						//blockage
     						if(x[0]!==null && x[0]==1){
@@ -164,6 +166,7 @@ assetsAnalysisApp.directive("assetsAnalysis", function () {
     							suppressImplerWearing();
     						}
     					});
+                    	}
                     });
                 },1000);
             }
@@ -213,12 +216,10 @@ function suppressDeviatedTDH() {
     $('.deviatedTDH').addClass("offline");
 }
 function implerWearing() {
-	debugger;
 	$('.implerWearing').removeClass("offline");
 	$('.implerWearing').addClass("online");
 }
 function suppressImplerWearing() {
-	debugger;
 	$('.implerWearing').removeClass("online");
 	$('.implerWearing').addClass("offline");
 }
