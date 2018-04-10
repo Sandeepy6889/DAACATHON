@@ -104,13 +104,13 @@ public class PumpKPIService {
 		for (int i = 20; i < 300; i++) {
 			long time = new Date().getTime();
 			TableRow row = new TableRow("calculated_kpi");
-			row.add("AssetId", "pump2");
+			row.add("AssetId", "PUMP03");
 			row.add("Flow", i);
 			row.add("TDH", randon.nextInt(40));
 			row.add("Efficiency", randon.nextInt(40));
 			row.add("Timestamp", time);
 			TableRow rrow = new TableRow("refrence_kpi");
-			rrow.add("AssetId", "pump2");
+			rrow.add("AssetId", "PUMP03");
 			rrow.add("Flow", i);
 			rrow.add("TDH", randon.nextInt(40));
 			rrow.add("Efficiency", randon.nextInt(40));
@@ -118,7 +118,7 @@ public class PumpKPIService {
 			
 			DBUtil.insert(row);
 			DBUtil.insert(rrow);
-			System.out.println(i - 19 + " row calculate kpi inserted pump2");
+			System.out.println(i - 19 + " row calculate kpi inserted PUMP03");
 			System.out.println(i - 19 + " row ref kpi inserted");
 		}
 	}

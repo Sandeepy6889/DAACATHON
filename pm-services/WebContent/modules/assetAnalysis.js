@@ -71,6 +71,16 @@ assetsAnalysisApp.factory("kpiService", function ($http,$rootScope, KPI, RefKPI,
             	  console.log(JSON.stringify(error));
             });
             return deferred.promise;
+        },
+        getVibrationData: function (assetId) {
+            var deferred = $q.defer();
+            var promise = $http.get('http://kpicalc-env.us-east-2.elasticbeanstalk.com/kpi-services/KPI-Calculation/fftdata' + "/"+assetId);
+            promise.then(function (response) {
+                deferred.resolve(response.data);
+            }).catch(function(error) {
+            	  console.log(JSON.stringify(error));
+            });
+            return deferred.promise;
         }
     }
 });
@@ -129,10 +139,16 @@ assetsAnalysisApp.directive("assetsAnalysis", function () {
                 	x.style.display = "block";
                 
                 $scope.Timer = $interval(function (){
-                    kpiService.getCalculatedAllKPI(new Date().getTime(), $scope.assetId).then(function (result) {
+                	var endTimestamp = new Date().getTime();
+                    kpiService.getCalculatedAllKPI(endTimestamp, $scope.assetId).then(function (kpiResult) {
                     	console.log('newSubscriptionId === $scope.assetId',newSubscriptionId, $scope.assetId)
                     	if(newSubscriptionId === $scope.assetId) {
-                        	plotCharts(result);
+                        	
+                        	kpiService.getVibrationData($scope.assetId).then(function (vibeData) {
+                        		plotCharts(kpiResult, vibeData);
+                        		console.log("Vibration data ", vibeData)
+                        	});
+                        	
     					kpiService.getAlarmStatus($scope.assetId).then(function(result) {
     						var x = result;
     						//blockage
@@ -233,7 +249,7 @@ function suppressImplerWearing() {
 
 function toggleAlarms() { }
 
-function plotCharts(result) {
+function plotCharts(result, vibeData) {
 
     tDHChartName = "#flot-line-chart1";
     var actualTDHData = result[0];
@@ -273,8 +289,8 @@ function plotCharts(result) {
     
     
     vibChartName="#flot-line-chart3";
-	var actualVibData=result[2];
-	var refVibData=result[3];
+	var actualVibData=vibeData;
+	var refVibData= [];
 	var optionsVib = {
 			series : {
 				lines : {

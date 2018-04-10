@@ -22,7 +22,8 @@ public class FrequencySamplingService {
 		for(float amp : amplitudes)
 		{
 			List<Float> freqAmp = new ArrayList<>();
-			freqAmp.add(freq/60);freqAmp.add(amp);
+			freqAmp.add(freq/60);
+			freqAmp.add(amp);
 			freqAmpListForFFT.add(freqAmp);
 			
 			freqAmpMap.put(freq/60, new BigDecimal(Math.abs(amp)).setScale(4,BigDecimal.ROUND_DOWN));
