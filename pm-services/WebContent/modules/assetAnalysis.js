@@ -289,7 +289,9 @@ function plotCharts(result, vibeData) {
     
     
     vibChartName="#flot-line-chart3";
-	var actualVibData=vibeData;
+	var actualVibData= vibeData;
+	if(vibeData === "")
+		actualVibData = [];
 	var refVibData= [];
 	var optionsVib = {
 			series : {
