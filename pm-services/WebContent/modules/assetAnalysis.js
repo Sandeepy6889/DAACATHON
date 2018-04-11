@@ -171,12 +171,8 @@ assetsAnalysisApp.directive("assetsAnalysis", function () {
                     kpiService.getCalculatedAllKPI(endTimestamp, $scope.assetId).then(function (kpiResult) {
                     	console.log('newSubscriptionId === $scope.assetId',newSubscriptionId, $scope.assetId)
                     	if(newSubscriptionId === $scope.assetId) {
-                        	
-                        	kpiService.getVibrationData($scope.assetId).then(function (vibeData) {
-                        		plotCharts(kpiResult, vibeData);
-                        	});
-                        	
-    					kpiService.getAlarmStatus($scope.assetId).then(function(result) {
+                    		plotCharts(kpiResult);
+                    		kpiService.getAlarmStatus($scope.assetId).then(function(result) {
     						var x = result;
     						//blockage
     						if(x[0]!==null && x[0]==1){
@@ -276,7 +272,7 @@ function suppressImplerWearing() {
 
 function toggleAlarms() { }
 
-function plotCharts(result, vibeData) {
+function plotCharts(result) {
 
     tDHChartName = "#flot-line-chart1";
     var actualTDHData = result[0];
