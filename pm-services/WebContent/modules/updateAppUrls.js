@@ -14,6 +14,7 @@ var assetsManagementApp = angular.module("urlsManagementApp", [])
         this.alarmsStatus = defaults.alarmsStatus;
         this.teachModel = defaults.teachModel;
         this.enggAssets = defaults.enggAssets;
+        this.vibration = defaults.vibration;
     }
     return URLsInfo;
 };

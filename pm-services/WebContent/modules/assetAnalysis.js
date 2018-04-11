@@ -74,7 +74,7 @@ assetsAnalysisApp.factory("kpiService", function ($http,$rootScope, KPI, RefKPI,
         },
         getVibrationData: function (assetId) {
             var deferred = $q.defer();
-            var promise = $http.get('http://kpicalc-env.us-east-2.elasticbeanstalk.com/kpi-services/KPI-Calculation/fftdata' + "/"+assetId);
+            var promise = $http.get($rootScope.appUrls.vibration + "/"+assetId);
             promise.then(function (response) {
                 deferred.resolve(response.data);
             }).catch(function(error) {
@@ -100,6 +100,7 @@ assetsAnalysisApp.directive("assetsAnalysis", function () {
             $scope.assetsIds = [];
             $scope.Timer = null;
             $scope.stop = false;
+            $scope.Timer = {};
             kpiService.getAll().then(function (result) {
                 $scope.kpis = result;
             });
@@ -110,7 +111,10 @@ assetsAnalysisApp.directive("assetsAnalysis", function () {
             $scope.$on('$destroy', function (event) {
             	if (angular.isDefined($scope.Timer)) {
             		$scope.stop = $interval.cancel($scope.Timer);
-                } 
+            		console.log('In ---- going to leave '+$scope.stop);
+            	}
+            	$scope.assetId = "";
+            	console.log('Out ---- going to leave '+$scope.stop);
             });
             $scope.getKpi = function () {
             	
@@ -140,13 +144,36 @@ assetsAnalysisApp.directive("assetsAnalysis", function () {
                 
                 $scope.Timer = $interval(function (){
                 	var endTimestamp = new Date().getTime();
+                    	kpiService.getVibrationData($scope.assetId).then(function (vibeData) {
+                    		if(newSubscriptionId === $scope.assetId) {
+                    		var vibChartName="#flot-line-chart3";
+                    		var actualVibData= vibeData;
+                    		if(vibeData === "")
+                    			actualVibData = [];
+                    		var refVibData= [];
+                    		var optionsVib = {
+                    				series : {
+                    					lines : {
+                    						show : true
+                    					},
+                    					points : {
+                    						show : true
+                    					}
+                    				},
+                    				grid : {
+                    					hoverable : true
+                    				}
+                    			};
+                    		plot(actualVibData,refVibData,optionsVib,vibChartName);
+                    		}
+                    	});
+                	
                     kpiService.getCalculatedAllKPI(endTimestamp, $scope.assetId).then(function (kpiResult) {
                     	console.log('newSubscriptionId === $scope.assetId',newSubscriptionId, $scope.assetId)
                     	if(newSubscriptionId === $scope.assetId) {
                         	
                         	kpiService.getVibrationData($scope.assetId).then(function (vibeData) {
                         		plotCharts(kpiResult, vibeData);
-                        		console.log("Vibration data ", vibeData)
                         	});
                         	
     					kpiService.getAlarmStatus($scope.assetId).then(function(result) {
@@ -286,28 +313,6 @@ function plotCharts(result, vibeData) {
         }
     };
     plot(actualEffData, refEffData, optionsEff, effChartName);
-    
-    
-    vibChartName="#flot-line-chart3";
-	var actualVibData= vibeData;
-	if(vibeData === "")
-		actualVibData = [];
-	var refVibData= [];
-	var optionsVib = {
-			series : {
-				lines : {
-					show : true
-				},
-				points : {
-					show : true
-				}
-			},
-			grid : {
-				hoverable : true
-			}
-		};
-	plot(actualVibData,refVibData,optionsVib,vibChartName);
-
 }
 
 function plot(actualData, RefData, options, chartName) {

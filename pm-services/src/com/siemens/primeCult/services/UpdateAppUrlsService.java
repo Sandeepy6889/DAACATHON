@@ -38,6 +38,8 @@ public class UpdateAppUrlsService {
 		row.update("teach_model", urlsInfo.getTeachModel().trim());
 		row.update("asset_created_p_client", urlsInfo.getAssetCreatedPClient().trim());
 		row.update("engg_assets", urlsInfo.getEnggAssets().trim());
+		row.update("vibration", urlsInfo.getVibration().trim());
+		
 		row.where("id", 1);
 		boolean update = DBUtil.update(row);
 		return update ? "updated successfully" : "failure! could not update";

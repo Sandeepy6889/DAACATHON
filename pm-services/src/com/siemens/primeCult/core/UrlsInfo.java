@@ -14,7 +14,14 @@ public class UrlsInfo implements DbRowToObject{
 	private String teachModel;
 	private String assetCreatedPClient;
 	private String enggAssets;
+	private String vibration;
 	
+	public String getVibration() {
+		return vibration;
+	}
+	public void setVibration(String vibration) {
+		this.vibration = vibration;
+	}
 	public String getEnggAssets() {
 		return enggAssets;
 	}
@@ -76,6 +83,7 @@ public class UrlsInfo implements DbRowToObject{
 		info.setTeachModel(rs.getString("teach_model"));
 		info.setAssetCreatedPClient(rs.getString("asset_created_p_client"));
 		info.setEnggAssets(rs.getString("engg_assets"));
+		info.setVibration(rs.getString("vibration"));
 		records.add(info);
 	}
 	@Override
