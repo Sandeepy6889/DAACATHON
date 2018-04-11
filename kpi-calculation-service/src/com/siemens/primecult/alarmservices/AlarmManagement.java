@@ -103,7 +103,7 @@ public class AlarmManagement {
 			currentAlarmsStatus.get(assetId).set(alarmType.getIndex(), GONE);
 		}
 
-		float[] measuredValues = rawValues.getKPIValues();
+		float[] measuredValues = rawValues.getkpiValues();
 		TableRow row = new TableRow("alarms");
 		row.set("asset_id", assetId);
 		row.set("fluid_flow", measuredValues[FLUID_FLOW_RATE]);
