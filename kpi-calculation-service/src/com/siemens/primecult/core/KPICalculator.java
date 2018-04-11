@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.siemens.primecult.alarmservices.AlarmManagement;
+import com.siemens.primecult.alarmservices.FrequencySamplingService;
 import com.siemens.primecult.models.KPIData;
 import com.siemens.primecult.models.ValueRt;
 import com.siemens.storage.InsertOperations;
@@ -84,6 +85,7 @@ public class KPICalculator {
 			refEfficiency = getRefValue(requestData.getAssetID(), values[FLUID_FLOW_RATE], "Efficiency");
 			insertKPI("refrence_kpi", refTDH, refEfficiency, requestData);
 		}
+		FrequencySamplingService.createFrequencySamples(requestData);
 		evaluateAlarmState(tdh, efficiency, refTDH, refEfficiency, requestData, isAssetTrained);
 	}
 
