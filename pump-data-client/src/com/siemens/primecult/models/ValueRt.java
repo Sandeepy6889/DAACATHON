@@ -22,7 +22,7 @@ public class ValueRt {
 		this.setAssetID(assetID);
 		this.setTimeStamp(timeStamp);
 		this.setKpiValues(kpiValues);
-		this.setVibrationAmplitudes(vibrationAmplitudes);
+		this.setValues(vibrationAmplitudes);
 	}
 
 	public String getAssetID() {
@@ -41,11 +41,19 @@ public class ValueRt {
 		this.timeStamp = timeStamp;
 	}
 
-	public float[] getVibrationAmplitudes() {
+	public float[] getKpiValues() {
+		return kpiValues;
+	}
+
+	public void setKpiValues(float[] kpiValues) {
+		this.kpiValues = kpiValues;
+	}
+
+	public float[] getValues() {
 		return values;
 	}
 
-	public void setVibrationAmplitudes(float[] values) {
+	public void setValues(float[] values) {
 		this.values = values;
 	}
 
@@ -53,11 +61,8 @@ public class ValueRt {
 		return samplingFrequency;
 	}
 
-	public float[] getkpiValues() {
-		return kpiValues;
+	public void setSamplingFrequency(float samplingFrequency) {
+		this.samplingFrequency = samplingFrequency;
 	}
-
-	public void setKpiValues(float[] kpiValues) {
-		this.kpiValues = kpiValues;
-	}
+	
 }

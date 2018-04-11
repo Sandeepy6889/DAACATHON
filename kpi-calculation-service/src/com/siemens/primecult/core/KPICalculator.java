@@ -67,7 +67,7 @@ public class KPICalculator {
 		float dischPipeDiameter = paramaData.getDischargeDiameter();
 		float fluidDensity = paramaData.getFluidDensity();
 		float motorEfficiency = paramaData.getMotorEfficiency();
-		float[] values = requestData.getkpiValues();
+		float[] values = requestData.getKpiValues();
 		float dischHead = calcDischargeHead(values[DISCH_PRESSURE], fluidDensity, values[FLUID_FLOW_RATE],
 				dischPipeDiameter);
 		float suctionHead = calcSuctionHead(values[SUCT_PRESSURE], fluidDensity, values[FLUID_FLOW_RATE],
@@ -89,15 +89,15 @@ public class KPICalculator {
 
 	private void evaluateAlarmState(float tdh, float efficiency, float refTDH, float refEfficiency, ValueRt requestData,
 			boolean isAssetTrained) throws SQLException {
-		KPIData calculatedKPI = new KPIData(requestData.getkpiValues()[FLUID_FLOW_RATE], efficiency, tdh);
-		KPIData refKPI = new KPIData(requestData.getkpiValues()[FLUID_FLOW_RATE], refEfficiency, refTDH);
+		KPIData calculatedKPI = new KPIData(requestData.getKpiValues()[FLUID_FLOW_RATE], efficiency, tdh);
+		KPIData refKPI = new KPIData(requestData.getKpiValues()[FLUID_FLOW_RATE], refEfficiency, refTDH);
 		new AlarmManagement(connection).setAlarmsState(calculatedKPI, refKPI, requestData, isAssetTrained);
 	}
 
 	private void insertKPI(String tableName, float tdh, float efficiency, ValueRt requestData) throws SQLException {
 		TableRow row = new TableRow(tableName);
 		row.set("AssetId", requestData.getAssetID());
-		row.set("Flow", requestData.getkpiValues()[FLUID_FLOW_RATE]);
+		row.set("Flow", requestData.getKpiValues()[FLUID_FLOW_RATE]);
 		row.set("TDH", tdh);
 		row.set("Efficiency", efficiency);
 		row.set("Timestamp", requestData.getTimeStamp());

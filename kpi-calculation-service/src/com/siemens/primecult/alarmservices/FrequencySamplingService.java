@@ -15,7 +15,7 @@ public class FrequencySamplingService {
 	public static Map<Float, BigDecimal> createFrequencySamples(ValueRt rawValues){
 		
 		Map<Float,BigDecimal> freqAmpMap = new HashMap<>();
-		float [] amplitudes = rawValues.getVibrationAmplitudes();
+		float [] amplitudes = rawValues.getValues();
 		float freq = 0;
 		float sampleRate = rawValues.getSamplingFrequency()/(amplitudes.length-1);
 		List<List<Float>> freqAmpListForFFT = new ArrayList<>();
