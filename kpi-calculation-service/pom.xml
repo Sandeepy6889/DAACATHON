@@ -11,63 +11,46 @@
 	</properties>
 
 	<dependencies>
-		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
-		<dependency>
+	
+	<!-- https://mvnrepository.com/artifact/org.codehaus.jackson/jackson-xc -->
+<!-- <dependency>
+    <groupId>org.codehaus.jackson</groupId>
+    <artifactId>jackson-xc</artifactId>
+    <version>1.9.13</version>
+</dependency>
+ -->	
+
+	<!-- https://mvnrepository.com/artifact/org.codehaus.jackson/jackson-jaxrs -->
+<!-- <dependency>
+    <groupId>org.codehaus.jackson</groupId>
+    <artifactId>jackson-jaxrs</artifactId>
+    <version>1.9.13</version>
+</dependency>
+ -->	
+
+
+		<!-- <dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-core</artifactId>
-			<version>2.0.5</version>
-		</dependency>
-
-		<!-- https://mvnrepository.com/artifact/org.codehaus.jackson/jackson-mapper-asl -->
-		<dependency>
-			<groupId>org.codehaus.jackson</groupId>
-			<artifactId>jackson-mapper-asl</artifactId>
-			<version>1.9.13</version>
-		</dependency>
-
-		<!-- https://mvnrepository.com/artifact/org.codehaus.jackson/jackson-core-asl -->
-		<dependency>
-			<groupId>org.codehaus.jackson</groupId>
-			<artifactId>jackson-core-asl</artifactId>
-			<version>1.9.13</version>
-		</dependency>
-
-		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-annotations -->
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-annotations</artifactId>
-			<version>2.9.5</version>
-		</dependency>
-
-
-		<!-- https://mvnrepository.com/artifact/org.codehaus.jackson/jackson-xc -->
-		<dependency>
-			<groupId>org.codehaus.jackson</groupId>
-			<artifactId>jackson-xc</artifactId>
-			<version>1.9.13</version>
-		</dependency>
-
-
-		<!-- https://mvnrepository.com/artifact/org.codehaus.jackson/jackson-jaxrs -->
-		<dependency>
-			<groupId>org.codehaus.jackson</groupId>
-			<artifactId>jackson-jaxrs</artifactId>
-			<version>1.9.13</version>
-		</dependency>
-
-
-		<!-- https://mvnrepository.com/artifact/org.codehaus.jackson/jackson-mapper-lgpl -->
-		<dependency>
-			<groupId>org.codehaus.jackson</groupId>
-			<artifactId>jackson-mapper-lgpl</artifactId>
-			<version>1.9.13</version>
-		</dependency>
-
-
-		<!-- <dependency> <groupId>com.sun.jersey</groupId> <artifactId>jersey-server</artifactId> 
-			<version>${jersey.version}</version> </dependency> <dependency> <groupId>com.sun.jersey</groupId> 
-			<artifactId>jersey-json</artifactId> <version>${jersey.version}</version> 
-			</dependency> -->
+			<artifactId>jackson-databind</artifactId>
+			<version>2.2.3</version>
+		</dependency> --><!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core 
+			<dependency> <groupId>com.fasterxml.jackson.core</groupId> <artifactId>jackson-core</artifactId> 
+			<version>2.0.5</version> </dependency> https://mvnrepository.com/artifact/org.codehaus.jackson/jackson-mapper-asl 
+			<dependency> <groupId>org.codehaus.jackson</groupId> <artifactId>jackson-mapper-asl</artifactId> 
+			<version>1.9.13</version> </dependency> https://mvnrepository.com/artifact/org.codehaus.jackson/jackson-core-asl 
+			<dependency> <groupId>org.codehaus.jackson</groupId> <artifactId>jackson-core-asl</artifactId> 
+			<version>1.9.13</version> </dependency> https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-annotations 
+			<dependency> <groupId>com.fasterxml.jackson.core</groupId> <artifactId>jackson-annotations</artifactId> 
+			<version>2.9.5</version> </dependency> https://mvnrepository.com/artifact/org.codehaus.jackson/jackson-xc 
+			<dependency> <groupId>org.codehaus.jackson</groupId> <artifactId>jackson-xc</artifactId> 
+			<version>1.9.13</version> </dependency> https://mvnrepository.com/artifact/org.codehaus.jackson/jackson-jaxrs 
+			<dependency> <groupId>org.codehaus.jackson</groupId> <artifactId>jackson-jaxrs</artifactId> 
+			<version>1.9.13</version> </dependency> https://mvnrepository.com/artifact/org.codehaus.jackson/jackson-mapper-lgpl 
+			<dependency> <groupId>org.codehaus.jackson</groupId> <artifactId>jackson-mapper-lgpl</artifactId> 
+			<version>1.9.13</version> </dependency> <dependency> <groupId>com.sun.jersey</groupId> 
+			<artifactId>jersey-server</artifactId> <version>${jersey.version}</version> 
+			</dependency> <dependency> <groupId>com.sun.jersey</groupId> <artifactId>jersey-json</artifactId> 
+			<version>${jersey.version}</version> </dependency> -->
 	</dependencies>
 
 	<build>
