@@ -6,6 +6,8 @@ import static com.siemens.primecult.alarmservices.AlarmManagement.removeEntryOfA
 import static com.siemens.primecult.core.KPICalculator.makeEntryToManageAssetTrainingStatus;
 import static com.siemens.primecult.core.KPICalculator.removeEntryOfAssetFromAssetTrainingStatusManagement;
 
+import static com.siemens.primecult.alarmservices.FrequencySamplingService.removeFrequencyAmplitudeData;
+
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -94,6 +96,7 @@ public class KPICalculationService {
 	@Consumes(MediaType.TEXT_PLAIN)
 	public String clearCache(@PathParam("assetId") String assetId) {
 		removeEntryOfAssetFromAlarmManagement(assetId);
+		removeFrequencyAmplitudeData(assetId);
 		return removeEntryOfAssetFromAssetTrainingStatusManagement(assetId);
 	}
 

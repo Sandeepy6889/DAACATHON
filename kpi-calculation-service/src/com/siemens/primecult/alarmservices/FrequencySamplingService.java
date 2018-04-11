@@ -32,4 +32,11 @@ public class FrequencySamplingService {
 	public static List<List<Float>> getFrequencyAmplitudeData(String assetId){
 		return assetVibrationData.get(assetId);
 	}
+	
+	public static String removeFrequencyAmplitudeData(String assetId){
+		if(assetVibrationData.get(assetId) == null)
+			return "asset not configured";
+		assetVibrationData.remove(assetId);
+		return "success";
+	}
 }

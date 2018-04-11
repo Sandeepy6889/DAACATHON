@@ -55,7 +55,7 @@ public class AlarmManagement {
 	
 	public static String removeEntryOfAssetFromAlarmManagement(String assetId) {
 		if (currentAlarmsStatus.get(assetId) == null)
-			return "asset Not present";
+			return "asset not configured";
 		currentAlarmsStatus.remove(assetId);
 		return "success";
 	}
