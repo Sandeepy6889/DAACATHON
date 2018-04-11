@@ -44,15 +44,34 @@
 					<div class="input-group">
 						<div class="input-group-addon">Asset
 							Created(KPI-Calculation)</div>
-						<input name="assetCreated" ng-required="true"
+						<input name="assetCreated" 
 							ng-model="urlsInfo.assetCreated" type="text" class="form-control">
 					</div>
 				</div>
+				
+				<div class="form-group">
+					<div class="input-group">
+						<div class="input-group-addon">Remove Asset (Pump data client)</div>
+						<input name="assetRemoved"
+							ng-model="urlsInfo.assetRemoved" type="text" class="form-control">
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<div class="input-group">
+						<div class="input-group-addon">clear Alarm Cache (KPI-Calculation)</div>
+						<input name="clearAlarmCache"
+							ng-model="urlsInfo.clearAlarmCache" type="text" class="form-control">
+					</div>
+				</div>
+				
+				
+				
 				<div class="form-group">
 					<div class="input-group">
 						<div class="input-group-addon">Asset Created(Pump data
 							client)</div>
-						<input name="assetCreated" ng-required="true"
+						<input name="assetCreated" 
 							ng-model="urlsInfo.assetCreatedPClient" type="text"
 							class="form-control">
 					</div>
@@ -62,7 +81,7 @@
 					<div class="input-group">
 						<div class="input-group-addon">Asset
 							Trained(KPI-Calculation)</div>
-						<input name="assetTrained" ng-required="true"
+						<input name="assetTrained" 
 							ng-model="urlsInfo.assetTrained" type="text" class="form-control">
 					</div>
 				</div>

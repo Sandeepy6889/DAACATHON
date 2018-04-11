@@ -52,6 +52,14 @@ assetsManagementApp.factory("assetService", function ($http,$rootScope, Asset, $
             });
             return deferred.promise;
         },
+        deleteAsset: function (assetId) {
+            var deferred = $q.defer();
+            var promise = $http.get(baseUri + "/assetPrmtz/delete/"+assetId);
+            promise.then(function (response) {
+                deferred.resolve(response.data);
+            });
+            return deferred.promise;
+        },
         notifyOpcForSubscription: function (assetId) {
             var deferred = $q.defer();
             var promise = $http.get($rootScope.appUrls.assetCreated + "/" + assetId);
@@ -69,6 +77,31 @@ assetsManagementApp.factory("assetService", function ($http,$rootScope, Asset, $
             promise.then(function (response) {
             	var resp = response;
             	console.log('response from pump data client ',resp);
+                deferred.resolve(response.data);
+            }).catch(function(error) {
+            	  console.log(JSON.stringify(error));
+            	  deferred.resolve(error);
+            });
+            return deferred.promise;
+        },
+        notifyPumpDataClientAssetRemoved: function (assetId) {
+            var deferred = $q.defer();
+            var promise = $http.get($rootScope.appUrls.assetRemoved + "/" + assetId);
+            promise.then(function (response) {
+            	var resp = response;
+            	console.log('Delete : response from pump data client ',resp);
+                deferred.resolve(response.data);
+            }).catch(function(error) {
+            	  console.log(JSON.stringify(error));
+            	  deferred.resolve(error);
+            });
+            return deferred.promise;
+        },
+        clearAlarmCache: function (assetId) {
+            var deferred = $q.defer();
+            var promise = $http.get($rootScope.appUrls.clearAlarmCache + "/" + assetId);
+            promise.then(function (response) {
+            	console.log('KPI :  ',response);
                 deferred.resolve(response.data);
             }).catch(function(error) {
             	  console.log(JSON.stringify(error));
@@ -182,13 +215,29 @@ assetsManagementApp.directive("assetsManagement", function () {
             }
            
             $scope.removeAsset = function (rmAsset) {
-            	for(var i = 0;i < $scope.confAssets.length;i++){
-            		if($scope.confAssets[i].assetID === rmAsset.assetID){
-            			$scope.confAssets.splice(i,1);
-            			break;
-            		}
-            	}
+            	$scope.isAlertEnable = false;
+            	assetService.deleteAsset(rmAsset.assetID).then(function (result) {
+    				if(result === 'SUCCESS'){
+    					for(var i = 0;i < $scope.confAssets.length;i++){
+    	            		if($scope.confAssets[i].assetID === rmAsset.assetID){
+    	            			$scope.confAssets.splice(i,1);
+    	            			$scope.nonConfAssets.push(rmAsset);
+    	            			assetService.clearAlarmCache(rmAsset.assetID).then(function(result){
+    	            				console.log("Cache cleared", result);
+    	            			});
+    	            			assetService.notifyPumpDataClientAssetRemoved(rmAsset.assetID).then(function(result){
+    	            				console.log("Asset unsubscribed from pump data client", result);
+    	            			});
+    	            			break;
+    	            		}
+    	            	}
+    				}
+    				else{
+    					console.log('error while deleting asset, id ',rmAsset.assetID);
+    				}
+    			});
             }
+
             $scope.showAssetInfo = function(asset){
             	$scope.assetInfo = asset;
             	 $("#assetInfoBox").modal("show");

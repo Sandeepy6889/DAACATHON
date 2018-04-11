@@ -157,11 +157,11 @@ assetsAnalysisApp.directive("assetsAnalysis", function () {
                     						show : true
                     					},
                     					points : {
-                    						show : true
+                    						show : false
                     					}
                     				},
                     				grid : {
-                    					hoverable : true
+                    					hoverable : false
                     				}
                     			};
                     		plot(actualVibData,refVibData,optionsVib,vibChartName);
@@ -288,11 +288,11 @@ function plotCharts(result, vibeData) {
                 show: true
             },
             points: {
-                show: true
+                show: false
             }
         },
         grid: {
-            hoverable: true
+            hoverable: false
         }
     };
     plot(actualTDHData, refTDHData, optionsTDH, tDHChartName);
@@ -305,11 +305,11 @@ function plotCharts(result, vibeData) {
                 show: true
             },
             points: {
-                show: true
+                show: false
             }
         },
         grid: {
-            hoverable: true
+            hoverable: false
         }
     };
     plot(actualEffData, refEffData, optionsEff, effChartName);

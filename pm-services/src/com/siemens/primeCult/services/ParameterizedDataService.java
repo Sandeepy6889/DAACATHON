@@ -6,6 +6,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
@@ -50,5 +51,19 @@ public class ParameterizedDataService {
 			return pumpData;
 		else
 			return null;
+	}
+	
+	@GET
+	@Path("/delete/{assetId}")
+	@Produces(MediaType.TEXT_PLAIN)
+	public String delete(@PathParam("assetId") String assetId) {
+		TableRow row = new TableRow("paramdata");
+		row.where("assetid", assetId);
+		boolean isSuccess = DBUtil.delete(row);
+		System.out.println("Deleted : "+isSuccess+" id "+assetId);
+		if (isSuccess)
+			return "SUCCESS";
+		else
+			return "FAIL";
 	}
 }
