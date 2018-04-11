@@ -32,5 +32,8 @@
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/java-property-utils-1.7.1.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/javax.servlet.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/databaseAPI.jar"/>
+	<classpathentry kind="lib" path="/pm-services/WebContent/WEB-INF/lib/jackson-annotations-2.0.5.jar"/>
+	<classpathentry kind="lib" path="/pm-services/WebContent/WEB-INF/lib/jackson-core-2.0.5.jar"/>
+	<classpathentry kind="lib" path="/pm-services/WebContent/WEB-INF/lib/jackson-databind-2.0.5.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
