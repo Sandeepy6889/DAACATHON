@@ -1,7 +1,13 @@
 package com.siemens.primecult.kpiServices;
 
 import static com.siemens.primecult.alarmservices.AlarmManagement.makeEntryToManageAlarmsForAsset;
+import static com.siemens.primecult.alarmservices.AlarmManagement.removeEntryOfAssetFromAlarmManagement;
+
 import static com.siemens.primecult.core.KPICalculator.makeEntryToManageAssetTrainingStatus;
+import static com.siemens.primecult.core.KPICalculator.removeEntryOfAssetFromAssetTrainingStatusManagement;
+
+import static com.siemens.primecult.alarmservices.FrequencySamplingService.removeFrequencyAmplitudeData;
+
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -82,6 +88,16 @@ public class KPICalculationService {
 	public String createCache(@PathParam("assetId") String assetId) {
 		makeEntryToManageAlarmsForAsset(assetId);
 		return makeEntryToManageAssetTrainingStatus(assetId);
+	}
+	
+	@GET
+	@Path("/assetremoved/{assetId}")
+	@Produces(MediaType.TEXT_PLAIN)
+	@Consumes(MediaType.TEXT_PLAIN)
+	public String clearCache(@PathParam("assetId") String assetId) {
+		removeEntryOfAssetFromAlarmManagement(assetId);
+		removeFrequencyAmplitudeData(assetId);
+		return removeEntryOfAssetFromAssetTrainingStatusManagement(assetId);
 	}
 
 	@GET

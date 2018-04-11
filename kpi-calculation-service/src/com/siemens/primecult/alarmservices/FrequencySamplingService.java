@@ -1,6 +1,5 @@
 package com.siemens.primecult.alarmservices;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,9 +11,8 @@ public class FrequencySamplingService {
 	
 	private static Map<String,List<List<Float>>> assetVibrationData = new HashMap<>();
 
-	public static Map<Float, BigDecimal> createFrequencySamples(ValueRt rawValues){
+	public static void createFrequencySamples(ValueRt rawValues){
 		
-		Map<Float,BigDecimal> freqAmpMap = new HashMap<>();
 		float [] amplitudes = rawValues.getValues();
 		float freq = 0;
 		float sampleRate = rawValues.getSamplingFrequency()/(amplitudes.length-1);
@@ -24,17 +22,21 @@ public class FrequencySamplingService {
 			List<Float> freqAmp = new ArrayList<>();
 			freqAmp.add(freq/60);
 			freqAmp.add(amp);
-			freqAmpListForFFT.add(freqAmp);
-			
-			freqAmpMap.put(freq/60, new BigDecimal(Math.abs(amp)).setScale(4,BigDecimal.ROUND_DOWN));
+			freqAmpListForFFT.add(freqAmp);			
 			freq = freq +sampleRate;
-		}
-		
+		}		
 		assetVibrationData.put(rawValues.getAssetID(), freqAmpListForFFT);
-		return freqAmpMap;		
+		return;		
 	}
 	
 	public static List<List<Float>> getFrequencyAmplitudeData(String assetId){
 		return assetVibrationData.get(assetId);
+	}
+	
+	public static String removeFrequencyAmplitudeData(String assetId){
+		if(assetVibrationData.get(assetId) == null)
+			return "asset not configured";
+		assetVibrationData.remove(assetId);
+		return "success";
 	}
 }
