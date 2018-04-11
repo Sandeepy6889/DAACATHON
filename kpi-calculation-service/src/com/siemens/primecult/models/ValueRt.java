@@ -18,12 +18,11 @@ public class ValueRt {
 	public ValueRt() {
 	}
 
-	public ValueRt(String assetID, long timeStamp, float[] kpiValues, float[] vibrationAmplitudes , float samplingFrequency) {
+	public ValueRt(String assetID, long timeStamp, float[] kpiValues, float[] vibrationAmplitudes) {
 		this.setAssetID(assetID);
 		this.setTimeStamp(timeStamp);
 		this.setKpiValues(kpiValues);
 		this.setVibrationAmplitudes(vibrationAmplitudes);
-		this.setSamplingFrequency(samplingFrequency);
 	}
 
 	public String getAssetID() {
@@ -52,10 +51,6 @@ public class ValueRt {
 
 	public float getSamplingFrequency() {
 		return samplingFrequency;
-	}
-
-	public void setSamplingFrequency(float samplingFrequency) {
-		this.samplingFrequency = samplingFrequency;
 	}
 
 	public float[] getkpiValues() {
