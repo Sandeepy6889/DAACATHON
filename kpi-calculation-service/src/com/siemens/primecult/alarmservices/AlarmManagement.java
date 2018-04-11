@@ -52,6 +52,13 @@ public class AlarmManagement {
 		currentAlarmsStatus.put(assetId, Arrays.asList(GONE, GONE, GONE, GONE, GONE));
 		return "success";
 	}
+	
+	public static String removeEntryOfAssetFromAlarmManagement(String assetId) {
+		if (currentAlarmsStatus.get(assetId) == null)
+			return "asset Not present";
+		currentAlarmsStatus.remove(assetId);
+		return "success";
+	}
 
 	public void setAlarmsState(KPIData calculatedKPI, KPIData refrencedKPI, ValueRt rawValue, boolean isAssetTrained) throws SQLException {
 		// get threshold from db

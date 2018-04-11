@@ -39,6 +39,13 @@ public class KPICalculator {
 		currentTrainingStatus.put(assetId, false);
 		return "success";
 	}
+	
+	public static String removeEntryOfAssetFromAssetTrainingStatusManagement(String assetId) {
+		if (currentTrainingStatus.get(assetId)== null)
+			return "asset not present";
+		currentTrainingStatus.remove(assetId);
+		return "success";
+	}
 
 	public static String changeTrainingStatus(String assetId) {
 		if (currentTrainingStatus.get(assetId) == null)
