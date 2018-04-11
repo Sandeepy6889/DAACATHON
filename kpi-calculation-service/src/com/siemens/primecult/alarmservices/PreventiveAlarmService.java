@@ -22,7 +22,7 @@ public class PreventiveAlarmService {
 	}
 
 	private static boolean checkIfPreventiveAlarm(AlarmTypes alarmType, ValueRt rawValues) {
-		float[] measuredParameters = rawValues.getValues();
+		float[] measuredParameters = rawValues.getKPIValues();
 		switch (alarmType) {
 		case BLOCKAGE:
 			return measuredParameters[FLUID_FLOW_RATE] == 0 && measuredParameters[SUCT_PRESSURE] != 0

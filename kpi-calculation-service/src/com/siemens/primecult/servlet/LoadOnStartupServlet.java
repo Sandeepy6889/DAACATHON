@@ -6,6 +6,9 @@ import static com.siemens.primecult.core.KPICalculator.makeEntryToManageAssetTra
 import static com.siemens.storage.DbConnection.getDbConnection;
 import static com.siemens.storage.DbConnection.releaseResources;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -28,6 +31,7 @@ public class LoadOnStartupServlet extends HttpServlet {
 		super.init();
 		initializeCacheIfAssetConfigured();
 		initializeTrainingStatusIfAssetConfigured();
+		trainVibrationModelOnLoad();
 	}
 
 	private void initializeCacheIfAssetConfigured() {
@@ -65,6 +69,7 @@ public class LoadOnStartupServlet extends HttpServlet {
 			while (rs.next()) {
 				assetIds.add(rs.getString("asset_id"));
 			}
+			System.out.println(assetIds);
 			for (String assetId : assetIds)
 				changeTrainingStatus(assetId);
 			rs.close();
@@ -74,6 +79,22 @@ public class LoadOnStartupServlet extends HttpServlet {
 		} finally {
 			DbConnection.releaseResources(connection);
 		}
+	}
+
+	private static void trainVibrationModelOnLoad() {
+		URL url;
+		try {
+			url = new URL("http://impellerfaultpredictionohio-dev.us-east-2.elasticbeanstalk.com/train");
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			conn.setRequestMethod("GET");
+			conn.setDoOutput(true);
+			conn.getResponseMessage();
+			// System.out.println(conn.getResponseMessage());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return;
 	}
 
 	public static void main(String[] args) {
