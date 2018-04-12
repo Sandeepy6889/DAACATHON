@@ -25,8 +25,8 @@ public class OracleDBOperation {
 		rs = stmt.executeQuery(query);
 		List<Double> list = new ArrayList<>();
 		while (rs.next()) {
-			//list.add(rs.getDouble("amplitude"));
-			list.add(Double.valueOf(rs.getInt("id")));
+			list.add(rs.getDouble("amplitude"));
+			//list.add(Double.valueOf(rs.getInt("id")));
 		}
 		rs.close();
 		stmt.close();
