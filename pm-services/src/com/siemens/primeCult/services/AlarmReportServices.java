@@ -39,7 +39,7 @@ public class AlarmReportServices {
 		
 		for(int i = 20; ;i++) {
 			TableRow row = new TableRow("alarms");
-			row.add("asset_id", "pump1");
+			row.add("asset_id", "PUMP01");
 			row.add("fluid_flow", i);
 			row.add("suction_pressure", i);
 			row.add("discharge_pressure", i);

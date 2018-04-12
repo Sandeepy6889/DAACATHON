@@ -15,7 +15,21 @@ public class UrlsInfo implements DbRowToObject{
 	private String assetCreatedPClient;
 	private String enggAssets;
 	private String vibration;
+	private String assetRemoved;
+	private String clearAlarmCache;
 	
+	public String getAssetRemoved() {
+		return assetRemoved;
+	}
+	public void setAssetRemoved(String assetRemoved) {
+		this.assetRemoved = assetRemoved;
+	}
+	public String getClearAlarmCache() {
+		return clearAlarmCache;
+	}
+	public void setClearAlarmCache(String clearAlarmCache) {
+		this.clearAlarmCache = clearAlarmCache;
+	}
 	public String getVibration() {
 		return vibration;
 	}
@@ -84,6 +98,8 @@ public class UrlsInfo implements DbRowToObject{
 		info.setAssetCreatedPClient(rs.getString("asset_created_p_client"));
 		info.setEnggAssets(rs.getString("engg_assets"));
 		info.setVibration(rs.getString("vibration"));
+		info.setAssetRemoved(rs.getString("asset_removed"));
+		info.setClearAlarmCache(rs.getString("clear_alarm_cache"));
 		records.add(info);
 	}
 	@Override

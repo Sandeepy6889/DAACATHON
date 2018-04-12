@@ -39,7 +39,8 @@ public class UpdateAppUrlsService {
 		row.update("asset_created_p_client", urlsInfo.getAssetCreatedPClient().trim());
 		row.update("engg_assets", urlsInfo.getEnggAssets().trim());
 		row.update("vibration", urlsInfo.getVibration().trim());
-		
+		row.update("asset_removed", urlsInfo.getAssetRemoved().trim());
+		row.update("clear_alarm_cache", urlsInfo.getClearAlarmCache().trim());
 		row.where("id", 1);
 		boolean update = DBUtil.update(row);
 		return update ? "updated successfully" : "failure! could not update";
