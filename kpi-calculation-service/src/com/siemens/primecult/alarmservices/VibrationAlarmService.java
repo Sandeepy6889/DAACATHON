@@ -43,7 +43,9 @@ public class VibrationAlarmService {
 			while ((line = reader.readLine()) != null) {
 				result.append(line);
 			}
-			return Boolean.getBoolean(result.toString());
+			System.out.println("vibration result-------1" +result.toString());
+			System.out.println("vibration result------" + Boolean.valueOf(result.toString()));
+			return Boolean.valueOf(result.toString());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
