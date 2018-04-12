@@ -1,4 +1,4 @@
-package oracle;
+package com.siemens.primecult.oracle;
 
 import java.io.IOException;
 import java.io.InputStream;

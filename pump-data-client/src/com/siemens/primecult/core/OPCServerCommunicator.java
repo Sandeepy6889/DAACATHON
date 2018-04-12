@@ -1,6 +1,6 @@
 package com.siemens.primecult.core;
 
-import static com.siemens.primecult.core.OpcNodesInfo.NAME_SPACE_INDEX;
+import static com.siemens.primecult.core.DataClientConfiguration.NAME_SPACE_INDEX;
 import static com.siemens.primecult.init.MqttClientFactory.getMqttClient;
 import static com.siemens.primecult.init.OPCUaClientFactory.getOPCUaClient;
 
@@ -19,10 +19,9 @@ import org.opcfoundation.ua.core.TimestampsToReturn;
 import com.amazonaws.services.iot.client.AWSIotException;
 import com.prosysopc.ua.ServiceException;
 import com.siemens.primecult.models.ValueRt;
+import com.siemens.primecult.oracle.OracleConnection;
+import com.siemens.primecult.oracle.OracleDBOperation;
 import com.siemens.primecult.utils.ObjectToJSonMapper;
-
-import oracle.OracleConnection;
-import oracle.OracleDBOperation;
 
 public class OPCServerCommunicator {
 
@@ -63,12 +62,11 @@ public class OPCServerCommunicator {
 	}
 
 	private static NodeId[] getNodeIds(String assetID) {
-
-		NodeId ffNode = new NodeId(NAME_SPACE_INDEX, assetID + "_FF");
-		NodeId psNode = new NodeId(NAME_SPACE_INDEX, assetID + "_Ps");
-		NodeId pdNode = new NodeId(NAME_SPACE_INDEX, assetID + "_Pd");
-		NodeId motorCurrent = new NodeId(NAME_SPACE_INDEX, assetID + "_AMP");
-		return new NodeId[] { ffNode, psNode, pdNode, motorCurrent };
+		NodeId ffNode = new NodeId(NAME_SPACE_INDEX, assetID + "_FF||OUT");
+		NodeId psNode = new NodeId(NAME_SPACE_INDEX, assetID + "_Ps||OUT");
+		NodeId pdNode = new NodeId(NAME_SPACE_INDEX, assetID + "_Pd||OUT");
+		NodeId motorPower = new NodeId(NAME_SPACE_INDEX, assetID + "_PWR||OUT");
+		return new NodeId[] { ffNode, psNode, pdNode, motorPower };
 
 	}
 
@@ -117,11 +115,18 @@ public class OPCServerCommunicator {
 		return values;
 	}
 
-	public static void main(String[] args)
-			throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
-		if (connection == null)
-			connection = OracleConnection.getDbConnection();
-		List<Double> list = OracleDBOperation.get(connection, 1, 63);
-		System.out.println(list);
+	public static void disconnect() {
+		if (getOPCUaClient() != null) {
+			for (String assetID : timerMapping.keySet())
+				timerMapping.get(assetID).cancel();
+			timerMapping.clear();
+			if (getOPCUaClient().isConnected())
+				getOPCUaClient().disconnect();
+			try {
+				getMqttClient().disconnect();
+			} catch (AWSIotException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }
