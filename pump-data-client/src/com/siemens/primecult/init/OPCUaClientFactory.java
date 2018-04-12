@@ -1,5 +1,7 @@
 package com.siemens.primecult.init;
 
+import static com.siemens.primecult.core.OpcNodesInfo.APP_NAME;
+
 import java.util.Locale;
 
 import org.opcfoundation.ua.builtintypes.LocalizedText;
@@ -12,15 +14,11 @@ import org.opcfoundation.ua.transport.security.SecurityPolicy;
 import com.prosysopc.ua.ApplicationIdentity;
 import com.prosysopc.ua.UserIdentity;
 import com.prosysopc.ua.client.UaClient;
+import com.siemens.primecult.core.OpcNodesInfo;
 
 public class OPCUaClientFactory {
 
 	private static UaClient uaClient = initOPCUAClient();
-	// private static final String URI =
-	// "opc.tcp://14.97.191.56:4841/OpcUaServer_901";
-	private static final String URI = "opc.tcp://This-PC:53530/OPCUA/SimulationServer";
-	// private static final String APP_NAME = "OpcUaServer_901";
-	private static final String APP_NAME = "SimulationServer";
 
 	private OPCUaClientFactory() {
 	}
@@ -32,7 +30,7 @@ public class OPCUaClientFactory {
 	private static UaClient initOPCUAClient() {
 		UaClient opcClient = null;
 		try {
-			opcClient = new UaClient(URI);
+			opcClient = new UaClient(OpcNodesInfo.URI);
 			final ApplicationIdentity identity = ApplicationIdentity
 					.loadOrCreateCertificate(getApplicationDescription(), "Organisation", null, null, true);
 			opcClient.setApplicationIdentity(identity);

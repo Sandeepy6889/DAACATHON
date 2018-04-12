@@ -1,5 +1,6 @@
 package com.siemens.primecult.core;
 
+import static com.siemens.primecult.core.OpcNodesInfo.NAME_SPACE_INDEX;
 import static com.siemens.primecult.init.MqttClientFactory.getMqttClient;
 import static com.siemens.primecult.init.OPCUaClientFactory.getOPCUaClient;
 
@@ -27,10 +28,10 @@ public class OPCServerCommunicator {
 
 	private static final String PUMP_TOPIC = "centrifugalPumpData";
 	private static Map<String, Timer> timerMapping = new HashMap<>();
-	private static final int READ_UPDATE_INTERVAL = 10000;
+	private static final int READ_UPDATE_INTERVAL = 1000;
 	private static final int INITIAL_DELAY = 100;
 	private static Connection connection;
-	private static final int noOfRecords = 10;//16384;
+	private static final int noOfRecords = 10;// 16384;
 	private static int currentPointer = 0;
 
 	public static String startFetchingData(String assetID) {
@@ -63,17 +64,11 @@ public class OPCServerCommunicator {
 
 	private static NodeId[] getNodeIds(String assetID) {
 
-		// NodeId ffNode = new NodeId(2, assetID + "_FF");
-		// NodeId psNode = new NodeId(2, assetID + "_Ps");
-		// NodeId pdNode = new NodeId(2, assetID + "_Pd");
-		// NodeId motorCurrent = new NodeId(2, assetID + "_AMP");
-		// return new NodeId[] { ffNode, psNode, pdNode, motorCurrent };
-
-		NodeId nodeId1 = new NodeId(5, "Counter1_1");
-		NodeId nodeId2 = new NodeId(5, "Counter2_1");
-		NodeId nodeId3 = new NodeId(5, "Counter3_1");
-		NodeId nodeId4 = new NodeId(5, "Counter4_1");
-		return new NodeId[] { nodeId1, nodeId2, nodeId3, nodeId4 };
+		NodeId ffNode = new NodeId(NAME_SPACE_INDEX, assetID + "_FF");
+		NodeId psNode = new NodeId(NAME_SPACE_INDEX, assetID + "_Ps");
+		NodeId pdNode = new NodeId(NAME_SPACE_INDEX, assetID + "_Pd");
+		NodeId motorCurrent = new NodeId(NAME_SPACE_INDEX, assetID + "_AMP");
+		return new NodeId[] { ffNode, psNode, pdNode, motorCurrent };
 
 	}
 
@@ -104,7 +99,6 @@ public class OPCServerCommunicator {
 				connection = OracleConnection.getDbConnection();
 			System.out.println((startOffset * 64 + 1) + " - " + ((startOffset * 64 + 1) + 63));
 			List<Double> list = OracleDBOperation.get(connection, startOffset * 64 + 1, (startOffset * 64 + 1) + 63);
-			System.out.println(list.size());
 			for (int i = 0; i < list.size(); i++)
 				values[i] = list.get(i).floatValue();
 		} catch (SQLException e) {
@@ -121,5 +115,13 @@ public class OPCServerCommunicator {
 			e.printStackTrace();
 		}
 		return values;
+	}
+
+	public static void main(String[] args)
+			throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
+		if (connection == null)
+			connection = OracleConnection.getDbConnection();
+		List<Double> list = OracleDBOperation.get(connection, 1, 63);
+		System.out.println(list);
 	}
 }
