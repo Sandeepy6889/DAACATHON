@@ -80,7 +80,7 @@ public class OPCServerCommunicator {
 		}
 		float[] valuesArr = new float[4];
 		for (int i = 0; i < 4; i++)
-			valuesArr[i] = values[i].getValue().floatValue();
+			valuesArr[i] = (float) (Math.round(values[i].getValue().floatValue() * 100.0) / 100.0);
 		float[] vibrationValues = getVibrationData(currentPointer++);
 		ValueRt valueRt = new ValueRt(assetID, values[0].getSourceTimestamp().getTimeInMillis(), valuesArr,
 				vibrationValues);
@@ -90,6 +90,10 @@ public class OPCServerCommunicator {
 		System.out.println(payload);
 	}
 
+	public static void main(String[] args) {
+		System.out.println((float)Math.round(12.34578 * 100.0) / 100.0);
+	}
+	
 	private static float[] getVibrationData(int startOffset) {
 		float[] values = new float[64];
 		try {
