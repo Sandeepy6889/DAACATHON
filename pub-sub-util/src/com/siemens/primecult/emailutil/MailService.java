@@ -41,9 +41,7 @@ public class MailService {
 						.withRegion(Regions.US_EAST_1)
 						.withCredentials(credentialsProvider)
 						.build();
-//	                [default]
-//	        		 aws_access_key_id=AKIAJ4QBYRM52M73OARA
-//	        		 aws_secret_access_key=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
+
 	    	//create a new SNS topic
 //	    	CreateTopicRequest createTopicRequest = new CreateTopicRequest("MyNewTopic");
 //	    	CreateTopicResult createTopicResult = snsClient.createTopic(createTopicRequest);
