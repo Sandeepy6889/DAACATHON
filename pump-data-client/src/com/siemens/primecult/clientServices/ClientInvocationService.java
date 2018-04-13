@@ -1,5 +1,6 @@
 package com.siemens.primecult.clientServices;
 
+import static com.siemens.primecult.core.OPCServerCommunicator.disconnect;
 import static com.siemens.primecult.core.OPCServerCommunicator.startFetchingData;
 import static com.siemens.primecult.core.OPCServerCommunicator.stopFetchingData;
 
@@ -27,6 +28,15 @@ public class ClientInvocationService {
 	@Consumes(MediaType.TEXT_PLAIN)
 	public String assetRemoved(@PathParam("assetId") String assetId) {
 		return stopFetchingData(assetId);
+	}
+
+	@GET
+	@Path("/disconnectDataClient")
+	@Produces(MediaType.TEXT_PLAIN)
+	@Consumes(MediaType.TEXT_PLAIN)
+	public String disconnectDataClient() {
+		disconnect();
+		return "success";
 	}
 
 }

@@ -4,7 +4,7 @@
  * SPPA-T3000  
  * 
  */
-package oracle;
+package com.siemens.primecult.oracle;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

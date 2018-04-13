@@ -114,6 +114,7 @@ public class KPICalculator {
 	}
 
 	private static float getRefValue(String assetId, float fluidFlowRate, String requestType) {
+		System.out.println("Ref Value asset ID -"+ assetId + "fluid flow rate- "+fluidFlowRate + "Request type "+ requestType);
 		float refValue = -1.0f;
 		try {
 			URL url = new URL("http://kpipredictionohio-dev.us-east-2.elasticbeanstalk.com/predict?x="

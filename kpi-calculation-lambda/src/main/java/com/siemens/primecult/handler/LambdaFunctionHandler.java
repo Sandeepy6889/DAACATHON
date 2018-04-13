@@ -21,9 +21,12 @@ public class LambdaFunctionHandler implements RequestHandler<Object, String> {
 			conn.setRequestProperty("Content-Type", "application/json");
 			conn.setDoOutput(true);
 			conn.getOutputStream().write(new ObjectToJSonMapper().mapObjToJSonStr(input).getBytes());
-			conn.getResponseMessage();
-			System.out.println("response "+conn.getResponseMessage());
+			String reponse = conn.getResponseMessage();
+			System.out.println("response "+reponse);
 		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 		return "OK";

@@ -5,6 +5,7 @@ import static com.siemens.primecult.constants.AlarmStatus.RAISED;
 import static com.siemens.primecult.constants.PumpMonitorConstant.DISCH_PRESSURE;
 import static com.siemens.primecult.constants.PumpMonitorConstant.FLUID_FLOW_RATE;
 import static com.siemens.primecult.constants.PumpMonitorConstant.SUCT_PRESSURE;
+import static com.siemens.primecult.utils.ArithmeticUtil.isFloatValueEqual;
 
 import java.util.List;
 import java.util.Map;
@@ -25,11 +26,13 @@ public class PreventiveAlarmService {
 		float[] measuredParameters = rawValues.getKpiValues();
 		switch (alarmType) {
 		case BLOCKAGE:
-			return measuredParameters[FLUID_FLOW_RATE] == 0 && measuredParameters[SUCT_PRESSURE] != 0
-					&& measuredParameters[DISCH_PRESSURE] != 0;
+			return isFloatValueEqual(measuredParameters[FLUID_FLOW_RATE], 0.0f)
+					&& (!isFloatValueEqual(measuredParameters[SUCT_PRESSURE], 0.0f))
+					&& (!isFloatValueEqual(measuredParameters[DISCH_PRESSURE], 0.0f));
 		case DRYRUN:
-			return measuredParameters[FLUID_FLOW_RATE] == 0 && measuredParameters[SUCT_PRESSURE] == 0
-					&& measuredParameters[DISCH_PRESSURE] == 0;
+			return isFloatValueEqual(measuredParameters[FLUID_FLOW_RATE], 0.0f)
+					&& isFloatValueEqual(measuredParameters[SUCT_PRESSURE], 0.0f)
+					&& isFloatValueEqual(measuredParameters[DISCH_PRESSURE], 0.0f);
 		default:
 			return false;
 		}

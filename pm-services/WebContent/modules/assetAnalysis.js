@@ -173,6 +173,7 @@ assetsAnalysisApp.directive("assetsAnalysis", function () {
                     	if(newSubscriptionId === $scope.assetId) {
                     		plotCharts(kpiResult);
                     		kpiService.getAlarmStatus($scope.assetId).then(function(result) {
+                    			console.log('alarms ', result);
     						var x = result;
     						//blockage
     						if(x[0]!==null && x[0]==1){

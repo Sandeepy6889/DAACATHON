@@ -1,6 +1,7 @@
 package com.siemens.primecult.init;
 
-import static com.siemens.primecult.core.OpcNodesInfo.APP_NAME;
+import static com.siemens.primecult.core.DataClientConfiguration.APP_NAME;
+import static com.siemens.primecult.core.DataClientConfiguration.URI;
 
 import java.util.Locale;
 
@@ -14,7 +15,6 @@ import org.opcfoundation.ua.transport.security.SecurityPolicy;
 import com.prosysopc.ua.ApplicationIdentity;
 import com.prosysopc.ua.UserIdentity;
 import com.prosysopc.ua.client.UaClient;
-import com.siemens.primecult.core.OpcNodesInfo;
 
 public class OPCUaClientFactory {
 
@@ -30,7 +30,7 @@ public class OPCUaClientFactory {
 	private static UaClient initOPCUAClient() {
 		UaClient opcClient = null;
 		try {
-			opcClient = new UaClient(OpcNodesInfo.URI);
+			opcClient = new UaClient(URI);
 			final ApplicationIdentity identity = ApplicationIdentity
 					.loadOrCreateCertificate(getApplicationDescription(), "Organisation", null, null, true);
 			opcClient.setApplicationIdentity(identity);
