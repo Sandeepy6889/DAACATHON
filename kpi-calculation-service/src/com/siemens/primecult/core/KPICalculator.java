@@ -27,7 +27,7 @@ import com.siemens.storage.TableRow;
 public class KPICalculator {
 	Connection connection = null;
 	InsertOperations inOperation = new InsertOperations();
-	private static Map<String, Boolean> currentTrainingStatus = new HashMap<>();
+	private static volatile Map<String, Boolean> currentTrainingStatus = new HashMap<>();
 
 	public KPICalculator(Connection connection) {
 		this.connection = connection;

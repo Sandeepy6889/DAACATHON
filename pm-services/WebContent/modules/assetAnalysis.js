@@ -176,7 +176,7 @@ assetsAnalysisApp.directive("assetsAnalysis", function () {
                     			console.log('alarms ', result);
     						var x = result;
     						//blockage
-    						if(x[0]!==null && x[0]==1){
+    						if(x[3]!==null && x[3]==1){
     							blockage();
     						}
     						else{
@@ -197,7 +197,7 @@ assetsAnalysisApp.directive("assetsAnalysis", function () {
     							suppressDryRunning();
     						}
     						//deviatedTDH
-    						if(x[3]!==null && x[3]==1){
+    						if(x[0]!==null && x[0]==1){
     							deviatedTDH();
     						}
     						else{

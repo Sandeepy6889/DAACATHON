@@ -34,7 +34,7 @@ import com.siemens.storage.TableRow;
 
 public class AlarmManagement {
 
-	private static Map<String, List<Integer>> currentAlarmsStatus = new HashMap<>();
+	private static volatile Map<String, List<Integer>> currentAlarmsStatus = new HashMap<>();
 
 	private Connection connection;
 	InsertOperations inOperation = new InsertOperations();
@@ -67,14 +67,14 @@ public class AlarmManagement {
 		if (isAssetTrained && checkKpiStateChange(calculatedKPI, refrencedKPI, threshold, TDH, rawValue.getAssetID(),
 				currentAlarmsStatus))
 			changeStateInCacheAndDb(TDH, rawValue);
-		else
+		else if(!isAssetTrained) 
 			currentAlarmsStatus.get(rawValue.getAssetID()).set(TDH.getIndex(), NOT_DEFINED);
 
 		// check for efficiency alarm
 		if (isAssetTrained && checkKpiStateChange(calculatedKPI, refrencedKPI, threshold, EFFICIENCY,
 				rawValue.getAssetID(), currentAlarmsStatus))
 			changeStateInCacheAndDb(EFFICIENCY, rawValue);
-		else
+		else if(!isAssetTrained) 
 			currentAlarmsStatus.get(rawValue.getAssetID()).set(EFFICIENCY.getIndex(), NOT_DEFINED);
 
 		// check for blockage alarm
