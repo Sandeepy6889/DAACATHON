@@ -89,10 +89,6 @@ public class OPCServerCommunicator {
 		currentPointer %= (noOfRecords - 1);
 		System.out.println(payload);
 	}
-
-	public static void main(String[] args) {
-		System.out.println((float)Math.round(12.34578 * 100.0) / 100.0);
-	}
 	
 	private static float[] getVibrationData(int startOffset) {
 		float[] values = new float[64];
