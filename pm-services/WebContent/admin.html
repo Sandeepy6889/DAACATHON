@@ -116,11 +116,35 @@
 					</div>
 				</div>
 				
+				<div class="form-group">
+					<div class="input-group">
+						<div class="input-group-addon">Alarm subscription</div>
+						<input name="teachModel" ng-model="urlsInfo.alarmSubs"
+							type="text" class="form-control">
+					</div>
+				</div>
 				
 				<div class="form-group">
 					<div class="input-group">
 						<button type="button" class="btn btn-primary gap"
 							ng-click="update()">Update</button>
+					</div>
+				</div>
+				
+				<hr/>
+				<div class="form-group">
+					<div class="input-group">
+						<div class="input-group-addon">Email</div>
+						<input name="email" ng-model="urlsInfo.email"
+							type="text" class="form-control">
+					</div>
+				</div>
+				
+				
+				<div class="form-group">
+					<div class="input-group">
+						<button type="button" class="btn btn-primary gap"
+							ng-click="registerEmailForAlarmSubs()">Register</button>
 					</div>
 				</div>
 

@@ -17,8 +17,14 @@ import static com.siemens.primecult.constants.PumpMonitorConstant.FLUID_FLOW_RAT
 import static com.siemens.primecult.constants.PumpMonitorConstant.MOTOR_POWER_INPUT;
 import static com.siemens.primecult.constants.PumpMonitorConstant.SUCT_PRESSURE;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -61,6 +67,7 @@ public class AlarmManagement {
 	}
 
 	public void setAlarmsState(KPIData calculatedKPI, KPIData refrencedKPI, ValueRt rawValue, boolean isAssetTrained) throws SQLException {
+		
 		// get threshold from db
 		float threshold = fetchThresholdFromDb(rawValue.getAssetID());
 		// check for TDH alarm
@@ -79,12 +86,25 @@ public class AlarmManagement {
 
 		// check for blockage alarm
 		if (checkPreventiveAlarmStateChange(BLOCKAGE, rawValue, currentAlarmsStatus))
+			{
 			changeStateInCacheAndDb(BLOCKAGE, rawValue);
-
+			int integer = currentAlarmsStatus.get(rawValue.getAssetID()).get(BLOCKAGE.getIndex());
+			if(RAISED == integer)
+			{
+				sendMailForAlarm(rawValue.getAssetID(),"BLOCKAGE");
+			}
+			}
+		
 		// check for dryrun alarm
 		if (checkPreventiveAlarmStateChange(DRYRUN, rawValue, currentAlarmsStatus))
+		{
 			changeStateInCacheAndDb(DRYRUN, rawValue);
-
+			int integer = currentAlarmsStatus.get(rawValue.getAssetID()).get(DRYRUN.getIndex());
+			if(RAISED == integer)
+			{
+				sendMailForAlarm(rawValue.getAssetID(),"DRYRUN");
+			}
+		}
 		// check for Impeller wear combination alarm
 		if (checkVibrationAlarmStateChange(IMPELLER_WEAR_COMBINATION, rawValue, currentAlarmsStatus))
 			changeStateInCacheAndDb(IMPELLER_WEAR_COMBINATION, rawValue);
@@ -122,5 +142,19 @@ public class AlarmManagement {
 		row.set("timestamp", rawValues.getTimeStamp());
 		inOperation.insert(connection, row);
 	}
-
-}
+	private static void sendMailForAlarm(String assetId,  String raisedAlarm) {
+		try {
+	        List<Object> columnValues = DBUtil.getColumnValues("select alarm_subs from urls_info", "alarm_subs");
+	        String eMailSubURL = ((Pair)columnValues.get(0)).getValue().toString();
+			URL url = new URL(eMailSubURL+"mail/publishMail/" + assetId + "/" + raisedAlarm);
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			conn.setRequestMethod("GET");
+			conn.setDoOutput(true);
+			conn.getResponseMessage();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		//return refValue;
+	}
+	
+	}

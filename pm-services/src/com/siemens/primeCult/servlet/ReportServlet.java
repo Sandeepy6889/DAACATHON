@@ -7,6 +7,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -26,7 +28,7 @@ import net.sf.jasperreports.engine.JasperReport;
 public class ReportServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
-
+	
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -47,10 +49,17 @@ public class ReportServlet extends HttpServlet {
 			JasperReport alarmReport = JasperCompileManager.compileReport(inputStream);
 			dbConnection = DbConnection.getDbConnection();
 			stmt = dbConnection.createStatement();
-			String queryString = "select * from alarms where asset_id='"+assetId+"' and timestamp >= " + start + " and timestamp <= " + end;
+			String queryString = "select * from alarms where asset_id='"+assetId+"' and timestamp >= " + start + " and timestamp <= " + end+" order by timestamp asc";
+			
+			//String queryString = "select * from alarms";
 			rset = stmt.executeQuery(queryString);
 			JRResultSetDataSource jasperReports = new JRResultSetDataSource(rset);
-			JasperPrint print = JasperFillManager.fillReport(alarmReport, null, jasperReports);
+			
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("FROM", start);
+			params.put("TO", end);
+			
+			JasperPrint print = JasperFillManager.fillReport(alarmReport, params, jasperReports);
 
 			JasperExportManager.exportReportToPdfStream(print, baos);
 			response.setContentLength(baos.size());

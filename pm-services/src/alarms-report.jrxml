@@ -13,6 +13,8 @@
 			<style backcolor="#E6DAC3"/>
 		</conditionalStyle>
 	</style>
+	<parameter name="FROM" class="java.lang.Long"/>
+	<parameter name="TO" class="java.lang.Long"/>
 	<field name="asset_id" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
@@ -43,26 +45,50 @@
 	<title>
 		<band height="136" splitType="Stretch">
 			<staticText>
-				<reportElement uuid="71668c98-785d-419e-8835-ec2ca98beaa2" style="Title" x="5" y="6" width="547" height="68"/>
+				<reportElement uuid="71668c98-785d-419e-8835-ec2ca98beaa2" style="Title" x="195" y="6" width="356" height="68"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="SansSerif" size="48" pdfFontName="Times-Roman"/>
 				</textElement>
-				<text><![CDATA[Alarms]]></text>
+				<text><![CDATA[Alarms ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="3d82368d-b613-498b-a77b-db91fc454ec8" style="SubTitle" x="5" y="89" width="67" height="22"/>
+				<reportElement uuid="3d82368d-b613-498b-a77b-db91fc454ec8" style="SubTitle" x="5" y="92" width="67" height="22"/>
 				<textElement>
 					<font fontName="SansSerif" size="14" pdfFontName="Times-Roman"/>
 				</textElement>
 				<text><![CDATA[Asset ID : ]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true">
-				<reportElement uuid="002c7a1c-816c-4602-8da6-fb0e5b88140d" style="Detail" x="72" y="88" width="470" height="22"/>
+				<reportElement uuid="002c7a1c-816c-4602-8da6-fb0e5b88140d" style="Detail" x="72" y="94" width="106" height="22"/>
 				<textElement>
-					<font fontName="SansSerif" size="14"/>
+					<font fontName="SansSerif" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{asset_id}]]></textFieldExpression>
 			</textField>
+			<textField>
+				<reportElement uuid="1c1a52bf-c126-41bb-bf93-944e5ed6ccd7" x="431" y="82" width="120" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[(new SimpleDateFormat("dd.MM.yyyy - HH:mm : ss")).format($P{FROM})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="a1a53bfb-210c-40e0-bcc6-988f26d1b4f3" x="433" y="102" width="120" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[(new SimpleDateFormat("dd.MM.yyyy - HH:mm : ss")).format($P{TO})]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="3d82368d-b613-498b-a77b-db91fc454ec8" style="SubTitle" x="393" y="81" width="36" height="20"/>
+				<textElement>
+					<font fontName="SansSerif" size="12" pdfFontName="Times-Roman"/>
+				</textElement>
+				<text><![CDATA[From : ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="3d82368d-b613-498b-a77b-db91fc454ec8" style="SubTitle" x="394" y="101" width="23" height="20"/>
+				<textElement>
+					<font fontName="SansSerif" size="12" pdfFontName="Times-Roman"/>
+				</textElement>
+				<text><![CDATA[To :]]></text>
+			</staticText>
 		</band>
 	</title>
 	<pageHeader>
@@ -84,35 +110,35 @@
 				<text><![CDATA[Type]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="c07a261c-1dc4-44f8-8dfd-730d04697222" style="Column header" x="85" y="0" width="69" height="15" forecolor="#736343"/>
+				<reportElement uuid="c07a261c-1dc4-44f8-8dfd-730d04697222" style="Column header" x="136" y="0" width="42" height="15" forecolor="#736343"/>
 				<textElement>
 					<font fontName="SansSerif" size="10"/>
 				</textElement>
 				<text><![CDATA[Status]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="23064a08-a8b3-487e-be82-a20fd8194da1" style="Column header" x="161" y="0" width="69" height="15" forecolor="#736343"/>
+				<reportElement uuid="23064a08-a8b3-487e-be82-a20fd8194da1" style="Column header" x="201" y="0" width="69" height="15" forecolor="#736343"/>
 				<textElement>
 					<font fontName="SansSerif" size="10"/>
 				</textElement>
 				<text><![CDATA[Date]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="9975edae-df09-4579-8a1a-92bff12581a5" style="Column header" x="304" y="0" width="46" height="15" forecolor="#736343"/>
+				<reportElement uuid="9975edae-df09-4579-8a1a-92bff12581a5" style="Column header" x="325" y="0" width="46" height="15" forecolor="#736343"/>
 				<textElement>
 					<font fontName="SansSerif" size="10"/>
 				</textElement>
 				<text><![CDATA[Flow]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="92ef33b1-e953-4180-a906-0663cedbcb6b" style="Column header" x="374" y="0" width="40" height="15" forecolor="#736343"/>
+				<reportElement uuid="92ef33b1-e953-4180-a906-0663cedbcb6b" style="Column header" x="388" y="0" width="40" height="15" forecolor="#736343"/>
 				<textElement>
 					<font fontName="SansSerif" size="10"/>
 				</textElement>
 				<text><![CDATA[S. P.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="2fae306f-6265-462a-bc05-2728419c0a95" style="Column header" x="442" y="0" width="42" height="15" forecolor="#736343"/>
+				<reportElement uuid="2fae306f-6265-462a-bc05-2728419c0a95" style="Column header" x="449" y="0" width="42" height="15" forecolor="#736343"/>
 				<textElement>
 					<font fontName="SansSerif" size="10"/>
 				</textElement>
@@ -132,51 +158,51 @@
 			<frame>
 				<reportElement uuid="5744617a-6d4f-481c-b65b-1f841d84f310" style="Row" mode="Opaque" x="0" y="0" width="555" height="15"/>
 				<textField isStretchWithOverflow="true">
-					<reportElement uuid="cbcd04c2-fde6-41c0-9507-155b052bb6a1" style="Detail" x="5" y="0" width="69" height="15"/>
+					<reportElement uuid="cbcd04c2-fde6-41c0-9507-155b052bb6a1" style="Detail" x="5" y="0" width="120" height="15"/>
 					<textElement>
-						<font fontName="SansSerif"/>
+						<font fontName="SansSerif" size="10"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{alarm_type}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
-					<reportElement uuid="b5c2b59e-d892-4dff-8da5-d47294d6c724" style="Detail" x="87" y="0" width="69" height="15"/>
+					<reportElement uuid="b5c2b59e-d892-4dff-8da5-d47294d6c724" style="Detail" x="138" y="0" width="57" height="15"/>
 					<textElement>
-						<font fontName="SansSerif"/>
+						<font fontName="SansSerif" size="10"/>
 					</textElement>
 					<textFieldExpression><![CDATA[($F{alarm_status} == 0) ? 'Gone' : 'Raised']]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
-					<reportElement uuid="6e660357-55b2-4925-bb12-cf02e5520b26" style="Detail" x="160" y="0" width="133" height="15"/>
+					<reportElement uuid="6e660357-55b2-4925-bb12-cf02e5520b26" style="Detail" x="200" y="0" width="125" height="15"/>
 					<textElement>
-						<font fontName="SansSerif"/>
+						<font fontName="SansSerif" size="10"/>
 					</textElement>
 					<textFieldExpression><![CDATA[(new SimpleDateFormat("dd.MM.yyyy - HH:mm : ss")).format($F{timestamp})]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
-					<reportElement uuid="a930a562-f228-44ac-950b-cc6f468ee09c" style="Detail" x="304" y="0" width="57" height="15"/>
+					<reportElement uuid="a930a562-f228-44ac-950b-cc6f468ee09c" style="Detail" x="325" y="0" width="57" height="15"/>
 					<textElement>
-						<font fontName="SansSerif"/>
+						<font fontName="SansSerif" size="10"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{fluid_flow}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
-					<reportElement uuid="ced95625-fa73-402c-9857-9916aba054e6" style="Detail" x="374" y="0" width="58" height="15"/>
+					<reportElement uuid="ced95625-fa73-402c-9857-9916aba054e6" style="Detail" x="388" y="0" width="58" height="15"/>
 					<textElement>
-						<font fontName="SansSerif"/>
+						<font fontName="SansSerif" size="10"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{suction_pressure}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
-					<reportElement uuid="0c92e455-4cf8-403d-ae48-967a85272495" style="Detail" x="442" y="0" width="54" height="15"/>
+					<reportElement uuid="0c92e455-4cf8-403d-ae48-967a85272495" style="Detail" x="449" y="0" width="54" height="15"/>
 					<textElement>
-						<font fontName="SansSerif"/>
+						<font fontName="SansSerif" size="10"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{discharge_pressure}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
 					<reportElement uuid="a4e422c0-0990-4852-8b14-72862d706e0d" style="Detail" x="506" y="0" width="49" height="15"/>
 					<textElement>
-						<font fontName="SansSerif"/>
+						<font fontName="SansSerif" size="10"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{motor_power_input}]]></textFieldExpression>
 				</textField>

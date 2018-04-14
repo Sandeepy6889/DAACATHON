@@ -22,6 +22,7 @@ public class UpdateAppUrlsService {
 	public UrlsInfo get() {
 		String qString = "select * from urls_info where id=1";
 		List<Object> records = DBUtil.get(qString, new UrlsInfo());
+		System.out.println("---- "+((UrlsInfo) records.get(0)).getAlarmSubs());
 		return (UrlsInfo) records.get(0);
 	}
 
@@ -30,6 +31,8 @@ public class UpdateAppUrlsService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.TEXT_PLAIN)
 	public String update(UrlsInfo urlsInfo) {
+		
+		System.out.println("urlsInfo.getAlarmSubs() "+urlsInfo.getAlarmSubs());
 
 		TableRow row = new TableRow("urls_info");
 		row.update("asset_created", urlsInfo.getAssetCreated().trim());
@@ -41,6 +44,12 @@ public class UpdateAppUrlsService {
 		row.update("vibration", urlsInfo.getVibration().trim());
 		row.update("asset_removed", urlsInfo.getAssetRemoved().trim());
 		row.update("clear_alarm_cache", urlsInfo.getClearAlarmCache().trim());
+		row.update("alarm_subs", urlsInfo.getAlarmSubs().trim());
+		
+		System.out.println("urlsInfo.getAlarmSubs() "+urlsInfo.getAlarmSubs());
+		row.update("email", urlsInfo.getEmail()!= null? urlsInfo.getEmail().trim() :"" );
+		row.update("topic_arn", urlsInfo.getTopicArn() != null? urlsInfo.getTopicArn().trim() :"" );
+		System.out.println("topic Arn "+urlsInfo.getTopicArn());
 		row.where("id", 1);
 		boolean update = DBUtil.update(row);
 		return update ? "updated successfully" : "failure! could not update";
