@@ -17,6 +17,9 @@ var assetsManagementApp = angular.module("urlsManagementApp", [])
         this.teachModel = defaults.teachModel;
         this.enggAssets = defaults.enggAssets;
         this.vibration = defaults.vibration;
+        this.alarmSubs = defaults.alarmSubs;
+        this.email = defaults.email;
+        this.topicArn = defaults.topicArn;
     }
     return URLsInfo;
 };
@@ -45,12 +48,23 @@ assetsManagementApp.factory("appUrlsService", function ($http, URLsInfo, $q, bas
             });
             return deferred.promise;
         },
+        registerEmailForAlarmSubs: function (urlsInfo) {
+            var deferred = $q.defer();
+            var promise = $http.post(urlsInfo.alarmSubs + "/getTopicArn/"+urlsInfo.email);
+            promise.then(function (response) {
+                deferred.resolve(response.data);
+            }).catch(function(error) {
+        	  console.log(JSON.stringify(error));
+            });
+            return deferred.promise;
+        },
     }
 });
 
 assetsManagementApp.controller("appUrlsController",function ($scope, $element, URLsInfo, appUrlsService) {
     $scope.urlsInfo= {};
     $scope.message = '';
+    $scope.email = '';
     appUrlsService.getAllUrls().then(function(result){
     	$scope.urlsInfo = result;
     });
@@ -59,6 +73,15 @@ assetsManagementApp.controller("appUrlsController",function ($scope, $element, U
     	 appUrlsService.updateUrls($scope.urlsInfo).then(function(result){
     		 $scope.message = result;
          });
+    }
+    
+    $scope.registerEmailForAlarmSubs = function(){
+    	appUrlsService.registerEmailForAlarmSubs($scope.urlsInfo).then(function(topicArn){
+    		$scope.urlsInfo.topicArn = topicArn;
+    		appUrlsService.updateUrls($scope.urlsInfo).then(function(result){
+       		 $scope.message = "Email subscribed successfully";
+            });
+    	});
     }
 });
 

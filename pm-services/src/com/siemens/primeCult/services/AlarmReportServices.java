@@ -29,7 +29,7 @@ public class AlarmReportServices {
 	@Path("/getAlarms/{assetId}/{beginTimestamp}/{endTimestamp}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Object> getAlarmsForDuration(@PathParam("assetId") String assetId,@PathParam("beginTimestamp") String beginTimestamp,@PathParam("endTimestamp") String endTimestamp) {
-		String qString = "select * from alarms where Asset_id='" + assetId + "' and timestamp >= "+Long.valueOf(beginTimestamp)+" and timestamp <= "+Long.valueOf(endTimestamp) ;
+		String qString = "select * from alarms where Asset_id='" + assetId + "' and timestamp >= "+Long.valueOf(beginTimestamp)+" and timestamp <= "+Long.valueOf(endTimestamp)+" order by timestamp asc" ;
 		List<Object> records = DBUtil.get(qString, new Alarm());
 		return records;
 	}
