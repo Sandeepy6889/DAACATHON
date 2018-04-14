@@ -146,7 +146,7 @@ public class AlarmManagement {
 		try {
 	        List<Object> columnValues = DBUtil.getColumnValues("select alarm_subs from urls_info", "alarm_subs");
 	        String eMailSubURL = ((Pair)columnValues.get(0)).getValue().toString();
-			URL url = new URL(eMailSubURL+"mail/publishMail/" + assetId + "/" + raisedAlarm);
+			URL url = new URL(eMailSubURL+"/publishMail/" + assetId + "/" + raisedAlarm);
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestMethod("GET");
 			conn.setDoOutput(true);
