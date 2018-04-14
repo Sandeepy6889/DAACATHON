@@ -51,7 +51,7 @@ public class KPICalculationService {
 		try {
 			kpiCalculator.calculateKPI(requestData);
 			connection.commit();
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			try {
 				connection.rollback();
 			} catch (SQLException e1) {
