@@ -68,7 +68,7 @@ public class EmailUtil {
 //		DBUtil.insert(row);
 //	}
 	
-	private static void publishEmail(
+	public static void publishEmail(
 			List<String> raisedAlarmsList, String assetID )
 	{
 		ProfileCredentialsProvider credentialsProvider = new ProfileCredentialsProvider();
