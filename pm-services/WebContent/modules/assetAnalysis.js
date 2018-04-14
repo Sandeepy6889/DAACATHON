@@ -171,7 +171,7 @@ assetsAnalysisApp.directive("assetsAnalysis", function () {
                     kpiService.getCalculatedAllKPI(endTimestamp, $scope.assetId).then(function (kpiResult) {
                     	console.log('newSubscriptionId === $scope.assetId',newSubscriptionId, $scope.assetId)
                     	if(newSubscriptionId === $scope.assetId) {
-                    		plotCharts(kpiResult);
+                    		plotCharts(kpiResult, $scope.assetId);
                     		kpiService.getAlarmStatus($scope.assetId).then(function(result) {
                     			console.log('alarms ', result);
     						var x = result;
@@ -273,43 +273,50 @@ function suppressImplerWearing() {
 
 function toggleAlarms() { }
 
-function plotCharts(result) {
+function plotCharts(result, pump) {
 
     tDHChartName = "#flot-line-chart1";
     var actualTDHData = result[0];
     var refTDHData = result[1];
-
-    var optionsTDH = {
-        series: {
-            lines: {
-                show: true
-            },
-            points: {
-                show: false
-            }
-        },
-        grid: {
-            hoverable: false
-        }
-    };
+    var optionsTDH;
+    if(pump === 'PUMP03')
+    	{
+    	optionsTDH = {
+    	        series: {
+    	            lines: {
+    	                show: true
+    	            },
+    	            points: {
+    	                show: true
+    	            }
+    	        },
+    	        grid: {
+    	            hoverable: true
+    	        }
+    	    };
+    	}
+    else
+    	{
+    	optionsTDH = {
+    			series: {
+    				lines: {
+    					show: true
+    				},
+    				points: {
+    					show: false
+    				}
+    			},
+    			grid: {
+    				hoverable: false
+    			}
+    	};
+    	
+    	}
     plot(actualTDHData, refTDHData, optionsTDH, tDHChartName);
     effChartName = "#flot-line-chart2";
     var actualEffData = result[2];
     var refEffData = result[3];
-    var optionsEff = {
-        series: {
-            lines: {
-                show: true
-            },
-            points: {
-                show: false
-            }
-        },
-        grid: {
-            hoverable: false
-        }
-    };
-    plot(actualEffData, refEffData, optionsEff, effChartName);
+       plot(actualEffData, refEffData, optionsTDH, effChartName);
 }
 
 function plot(actualData, RefData, options, chartName) {
