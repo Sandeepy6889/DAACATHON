@@ -41,7 +41,7 @@ public class PumpKPIService {
 	public List<List<Double[]>> getCalculatedAllKPI(@PathParam("assetId") String assetId,
 			@PathParam("timeStamp") long endTimeStamp) {
 
-		long beginTimeStamp = endTimeStamp - 300000;
+		long beginTimeStamp = endTimeStamp - 180000;
 		PumpKPIDAO dao = new PumpKPIDAO();
 		List<List<Double[]>> kpiList = new ArrayList<>();
 		PumpKPIDAO dao1 = new PumpKPIDAO();
