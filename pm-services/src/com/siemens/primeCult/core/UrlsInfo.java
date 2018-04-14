@@ -17,9 +17,9 @@ public class UrlsInfo implements DbRowToObject{
 	private String vibration;
 	private String assetRemoved;
 	private String clearAlarmCache;
-	private String alarmSubs = "";
-	private String email = "";
-	private String topicArn = "";
+	private String alarmSubs;
+	private String email;
+	private String topicArn;
 	
 	public String getEmail() {
 		return email;
@@ -123,8 +123,8 @@ public class UrlsInfo implements DbRowToObject{
 		info.setClearAlarmCache(rs.getString("clear_alarm_cache"));
 		info.setAlarmSubs(rs.getString("alarm_subs"));
 		System.out.println("From database "+rs.getString("alarm_subs"));
-		info.setAlarmSubs(rs.getString("email"));
-		info.setAlarmSubs(rs.getString("topic_arn"));
+		info.setEmail(rs.getString("email"));
+		info.setTopicArn(rs.getString("topic_arn"));
 		records.add(info);
 	}
 	@Override

@@ -50,7 +50,7 @@ assetsManagementApp.factory("appUrlsService", function ($http, URLsInfo, $q, bas
         },
         registerEmailForAlarmSubs: function (urlsInfo) {
             var deferred = $q.defer();
-            var promise = $http.post(urlsInfo.alarmSubs + "/getTopicArn/"+urlsInfo.email);
+            var promise = $http.get(urlsInfo.alarmSubs + "/"+urlsInfo.email);
             promise.then(function (response) {
                 deferred.resolve(response.data);
             }).catch(function(error) {

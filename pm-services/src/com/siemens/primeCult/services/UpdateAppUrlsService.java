@@ -45,8 +45,11 @@ public class UpdateAppUrlsService {
 		row.update("asset_removed", urlsInfo.getAssetRemoved().trim());
 		row.update("clear_alarm_cache", urlsInfo.getClearAlarmCache().trim());
 		row.update("alarm_subs", urlsInfo.getAlarmSubs().trim());
-		row.update("email", urlsInfo.getEmail().trim());
-		row.update("topic_arn", urlsInfo.getTopicArn().trim());
+		
+		System.out.println("urlsInfo.getAlarmSubs() "+urlsInfo.getAlarmSubs());
+		row.update("email", urlsInfo.getEmail()!= null? urlsInfo.getEmail().trim() :"" );
+		row.update("topic_arn", urlsInfo.getTopicArn() != null? urlsInfo.getTopicArn().trim() :"" );
+		System.out.println("topic Arn "+urlsInfo.getTopicArn());
 		row.where("id", 1);
 		boolean update = DBUtil.update(row);
 		return update ? "updated successfully" : "failure! could not update";
