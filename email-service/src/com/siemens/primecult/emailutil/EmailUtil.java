@@ -25,8 +25,8 @@ public class EmailUtil {
 	public static String subscribeEMailID(String emailID) {
 		System.out.println("email "+emailID);
 		
-		BasicAWSCredentials awsCreds = new BasicAWSCredentials("AKIAIEHJU62XLEUBWMTQ",
-				"BdgljB9lViR3Wzpbt6w1/ufn/yfU8Nv1r07wPPDK");
+		BasicAWSCredentials awsCreds = new BasicAWSCredentials("",
+				"");
 		AmazonSNS snsClient = AmazonSNSClient.builder().withRegion(Regions.US_EAST_1)
 				.withCredentials(new AWSStaticCredentialsProvider(awsCreds)).build();
 
@@ -49,8 +49,8 @@ public class EmailUtil {
 		try {
 
 			System.out.println("Goint to publish alarm");
-			BasicAWSCredentials awsCreds = new BasicAWSCredentials("AKIAIEHJU62XLEUBWMTQ",
-					"BdgljB9lViR3Wzpbt6w1/ufn/yfU8Nv1r07wPPDK");
+			BasicAWSCredentials awsCreds = new BasicAWSCredentials("",
+					"");
 			AmazonSNS snsClient = AmazonSNSClient.builder().withRegion(Regions.US_EAST_1)
 					.withCredentials(new AWSStaticCredentialsProvider(awsCreds)).build();
 			System.out.println("snsClient " + snsClient);
