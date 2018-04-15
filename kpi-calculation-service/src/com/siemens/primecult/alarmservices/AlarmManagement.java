@@ -4,7 +4,6 @@ import static com.siemens.primecult.alarmservices.KPIAlarmService.checkKpiStateC
 import static com.siemens.primecult.alarmservices.PreventiveAlarmService.checkPreventiveAlarmStateChange;
 import static com.siemens.primecult.alarmservices.VibrationAlarmService.checkVibrationAlarmStateChange;
 import static com.siemens.primecult.constants.AlarmStatus.GONE;
-import static com.siemens.primecult.constants.AlarmStatus.NOT_DEFINED;
 import static com.siemens.primecult.constants.AlarmStatus.RAISED;
 import static com.siemens.primecult.constants.AlarmTypes.BLOCKAGE;
 import static com.siemens.primecult.constants.AlarmTypes.DRYRUN;
@@ -75,14 +74,14 @@ public class AlarmManagement {
 				currentAlarmsStatus))
 			changeStateInCacheAndDb(TDH, rawValue);
 		else if (!isAssetTrained)
-			currentAlarmsStatus.get(rawValue.getAssetID()).set(TDH.getIndex(), NOT_DEFINED);
+			currentAlarmsStatus.get(rawValue.getAssetID()).set(TDH.getIndex(), GONE);
 
 		// check for efficiency alarm
 		if (isAssetTrained && checkKpiStateChange(calculatedKPI, refrencedKPI, threshold, EFFICIENCY,
 				rawValue.getAssetID(), currentAlarmsStatus))
 			changeStateInCacheAndDb(EFFICIENCY, rawValue);
 		else if (!isAssetTrained)
-			currentAlarmsStatus.get(rawValue.getAssetID()).set(EFFICIENCY.getIndex(), NOT_DEFINED);
+			currentAlarmsStatus.get(rawValue.getAssetID()).set(EFFICIENCY.getIndex(), GONE);
 
 		// check for blockage alarm
 		if (checkPreventiveAlarmStateChange(BLOCKAGE, rawValue, currentAlarmsStatus)) {
