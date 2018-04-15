@@ -161,7 +161,7 @@ public class KPICalculator {
 
 		if (motorPowerInput <= 0)
 			return 0;
-		return ((discPress - suctPress) * fluidFlowRate) / (2298 * motorPowerInput * motorEfficiency);
+		return (((discPress - suctPress) * fluidFlowRate) / (2298 * motorPowerInput * motorEfficiency)) * 100;
 	}
 
 }
