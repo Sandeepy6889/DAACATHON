@@ -22,7 +22,6 @@ public class UpdateAppUrlsService {
 	public UrlsInfo get() {
 		String qString = "select * from urls_info where id=1";
 		List<Object> records = DBUtil.get(qString, new UrlsInfo());
-		System.out.println("---- "+((UrlsInfo) records.get(0)).getAlarmSubs());
 		return (UrlsInfo) records.get(0);
 	}
 

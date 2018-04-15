@@ -35,6 +35,16 @@
 		<servlet-name>report</servlet-name>
 		<url-pattern>/report/download</url-pattern>
 	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>help</servlet-name>
+		<servlet-class>com.siemens.primeCult.servlet.HelpDocument</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>help</servlet-name>
+		<url-pattern>/help/download</url-pattern>
+	</servlet-mapping>
+	
 
 	<servlet-mapping>
 		<servlet-name>jersey-serlvet</servlet-name>
