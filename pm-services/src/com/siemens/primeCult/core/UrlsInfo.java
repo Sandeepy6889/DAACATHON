@@ -122,7 +122,6 @@ public class UrlsInfo implements DbRowToObject{
 		info.setAssetRemoved(rs.getString("asset_removed"));
 		info.setClearAlarmCache(rs.getString("clear_alarm_cache"));
 		info.setAlarmSubs(rs.getString("alarm_subs"));
-		System.out.println("From database "+rs.getString("alarm_subs"));
 		info.setEmail(rs.getString("email"));
 		info.setTopicArn(rs.getString("topic_arn"));
 		records.add(info);

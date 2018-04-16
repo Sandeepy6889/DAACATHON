@@ -23,6 +23,7 @@ public class mailSubscriptionService {
 	@Path("/publishMail/{assetID}/{raisedAlarm}")
 	@Consumes(MediaType.TEXT_PLAIN)
 	public void publishMail(@PathParam("assetID") String assetID,@PathParam("raisedAlarm") String raisedAlarm) {
+		System.out.println("Email api called");
 		EmailUtil.publishEmail(raisedAlarm, assetID);
 	}
 }
